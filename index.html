@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ORIGAMI — Arta plierii hârtiei</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="description" content="Ghid offline de origami: simboluri de pliere, baze fundamentale și modele pas cu pas, de la începător la avansat.">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ORIGAMI — Arta plierii hârtiei">
+<meta property="og:description" content="Ghid offline de origami: simboluri, baze și 30 de modele pas cu pas. Un singur fișier HTML, fără cont, fără urmărire.">
+<meta name="theme-color" content="#F5EFDF">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Origami">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%A2%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --paper:        #F5EFDF;
+  --paper-alt:    #ECE1C4;
+  --paper-deep:   #E2D4AC;
+  --paper-edge:   #D8C79C;
+  --ink:          #211D17;
+  --ink-soft:     #5B5646;
+  --ink-faint:    #686354;
+  --indigo:       #2C3C58;
+  --indigo-deep:  #1C2740;
+  --gold:         #A97B2E;
+  --gold-soft:    #D8A94E;
+  --vermillion:   #A8452E;
+  --vermillion-soft:#C97656;
+
+  --valley:  var(--indigo);
+  --mountain: var(--vermillion);
+
+  --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Noto Serif', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --radius-s: 3px;
+  --radius-m: 6px;
+  --shadow-paper: 0 1px 2px rgba(33,29,23,.08), 0 6px 18px -8px rgba(33,29,23,.25);
+  --maxw: 880px;
+}
+
+@media (prefers-color-scheme: dark){
+  /* Intentionally not remapped: this is a single offline reference file meant to be
+     read like a printed book on warm paper; we keep one consistent paper tone. */
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+section.block, header.hero{ scroll-margin-top:60px; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ display:block; max-width:100%; }
+
+a{ color:var(--indigo); }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-visible{
+  outline:2px solid var(--gold); outline-offset:2px;
+}
+
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  color:var(--indigo-deep);
+  margin:0 0 .5em;
+  font-weight:600;
+  letter-spacing:.005em;
+}
+p{ margin:0 0 1em; max-width:66ch; }
+.ink-soft{ color:var(--ink-soft); }
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 max(22px, env(safe-area-inset-right)) 0 max(22px, env(safe-area-inset-left)); }
+
+/* fold-rule: a divider styled like an origami crease, used between
+   major sections instead of a generic hairline */
+.fold-rule{
+  border:0; height:0;
+  border-top:1.5px dashed var(--paper-edge);
+  margin:0;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.site-nav{
+  position:sticky; top:0; z-index:40;
+  background:rgba(245,239,223,.92);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--paper-edge);
+  padding-top:env(safe-area-inset-top);
+}
+.site-nav .wrap{
+  display:flex; align-items:center; gap:6px;
+  height:52px;
+  position:relative;
+}
+.site-nav .brand{
+  font-family:var(--font-display); font-weight:700; font-size:1.05rem;
+  color:var(--indigo-deep); text-decoration:none; white-space:nowrap;
+  margin-right:10px; letter-spacing:.02em;
+}
+.site-nav .brand span{ color:var(--vermillion); }
+.nav-toggle{
+  display:none;
+  margin-left:auto; flex:0 0 auto;
+  width:44px; height:44px; align-items:center; justify-content:center;
+  background:none; border:1px solid var(--paper-edge); border-radius:var(--radius-s);
+  font-size:1.1rem; color:var(--ink-soft); cursor:pointer; line-height:1;
+  appearance:none; -webkit-appearance:none;
+}
+.nav-links{
+  display:flex; align-items:center; gap:6px;
+  overflow-x:auto; scrollbar-width:none;
+  flex:1 1 auto; min-width:0;
+}
+.nav-links::-webkit-scrollbar{ display:none; }
+.site-nav button.navlink{
+  background:none; border:0; cursor:pointer;
+  font-family:var(--font-body); font-size:.86rem; color:var(--ink-soft);
+  padding:6px 10px; border-radius:var(--radius-s); white-space:nowrap;
+  appearance:none; -webkit-appearance:none;
+  flex:0 0 auto;
+}
+.site-nav button.navlink:hover{ color:var(--ink); background:var(--paper-alt); }
+.site-nav button.navlink[aria-current="true"]{ color:var(--indigo-deep); font-weight:600; background:var(--paper-alt); }
+
+@media (max-width:720px){
+  .nav-toggle{ display:flex; }
+  .nav-links{
+    display:none;
+    position:absolute; top:calc(100% + 1px); left:0; right:0;
+    flex-direction:column; align-items:stretch; gap:2px;
+    background:var(--paper); border:1px solid var(--paper-edge); border-top:0;
+    padding:8px; box-shadow:0 10px 24px -8px rgba(33,29,23,.3);
+    max-height:70vh; overflow-y:auto;
+  }
+  .nav-links.open{ display:flex; }
+  .site-nav button.navlink{ padding:13px 14px; text-align:left; width:100%; font-size:.92rem; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{ padding:56px 0 40px; }
+.hero .wrap{ display:grid; grid-template-columns:1fr 200px; gap:34px; align-items:center; }
+.hero h1{ font-size:2.5rem; line-height:1.08; margin-bottom:.28em; }
+.hero .lede{ font-size:1.08rem; color:var(--ink-soft); max-width:52ch; }
+.hero .stat-line{ display:flex; gap:22px; margin-top:22px; flex-wrap:wrap; }
+.hero .stat-line div{ font-family:var(--font-display); font-size:1.5rem; color:var(--indigo); }
+.hero .stat-line small{ display:block; font-family:var(--font-body); font-size:.72rem; color:var(--ink-faint); }
+
+.fold-hero{ width:180px; height:180px; margin:0 auto; }
+.fold-hero .sq{ fill:var(--paper); stroke:var(--indigo-deep); stroke-width:1.5; }
+.fold-hero .flap{
+  fill:var(--paper-alt); stroke:var(--indigo-deep); stroke-width:1.5;
+  transform-origin:170px 30px;
+  animation:foldDown 1.6s cubic-bezier(.6,0,.2,1) both;
+}
+.fold-hero .crease{ stroke:var(--gold); stroke-width:1.2; stroke-dasharray:4 3; }
+@keyframes foldDown{
+  0%{ transform:rotate(0deg) scaleX(-1) translateX(-140px); opacity:.55; }
+  100%{ transform:rotate(0deg); opacity:1; }
+}
+@media (prefers-reduced-motion: reduce){ .fold-hero .flap{ animation:none; } }
+
+@media (max-width:720px){
+  .hero{ padding:28px 0; }
+  .hero .wrap{ grid-template-columns:1fr; text-align:left; gap:20px; }
+  .fold-hero{ order:-1; width:96px; height:96px; }
+  .hero h1{ font-size:1.7rem; }
+  .hero .lede{ font-size:1rem; }
+  .hero .stat-line{ gap:16px; margin-top:18px; }
+  .hero .stat-line div{ font-size:1.25rem; }
+}
+
+/* ============================================================
+   SECTIONS (generic)
+   ============================================================ */
+section.block{ padding:46px 0; }
+@media (max-width:720px){
+  section.block{ padding:30px 0; }
+  .catalog-controls{ gap:6px; }
+}
+.block > .wrap > .block-head{ margin-bottom:22px; }
+.block-head .kicker{
+  font-family:var(--font-body); font-size:.72rem; color:var(--vermillion);
+  font-weight:600; margin-bottom:.4em; display:block;
+}
+.block-head h2{ font-size:1.7rem; }
+.block-head p{ color:var(--ink-soft); }
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+#intro-content h3{ font-size:1.15rem; margin-top:1.1em; }
+.timeline{ list-style:none; margin:0 0 .2em; padding:0; display:grid; gap:16px; }
+.timeline li{ border-left:2.5px dashed var(--paper-edge); padding-left:14px; }
+.timeline .yr{ display:block; font-family:var(--font-display); color:#7E5C22; font-weight:600; font-size:.85rem; letter-spacing:.02em; margin-bottom:.15em; }
+
+/* ============================================================
+   SYMBOLS GRID
+   ============================================================ */
+.symbols-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:14px;
+}
+.symbol-card{
+  background:var(--paper);
+  border:1px solid var(--paper-edge);
+  border-radius:var(--radius-m);
+  padding:14px 14px 12px;
+}
+.symbol-card svg{ width:100%; height:64px; margin-bottom:8px; }
+.symbol-card h4{ font-family:var(--font-body); font-size:.86rem; color:var(--ink); margin:0 0 .3em; font-weight:600; }
+.symbol-card p{ font-size:.78rem; color:var(--ink-soft); margin:0; }
+.legend-line{ fill:none; }
+.legend-valley{ stroke:var(--valley); stroke-width:2; stroke-dasharray:5 4; }
+.legend-mountain{ stroke:var(--mountain); stroke-width:2; stroke-dasharray:1 5; stroke-linecap:round; }
+.legend-existing{ stroke:var(--ink-faint); stroke-width:1.4; stroke-dasharray:2 3; }
+.legend-arrow{ stroke:var(--ink); stroke-width:1.8; fill:none; }
+
+/* ============================================================
+   FOLD DIAGRAM (shared by bases + model viewer)
+   ============================================================ */
+.fold-diagram{ width:100%; aspect-ratio:1/1; background:var(--paper); border:1px solid var(--paper-edge); border-radius:var(--radius-m); }
+.diagram-bg{ fill:var(--paper); }
+.paper-shape{ fill:var(--paper); stroke:var(--indigo-deep); stroke-width:2; stroke-linejoin:round; }
+.paper-shape.side-back{ fill:var(--paper-deep); }
+.paper-ghost{ fill:var(--paper-alt); stroke:var(--ink-faint); stroke-width:1; stroke-dasharray:2 2; opacity:.7; }
+.fold-valley{ stroke:var(--valley); stroke-width:1.8; stroke-dasharray:6 4; }
+.fold-mountain{ stroke:var(--mountain); stroke-width:1.8; stroke-dasharray:1 4.5; stroke-linecap:round; }
+.fold-existing{ stroke:var(--ink-faint); stroke-width:1.2; stroke-dasharray:2 3; }
+.fold-arrow{ stroke:var(--ink); stroke-width:2; fill:none; }
+.mark-dot{ fill:var(--gold); }
+.diagram-badge{ font-family:var(--font-body); font-size:9px; fill:var(--ink-faint); }
+
+/* ============================================================
+   BASES
+   ============================================================ */
+.base-block{ margin-bottom:34px; }
+.base-block h3{ font-size:1.2rem; margin-bottom:.15em; }
+.base-block .base-desc{ color:var(--ink-soft); font-size:.92rem; margin-bottom:16px; max-width:70ch; }
+.step-strip{
+  display:grid; grid-auto-flow:column; grid-auto-columns:150px;
+  gap:12px; overflow-x:auto; padding-bottom:10px;
+  scroll-snap-type:x proximity;
+}
+.step-strip .step-tile{ scroll-snap-align:start; }
+.step-strip:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+.note-box{ border-left:3px solid var(--gold); background:var(--paper-alt); padding:10px 14px; font-size:.86rem; color:var(--ink-soft); border-radius:0 var(--radius-s) var(--radius-s) 0; margin:0 0 18px; max-width:72ch; }
+.viewer-prov{ font-size:.78rem; color:var(--ink-faint); margin-top:.2em; }
+noscript .note-box{ margin:20px auto; max-width:640px; }
+.step-tile{ width:150px; }
+.step-tile .fold-diagram{ margin-bottom:6px; }
+.step-tile .step-no{
+  font-family:var(--font-display); font-size:.72rem; color:var(--vermillion); font-weight:700;
+}
+.step-tile p{ font-size:.76rem; color:var(--ink-soft); margin:2px 0 0; }
+
+/* ============================================================
+   MODEL CATALOG
+   ============================================================ */
+.catalog-controls{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:20px;
+}
+.catalog-controls input[type="search"]{
+  flex:1 1 200px; min-width:160px;
+  font-family:var(--font-body); font-size:.9rem;
+  padding:9px 12px; border:1px solid var(--paper-edge); border-radius:var(--radius-s);
+  background:var(--paper); color:var(--ink);
+  appearance:none; -webkit-appearance:none;
+}
+.chip-group{ display:flex; gap:6px; flex-wrap:wrap; }
+.chip{
+  font-family:var(--font-body); font-size:.8rem; cursor:pointer;
+  padding:9px 14px; border-radius:999px; border:1px solid var(--paper-edge);
+  background:var(--paper); color:var(--ink-soft);
+  appearance:none; -webkit-appearance:none;
+}
+.chip{ min-height:40px; }
+@media (pointer:coarse){ .chip{ min-height:44px; } }
+.chip[aria-pressed="true"]{ background:var(--indigo-deep); border-color:var(--indigo-deep); color:var(--paper); }
+
+.model-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:18px;
+}
+.model-card{
+  position:relative;
+  display:block;
+  width:100%;
+  margin:0;
+  appearance:none; -webkit-appearance:none;
+  background:var(--paper);
+  border:1px solid var(--paper-edge);
+  border-radius:var(--radius-m);
+  padding:16px 16px 14px;
+  cursor:pointer;
+  text-align:left;
+  font:inherit;
+  font-family:var(--font-body);
+  box-shadow:var(--shadow-paper);
+  overflow:hidden;
+}
+.model-card::after{
+  /* folded paper corner — difficulty encoded as the corner's colour */
+  content:""; position:absolute; top:0; right:0; width:0; height:0;
+  border-style:solid; border-width:0 26px 26px 0; border-color:transparent;
+  filter:drop-shadow(-1px 1px 1px rgba(33,29,23,.25));
+}
+.model-card[data-level="incepator"]::after{ border-right-color:var(--paper-deep); }
+.model-card[data-level="intermediar"]::after{ border-right-color:var(--gold-soft); }
+.model-card[data-level="avansat"]::after{ border-right-color:var(--vermillion-soft); }
+.cat-tag{
+  display:inline-block; font-family:var(--font-body); font-size:.72rem; font-weight:600;
+  letter-spacing:.03em; padding:2px 8px; border-radius:20px; margin-bottom:7px;
+  background:var(--paper-alt); color:var(--ink-soft);
+}
+.cat-tag[data-cat="actiune"]{ background:var(--vermillion); color:var(--paper); }
+.cat-tag[data-cat="modular"]{ background:var(--indigo); color:var(--paper); }
+.model-card h4{ font-family:var(--font-display); font-size:1.05rem; margin:0 0 .2em; padding-right:20px; }
+.model-card .meta{ font-size:.76rem; color:var(--ink-faint); margin-bottom:.5em; }
+.model-card p{ font-size:.82rem; color:var(--ink-soft); margin:0; }
+.model-card .done-mark{ display:none; font-size:.72rem; color:var(--indigo); margin-top:8px; font-weight:600; }
+.model-card[data-done="true"] .done-mark{ display:block; }
+.model-card:hover{ border-color:var(--gold); }
+
+.empty-note{ color:var(--ink-faint); font-size:.9rem; font-style:italic; }
+
+/* ============================================================
+   VIEWER (modal)
+   ============================================================ */
+.viewer-overlay{
+  position:fixed; inset:0; background:rgba(28,23,15,.55);
+  display:none; align-items:flex-end; justify-content:center;
+  z-index:100; padding:0;
+}
+.viewer-overlay.open{ display:flex; }
+.viewer-panel{
+  background:var(--paper); width:100%; max-width:640px;
+  max-height:92vh; max-height:92dvh; overflow-y:auto;
+  border-radius:14px 14px 0 0;
+  box-shadow:0 -8px 30px rgba(0,0,0,.35);
+  padding:20px 20px calc(28px + env(safe-area-inset-bottom));
+}
+@media (min-width:720px){
+  .viewer-overlay{ align-items:center; }
+  .viewer-panel{ border-radius:var(--radius-m); max-height:88vh; max-height:88dvh; }
+}
+.viewer-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
+.viewer-head h3{ font-size:1.3rem; margin-bottom:.1em; }
+.viewer-head .meta{ font-size:.8rem; color:var(--ink-faint); }
+.icon-btn{
+  background:none; border:1px solid var(--paper-edge); border-radius:var(--radius-s);
+  width:44px; height:44px; font-size:1rem; cursor:pointer; color:var(--ink-soft);
+  flex:0 0 auto;
+  appearance:none; -webkit-appearance:none;
+}
+.icon-btn:hover{ background:var(--paper-alt); }
+.viewer-progress{ height:4px; background:var(--paper-alt); border-radius:2px; margin:12px 0 18px; overflow:hidden; }
+.viewer-progress > div{ height:100%; background:var(--gold); transition:width .25s ease; }
+.viewer-stage{ display:grid; gap:16px; }
+.viewer-stage .fold-diagram{ max-width:320px; margin:0 auto; }
+.viewer-instruction{ font-size:1.02rem; text-align:center; max-width:52ch; margin:0 auto; }
+.viewer-instruction .step-label{ display:block; font-family:var(--font-display); color:var(--vermillion); font-size:.85rem; margin-bottom:.35em; }
+.viewer-nav{ display:flex; justify-content:space-between; align-items:center; margin-top:18px; gap:10px; }
+.btn{
+  font-family:var(--font-body); font-size:.88rem; font-weight:600; cursor:pointer;
+  padding:12px 18px; border-radius:var(--radius-s); border:1px solid var(--indigo-deep);
+  background:var(--indigo-deep); color:var(--paper);
+  appearance:none; -webkit-appearance:none;
+}
+.btn.secondary{ background:var(--paper); color:var(--indigo-deep); }
+.btn:disabled{ opacity:.35; cursor:default; }
+.btn.ghost{ background:none; border-color:var(--paper-edge); color:var(--ink-soft); }
+.viewer-foot{ display:flex; justify-content:center; gap:10px; margin-top:16px; flex-wrap:wrap; }
+
+/* ============================================================
+   GLOSSARY / TIPS
+   ============================================================ */
+.glossary-list{ display:grid; gap:14px; }
+.glossary-list dt{ font-family:var(--font-display); color:var(--indigo); font-size:1rem; }
+.glossary-list dd{ margin:.15em 0 0; color:var(--ink-soft); font-size:.9rem; max-width:68ch; }
+
+.tips-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+.tip-card{ border-left:2.5px dashed var(--paper-edge); padding-left:14px; }
+.tip-card h4{ font-family:var(--font-body); font-size:.95rem; margin-bottom:.3em; }
+.tip-card p{ font-size:.85rem; color:var(--ink-soft); margin:0; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{ padding:34px 0 50px; }
+footer .wrap{ font-size:.78rem; color:var(--ink-faint); }
+footer a{ color:var(--ink-soft); }
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+#print-sheet{ display:none; }
+@media print{
+  .site-nav, .catalog-controls, .hero .stat-line, footer, .icon-btn, .skip-link{ display:none !important; }
+  body{ background:#fff; }
+  .viewer-overlay{ display:none !important; }
+  body.print-viewer > *:not(#print-sheet){ display:none !important; }
+  body.print-viewer #print-sheet{ display:block; }
+  #print-sheet h1{ font-size:1.5rem; margin:0 0 .2em; }
+  #print-sheet .ps-meta{ font-size:.85rem; color:#333; margin:0 0 1em; }
+  #print-sheet .ps-step{ break-inside:avoid; display:grid; grid-template-columns:150px 1fr; gap:14px; align-items:center; margin:0 0 14px; }
+  #print-sheet .ps-step svg{ width:150px; height:150px; }
+  #print-sheet .ps-step p{ margin:0; max-width:none; }
+  .step-strip{ overflow:visible; grid-auto-flow:row; grid-template-columns:repeat(auto-fill,150px); }
+  a[href]::after{ content:""; }
+}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.skip-link{ position:absolute; left:-999px; top:0; background:var(--indigo-deep); color:var(--paper); padding:10px 14px; z-index:200; }
+.skip-link:focus{ left:10px; top:10px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Sari la conținut</a>
+<noscript><p class="note-box">Acest ghid are nevoie de JavaScript pentru a afișa simbolurile, bazele și modelele. Nu trimite și nu încarcă nimic de pe internet: activează JavaScript în browser și reîncarcă pagina.</p></noscript>
+
+<nav class="site-nav" aria-label="Navigare principală">
+  <div class="wrap">
+    <a class="brand" href="#top">ORIGAMI<span>.</span></a>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Meniu">☰</button>
+    <div class="nav-links" id="nav-links">
+      <button class="navlink" data-nav="intro">Introducere</button>
+      <button class="navlink" data-nav="simboluri">Simboluri</button>
+      <button class="navlink" data-nav="tehnici">Tehnici</button>
+      <button class="navlink" data-nav="baze">Baze</button>
+      <button class="navlink" data-nav="modele">Modele</button>
+      <button class="navlink" data-nav="glosar">Glosar</button>
+      <button class="navlink" data-nav="sfaturi">Sfaturi</button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <h1>Arta plierii hârtiei</h1>
+      <p class="lede">Un ghid offline, complet, despre origami: de la simbolurile universale de pliere, la bazele fundamentale, până la modele pas cu pas — de la o simplă pălărie de hârtie până la cocorul tradițional japonez.</p>
+      <div class="stat-line">
+        <div id="stat-tech">5<small>tehnici explicate</small></div>
+        <div id="stat-bases">8<small>baze fundamentale</small></div>
+        <div id="stat-models">30<small>modele explicate</small></div>
+        <div>1<small>pătrat de hârtie</small></div>
+      </div>
+    </div>
+    <svg class="fold-hero" viewBox="0 0 200 200" aria-hidden="true">
+      <rect class="sq" x="20" y="20" width="160" height="160"/>
+      <line class="crease" x1="20" y1="20" x2="180" y2="180"/>
+      <polygon class="flap" points="180,20 180,180 20,20"/>
+    </svg>
+  </div>
+</header>
+
+<hr class="fold-rule">
+
+<section class="block" id="intro">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Introducere</span>
+      <h2>Ce este origami</h2>
+    </div>
+    <div id="intro-content">
+      <p>Cuvântul <strong>origami</strong> vine din verbele japoneze pentru „a împături” (<em>oru</em>) și „hârtie” (<em>kami</em>, care devine <em>gami</em> la unire cu alt cuvânt — fenomen fonetic obișnuit în japoneză, numit <em>rendaku</em>). În forma sa clasică, regula e simplă și strictă: <strong>un singur pătrat de hârtie, fără tăieturi, fără lipici</strong> — totul ia naștere doar din cute. Variantele mai libere, cu tăieturi sau cu mai multe piese îmbinate, au și ele nume proprii — kirigami, origami modular — explicate în glosar, mai jos.</p>
+
+      <h3>Rădăcini ceremoniale</h3>
+      <p>Înainte să fie artă sau joc, plierea hârtiei a fost ceremonie. În Japonia feudală, hârtia era o resursă prețioasă, iar formele împăturite marcau puritate și respect: <em>shide</em>, fâșii de hârtie în zigzag atârnate la altarele shintoiste, sau <em>noshi</em>, atașate darurilor oficiale. În perioada Muromachi, la curtea samurailor s-a format o adevărată etichetă a împăturirii ceremoniale (<em>origata</em>), cu reguli precise despre cum trebuia împăturită hârtia care însoțea un cadou, în funcție de ocazie și de rangul destinatarului.</p>
+
+      <h3>Tradiții paralele</h3>
+      <p>Origami-ul japonez nu e singura tradiție de acest fel. În China s-a dezvoltat independent <em>zhezhi</em>, folosit inclusiv la ofrande funerare, sub formă de lingouri de hârtie împăturită. În lumea hispanică, <em>papiroflexia</em> a crescut din figurine populare precum <em>pajarita</em>, pasărea de hârtie despre care a scris, între alții, Miguel de Unamuno (sub numele glumeț de „cocotologie”). Cele trei tradiții s-au dezvoltat separat, secole la rând, înainte ca schimburile culturale din secolul XX să le apropie sub numele, azi universal, de origami.</p>
+
+      <h3>Repere istorice</h3>
+      <ul class="timeline">
+        <li><span class="yr">Secolele XIV–XVI</span>Eticheta origata se formalizează în Japonia feudală, în perioada Muromachi.</li>
+        <li><span class="yr">1797</span><em>Senbazuru Orikata</em> (aproximativ, „cum se pliază o mie de cocori”) — cea mai veche carte păstrată cu instrucțiuni de origami, despre cocori legați între ei dintr-o singură foaie (inclusiv cu tăieturi, deci dincolo de regula clasică de mai sus).</li>
+        <li><span class="yr">1911–2005</span>Akira Yoshizawa ridică origami la rang de artă: dezvoltă plierea umedă și un sistem de simboluri pentru diagrame; acesta a fost completat de Samuel Randlett și Robert Harbin și a devenit standardul din cărțile de origami (sistemul Yoshizawa–Randlett, folosit și aici).</li>
+        <li><span class="yr">Astăzi</span>Principiile origami au trecut granița artei: modelul de pliere <em>Miura-ori</em> (propus de astrofizicianul japonez Koryo Miura) a fost studiat pentru panouri solare pliabile pentru sateliți, iar principii înrudite sunt cercetate pentru stenturi medicale și structuri pliabile — domeniu numit „origami rigid”.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="fold-rule">
+
+<section class="block" id="simboluri">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Notație</span>
+      <h2>Simbolurile plierii</h2>
+      <p>Sistemul de notație Yoshizawa–Randlett, folosit în diagramele de mai jos și în foarte multe cărți de origami. Diagramele din această aplicație sunt schematice (ilustrative), nu desene la scară; în ele linia de munte apare punctată, iar în cărți se folosește de obicei linia punct–linie.</p>
+    </div>
+    <div class="symbols-grid" id="symbols-grid"></div>
+  </div>
+</section>
+
+<hr class="fold-rule">
+
+<section class="block" id="tehnici">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Vocabular</span>
+      <h2>Tehnici compuse</h2>
+      <p>Cinci mișcări folosite des în instrucțiunile de mai jos, prea complexe pentru un singur simbol — merită înțelese separat, o singură dată.</p>
+    </div>
+    <div class="symbols-grid" id="techniques-grid"></div>
+  </div>
+</section>
+
+<hr class="fold-rule">
+
+<section class="block" id="baze">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Fundamente</span>
+      <h2>Baze fundamentale</h2>
+      <p>Multe modele tradiționale pornesc de la una dintre aceste forme intermediare. Merită exersate separat, înainte de a începe un model.</p>
+    </div>
+    <div id="bases-content"></div>
+  </div>
+</section>
+
+<hr class="fold-rule">
+
+<section class="block" id="modele">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Catalog</span>
+      <h2>Modele, pas cu pas</h2>
+      <p>Alege un model — diagramele se deschid într-un vizualizator cu pași, înainte/înapoi.</p>
+    </div>
+    <p class="note-box"><strong>Despre instrucțiuni și atribuire.</strong> Pașii sunt reconstituiri didactice și diagramele sunt schematice; nu au fost verificate pas cu pas pe hârtie pentru fiecare model, iar unele detalii (unghiuri, proporții) sunt aproximative. Pentru modelele avansate, compară cu o carte de origami. „Tradițional” înseamnă aici model de circulație populară; unde autorul unui model este cunoscut, este menționat în vizualizator, iar unde proveniența nu a putut fi verificată, scrie asta.</p>
+    <div class="catalog-controls">
+      <input type="search" id="model-search" placeholder="Caută un model…" aria-label="Caută un model">
+      <div class="chip-group" id="level-filters" role="group" aria-label="Filtrează după nivel">
+        <button type="button" class="chip" data-level="all" aria-pressed="true">Toate</button>
+        <button type="button" class="chip" data-level="incepator" aria-pressed="false">Începător</button>
+        <button type="button" class="chip" data-level="intermediar" aria-pressed="false">Intermediar</button>
+        <button type="button" class="chip" data-level="avansat" aria-pressed="false">Avansat</button>
+      </div>
+      <div class="chip-group" id="category-filters" role="group" aria-label="Filtrează după tip">
+        <button type="button" class="chip" data-category="all" aria-pressed="true">Orice tip</button>
+        <button type="button" class="chip" data-category="traditional" aria-pressed="false">Tradițional / popular</button>
+        <button type="button" class="chip" data-category="actiune" aria-pressed="false">Acțiune</button>
+        <button type="button" class="chip" data-category="modular" aria-pressed="false">Modular</button>
+      </div>
+    </div>
+    <div class="model-grid" id="model-grid"></div>
+    <p class="empty-note" id="model-empty" hidden>Niciun model nu corespunde căutării.</p>
+  </div>
+</section>
+
+<hr class="fold-rule">
+
+<section class="block" id="glosar">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Vocabular</span>
+      <h2>Glosar</h2>
+    </div>
+    <dl class="glossary-list" id="glossary-list"></dl>
+  </div>
+</section>
+
+<hr class="fold-rule">
+
+<section class="block" id="sfaturi">
+  <div class="wrap">
+    <div class="block-head">
+      <span class="kicker">Practică</span>
+      <h2>Sfaturi înainte să începi</h2>
+    </div>
+    <div class="tips-grid" id="tips-grid"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Aplicație single-file, offline — fără scripturi externe, fără urmărire, fără cont, fără dependențe. Deschide fișierul HTML direct în orice browser, fără conexiune la internet. Singura informație păstrată în browser (localStorage) este lista modelelor marcate „realizat”; o poți șterge din setările site-ului.</p>
+  </div>
+</footer>
+
+<div class="viewer-overlay" id="viewer-overlay">
+  <div class="viewer-panel" role="dialog" aria-modal="true" aria-labelledby="viewer-title" aria-describedby="viewer-meta">
+    <div class="viewer-head">
+      <div>
+        <h3 id="viewer-title"></h3>
+        <div class="meta" id="viewer-meta"></div>
+        <div class="viewer-prov" id="viewer-prov"></div>
+      </div>
+      <button type="button" class="icon-btn" id="viewer-print" title="Printează" aria-label="Printează instrucțiunile">⎙</button>
+      <button type="button" class="icon-btn" id="viewer-close" title="Închide" aria-label="Închide">✕</button>
+    </div>
+    <div class="viewer-progress" aria-hidden="true"><div id="viewer-progress-bar" style="width:0%"></div></div>
+    <div class="viewer-stage" id="viewer-stage" aria-live="polite" aria-atomic="true"></div>
+    <div class="viewer-nav">
+      <button type="button" class="btn secondary" id="viewer-prev">← Înapoi</button>
+      <span id="viewer-count" class="ink-soft" style="font-size:.8rem;"></span>
+      <button type="button" class="btn" id="viewer-next">Înainte →</button>
+    </div>
+    <div class="viewer-foot">
+      <button type="button" class="btn ghost" id="viewer-done">Marchează ca realizat</button>
+    </div>
+  </div>
+</div>
+
+<div id="print-sheet" aria-hidden="true"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   DATA — filled in below
+   ============================================================ */
+var SYMBOLS = [
+  { name:'Linie de vale', desc:'Pliază hârtia spre tine, ca o vale. Cea mai comună pliere din origami.',
+    svg:'<svg viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="var(--ink-faint)" stroke-width="1"/><line class="legend-line legend-valley" x1="15" y1="85" x2="85" y2="15"/><path class="legend-arrow" fill="none" d="M28,76 Q48,54 58,36"/><polygon points="58,36 50,40 56,46" fill="var(--ink)"/></svg>' },
+  { name:'Linie de munte', desc:'Pliază hârtia în spate, dinspre tine. Cuta rezultată formează un „munte”.',
+    svg:'<svg viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="var(--ink-faint)" stroke-width="1"/><line class="legend-line legend-mountain" x1="15" y1="85" x2="85" y2="15"/><path class="legend-arrow" fill="none" stroke-dasharray="3 3" d="M72,24 Q52,46 42,64"/><polygon points="42,64 50,60 44,54" fill="var(--ink)"/></svg>' },
+  { name:'Pliază și desfă', desc:'Fă o cută bine marcată, apoi deschide hârtia la loc — cuta rămâne ca reper pentru pasul următor.',
+    svg:'<svg viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="none" stroke="var(--ink-faint)" stroke-width="1"/><line class="legend-line legend-valley" x1="15" y1="85" x2="85" y2="15"/><path class="legend-arrow" fill="none" d="M32,68 Q50,50 68,32"/><polygon points="68,32 60,34 64,40" fill="var(--ink)"/><polygon points="32,68 40,66 36,60" fill="var(--ink)"/></svg>' },
+  { name:'Repetă în spate', desc:'Repetă aceeași pliere și pe stratul din spate, simetric.',
+    svg:'<svg viewBox="0 0 100 100"><rect x="12" y="20" width="56" height="56" fill="var(--paper-alt)" stroke="var(--ink-faint)" stroke-width="1"/><rect x="32" y="24" width="56" height="56" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="4 3"/><path class="legend-arrow" fill="none" d="M70,30 Q86,46 78,62"/><polygon points="78,62 84,55 72,57" fill="var(--ink)"/></svg>' },
+  { name:'Întoarce hârtia', desc:'Întoarce tot modelul, ca pe o pagină — ceea ce era în față ajunge în spate.',
+    svg:'<svg viewBox="0 0 100 100"><rect x="25" y="25" width="50" height="50" fill="none" stroke="var(--ink-faint)" stroke-width="1"/><path class="legend-arrow" fill="none" d="M20,35 A32,32 0 1 1 20,66"/><polygon points="20,66 28,62 25,72" fill="var(--ink)"/></svg>' },
+  { name:'Rotește', desc:'Rotește modelul în același plan, fără să-l întorci pe spate — de obicei pentru a-l orienta convenabil pentru pasul următor.',
+    svg:'<svg viewBox="0 0 100 100"><rect x="30" y="30" width="40" height="40" fill="none" stroke="var(--ink-faint)" stroke-width="1"/><path class="legend-arrow" fill="none" d="M75,50 A25,25 0 1 1 55,26"/><polygon points="55,26 65,28 59,36" fill="var(--ink)"/></svg>' },
+  { name:'Umflă modelul', desc:'La modelele de tip „bombă cu apă”: suflă ușor în orificiul de la bază pentru a umfla forma în 3D.',
+    svg:'<svg viewBox="0 0 100 100"><polygon points="50,18 78,50 50,82 22,50" fill="var(--paper-alt)" stroke="var(--ink)" stroke-width="1.4"/><circle cx="50" cy="82" r="3" fill="none" stroke="var(--gold)" stroke-width="1.6"/><path class="legend-arrow" fill="none" d="M30,90 Q40,86 47,82"/><polygon points="47,82 40,81 42,87" fill="var(--gold)"/></svg>' },
+  { name:'Pliere inversă (interior)', desc:'Un vârf este împins spre interiorul modelului, inversând o cută existentă — folosit des la cap și coadă.',
+    svg:'<svg viewBox="0 0 100 100"><polygon points="20,80 80,80 50,25" fill="var(--paper-alt)" stroke="var(--ink)" stroke-width="1.4"/><line class="legend-line legend-existing" x1="50" y1="25" x2="50" y2="80"/><path class="legend-arrow" fill="none" d="M50,20 Q50,45 50,58"/><polygon points="50,58 45,49 55,49" fill="var(--ink)"/></svg>' }
+];
+var TECHNIQUES = [
+  { name:'Pliere-comprimare (squash fold)', desc:'O clapetă se desface și se aplatizează simetric, ca un evantai turtit — folosită la bazele pasăre și broască.',
+    svg:'<svg viewBox="0 0 100 100"><polygon points="50,20 72,75 28,75" fill="none" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/><polygon points="50,45 78,75 22,75" fill="var(--paper-alt)" stroke="var(--ink)" stroke-width="1.4"/><path class="legend-arrow" fill="none" d="M50,50 L30,50"/><path class="legend-arrow" fill="none" d="M50,50 L70,50"/><polygon points="30,50 38,46 38,54" fill="var(--ink)"/><polygon points="70,50 62,46 62,54" fill="var(--ink)"/></svg>' },
+  { name:'Pliere-petală (petal fold)', desc:'Vârful de jos al unei clape se ridică de-a lungul unor cute existente și se pliază în sus, îngustând clapeta într-un romb alungit.',
+    svg:'<svg viewBox="0 0 100 100"><polygon points="30,80 70,80 50,50" fill="none" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/><polygon points="42,80 58,80 50,20" fill="var(--paper-alt)" stroke="var(--ink)" stroke-width="1.4"/><path class="legend-arrow" fill="none" d="M50,75 Q50,55 50,30"/><polygon points="50,30 45,39 55,39" fill="var(--ink)"/></svg>' },
+  { name:'Ureche de iepure (rabbit ear)', desc:'Un colț este prins între două cute și pliat în sus, într-un vârf subțire care stă separat de restul hârtiei.',
+    svg:'<svg viewBox="0 0 100 100"><polygon points="20,80 80,80 50,55" fill="var(--paper-alt)" stroke="var(--ink-faint)" stroke-width="1"/><line class="legend-line legend-existing" x1="20" y1="80" x2="50" y2="55"/><line class="legend-line legend-existing" x1="80" y1="80" x2="50" y2="55"/><polygon points="45,80 55,80 50,28" fill="var(--paper-alt)" stroke="var(--ink)" stroke-width="1.4"/><path class="legend-arrow" fill="none" d="M50,58 Q50,45 50,35"/><polygon points="50,35 45,44 55,44" fill="var(--ink)"/></svg>' },
+  { name:'Pliere-înfundare (sink fold)', desc:'Un vârf este împins spre interior și „scufundat” între straturi, dispărând din conturul exterior al modelului.',
+    svg:'<svg viewBox="0 0 100 100"><polygon points="25,75 75,75 50,25" fill="var(--paper-alt)" stroke="var(--ink)" stroke-width="1.4"/><line class="legend-line legend-mountain" x1="35" y1="55" x2="65" y2="55"/><path class="legend-arrow" fill="none" stroke-dasharray="3 3" d="M50,35 Q50,50 50,62"/><polygon points="50,62 45,53 55,53" fill="var(--ink)"/></svg>' },
+  { name:'Pliere-încrețire (crimp fold)', desc:'Două plieri apropiate, în direcții opuse, care schimbă unghiul unei clape fără să-i schimbe lățimea — utilă la genunchi și coturi.',
+    svg:'<svg viewBox="0 0 100 100"><polyline points="20,80 40,55 60,80 80,30" fill="none" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/><polyline points="20,80 45,50 55,60 80,20" fill="none" stroke="var(--ink)" stroke-width="1.6"/><path class="legend-arrow" fill="none" d="M35,68 Q45,58 50,55"/><polygon points="50,55 41,55 46,63" fill="var(--ink)"/></svg>' }
+];
+var BASES = [
+  { id:'preliminara', name:'Baza preliminară', desc:'Numită și „baza pătrat”. Punctul de plecare pentru baza pasăre și baza broască, pentru multe flori și pentru numeroase modele clasice.',
+    steps:[
+      { text:'Pornește cu hârtia pătrată, cu fața colorată în sus.',
+        shape:[[40,40],[200,40],[200,200],[40,200]] },
+      { text:'Pliază și desfă pe ambele diagonale (colț în colț). Rămân două cute în formă de X.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}],
+        arrows:[{x1:70,y1:70,x2:105,y2:105,curve:8}] },
+      { text:'Întoarce hârtia pe partea albă. Pliază și desfă pe orizontală și pe verticală, margine cu margine. Ai acum 4 cute în total (două diagonale, două mediane).',
+        side:'back', badge:'spate',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+               {type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120}] },
+      { text:'Folosind cutele existente, împinge cele patru colțuri spre centru — hârtia colapsează natural într-un pătrat mai mic.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+               {type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:40,y1:120,x2:200,y2:120}],
+        arrows:[{x1:55,y1:55,x2:95,y2:95},{x1:185,y1:55,x2:145,y2:95},{x1:185,y1:185,x2:145,y2:145},{x1:55,y1:185,x2:95,y2:145}] },
+      { text:'Aplatizează bine. Ai obținut baza preliminară: vârful închis sus, iar jos un vârf deschis — două straturi pe care le poți separa, ca un buzunar.',
+        badge:'gata',
+        shape:[[120,50],[190,120],[120,190],[50,120]] }
+    ]
+  },
+  { id:'bomba-apa', name:'Baza bombă cu apă', desc:'Aceleași patru cute (două mediane, două diagonale) ca la baza preliminară, dar colapsate în sensul opus. Punctul de plecare pentru balonul „bombă cu apă”.',
+    steps:[
+      { text:'Pornește tot cu hârtia pătrată, de data aceasta cu fața colorată în jos.',
+        shape:[[40,40],[200,40],[200,200],[40,200]] },
+      { text:'Pliază și desfă pe orizontală și pe verticală, margine cu margine.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120}],
+        arrows:[{x1:70,y1:120,x2:105,y2:120,curve:-8}] },
+      { text:'Întoarce hârtia. Pliază și desfă pe ambele diagonale. Ai din nou 4 cute — dar colapsul se va face în direcția opusă față de baza preliminară.',
+        side:'back', badge:'spate',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:40,y1:120,x2:200,y2:120},
+               {type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+      { text:'Împinge centrul hârtiei în jos și adu laturile spre interior — colapsul se face în direcția opusă bazei preliminare.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:40,y1:120,x2:200,y2:120},
+               {type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200}],
+        arrows:[{x1:120,y1:60,x2:120,y2:95},{x1:60,y1:120,x2:95,y2:120},{x1:180,y1:120,x2:145,y2:120},{x1:120,y1:180,x2:120,y2:145}] },
+      { text:'Aplatizează bine. Ai obținut baza bombă cu apă: un triunghi plat, cu vârful sus și latura deschisă jos — colapsul opus celui de la baza preliminară.',
+        badge:'gata',
+        shape:[[120,50],[200,130],[40,130]] }
+    ]
+  },
+  { id:'pasare', name:'Baza pasăre', desc:'Baza preliminară dusă mai departe cu două plieri-petală — punctul de plecare pentru cocor și pentru multe modele de păsări.',
+    steps:[
+      { text:'Pornește cu hârtia pătrată. Pliază și desfă pe ambele diagonale (X).',
+        shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+      { text:'Întoarce hârtia. Pliază și desfă pe orizontală și pe verticală, margine cu margine — ai acum 4 cute în total (două diagonale, două mediane).',
+        side:'back', badge:'spate', shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+               {type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120}] },
+      { text:'Colapsează hârtia de-a lungul cutelor existente, formând baza preliminară.',
+        shape:[[120,50],[190,120],[120,190],[50,120]], badge:'baza preliminară' },
+      { text:'Orientează baza cu vârful deschis în jos. Lucrează doar cu stratul din față: pliază cele două margini inferioare spre linia centrală.',
+        shape:[[120,50],[190,120],[120,190],[50,120]],
+        folds:[{type:'valley',x1:50,y1:120,x2:120,y2:140},{type:'valley',x1:190,y1:120,x2:120,y2:140}] },
+      { text:'Pliază vârful de sus (cel închis) în jos, până la nivelul unde se întâlnesc capetele noilor cute, apoi desfă toate cele trei cute înapoi.',
+        shape:[[120,50],[190,120],[120,190],[50,120]],
+        folds:[{type:'existing',x1:50,y1:120,x2:120,y2:140},{type:'existing',x1:190,y1:120,x2:120,y2:140},{type:'valley',x1:80,y1:140,x2:160,y2:140}] },
+      { text:'Ridică vârful de jos de-a lungul cutelor și pliază-l în sus, apăsând marginile spre interior — plierea-petală. Aplatizează bine.',
+        shape:[[120,50],[140,120],[120,190],[100,120]], arrows:[{x1:120,y1:178,x2:120,y2:128}] },
+      { text:'Întoarce modelul și repetă exact aceeași pliere-petală pe stratul din spate.',
+        side:'back', badge:'spate', shape:[[120,50],[190,120],[120,190],[50,120]] },
+      { text:'Gata: un romb lung cu patru vârfuri libere — două sus (viitoarele aripi) și două jos („picioarele” care vor deveni gâtul și coada). De aici pornesc cocorul și multe alte păsări.',
+        shape:[[120,35],[155,110],[130,205],[110,205],[85,110]], badge:'gata' }
+    ]
+  },
+  { id:'peste-baza', name:'Baza pește', desc:'Bază cu patru vârfuri, obținută din plieri „zmeu” și două „urechi de iepure” — punctul de plecare pentru peștii origami mai detaliați.',
+    steps:[
+      { text:'Pornește cu hârtia pătrată. Pliază și desfă pe ambele diagonale (X).',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+      { text:'Din colțul din dreapta-sus, pliază marginea de sus pe diagonala care pornește din acel colț; din colțul din dreapta-jos, pliază marginea de jos pe diagonala care pornește din el. Desfă — cutele formează „forme de zmeu”.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+               {type:'valley',x1:200,y1:40,x2:40,y2:105},{type:'valley',x1:200,y1:200,x2:40,y2:135}] },
+      { text:'Repetă aceleași plieri „zmeu” din cele două colțuri din stânga, pe diagonalele lor. Desfă.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+               {type:'existing',x1:200,y1:40,x2:40,y2:105},{type:'existing',x1:200,y1:200,x2:40,y2:135},
+               {type:'valley',x1:40,y1:40,x2:200,y2:105},{type:'valley',x1:40,y1:200,x2:200,y2:135}] },
+      { text:'Folosind toate cutele, ridică fiecare vârf (dreapta și stânga) și pliază-l spre interior, de-a lungul diagonalei sale — marginile brute se adună pe linia centrală. Aceasta e plierea „ureche de iepure”, făcută în ambele părți.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+               {type:'existing',x1:200,y1:40,x2:40,y2:105},{type:'existing',x1:200,y1:200,x2:40,y2:135},
+               {type:'existing',x1:40,y1:40,x2:200,y2:105},{type:'existing',x1:40,y1:200,x2:200,y2:135}],
+        arrows:[{x1:185,y1:60,x2:150,y2:100},{x1:185,y1:180,x2:150,y2:140},{x1:55,y1:60,x2:90,y2:100},{x1:55,y1:180,x2:90,y2:140}] },
+      { text:'Gata: baza pește — un romb alungit, cu două clape subțiri împăturite spre centru. Punctul de plecare pentru peștii origami detaliați.',
+        badge:'gata',
+        shape:[[120,35],[175,120],[120,145],[65,120]] }
+    ]
+  },
+  { id:'broasca-baza', name:'Baza broască', desc:'Patru clape lungi obținute prin comprimare și pliere-petală pe fiecare latură a bazei preliminare — punctul de plecare pentru broasca „clasică” (frog) și pentru flori cu patru petale. (Broasca săritoare din catalog nu pornește de la ea.)',
+    steps:[
+      { text:'Pornește de la baza preliminară gata făcută (vezi mai sus), cu vârful deschis în jos.',
+        shape:[[120,50],[190,120],[120,190],[50,120]], badge:'baza preliminară' },
+      { text:'Ia una din cele patru clape: pliază marginea ei de sus spre linia centrală, apoi desfă — doar o cută de pregătire.',
+        shape:[[120,50],[190,120],[120,190],[50,120]],
+        folds:[{type:'valley',x1:120,y1:50,x2:120,y2:120}] },
+      { text:'Comprimă acea clapă („squash fold”): deschide-o ușor și aplatizeaz-o simetric, folosind cuta făcută. Repetă pe celelalte trei clape ale bazei (întoarce modelul pe rând).',
+        badge:'×4',
+        shape:[[120,50],[155,85],[120,120],[85,85]] },
+      { text:'La fiecare clapă comprimată: pliază cele două margini spre linia centrală, apoi desfă — cute de pregătire pentru plierea-petală.',
+        shape:[[120,50],[155,85],[120,120],[85,85]],
+        folds:[{type:'valley',x1:85,y1:85,x2:120,y2:70},{type:'valley',x1:155,y1:85,x2:120,y2:70}] },
+      { text:'Folosind acele cute, fă o pliere-petală pe fiecare clapă: ridică vârful și adu marginile spre interior, aplatizând. Repetă pe toate cele patru.',
+        badge:'×4',
+        shape:[[120,50],[132,90],[120,130],[108,90]],
+        arrows:[{x1:120,y1:118,x2:120,y2:98}] },
+      { text:'Gata: baza broască — patru clape lungi și subțiri, toate pornind din același punct central. De aici pornesc broasca săritoare și florile cu patru petale.',
+        badge:'gata',
+        shape:[[120,35],[135,120],[190,150],[120,110],[50,150],[105,120]] }
+    ]
+  },
+  { id:'rasucire-patrata', name:'Răsucire pătrată (twist)', desc:'Tehnica din spatele teselațiilor origami: un grilaj de cute, plus un pătrat rotit la mijloc, care se rotește și colapsează plat, ca o mică moară de vânt.',
+    steps:[
+      { text:'Pornește cu hârtia pătrată. Pliază și desfă pe orizontală și pe verticală, apoi pliază fiecare jumătate din nou în două — obții un grilaj cu cute la un sfert, o jumătate și trei sferturi, în ambele direcții.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120},
+               {type:'valley',x1:80,y1:40,x2:80,y2:200},{type:'valley',x1:160,y1:40,x2:160,y2:200},
+               {type:'valley',x1:40,y1:80,x2:200,y2:80},{type:'valley',x1:40,y1:160,x2:200,y2:160}] },
+      { text:'Marchează un pătrat mic, rotit la 45°, în centrul grilajului — vârfurile lui ating cutele aflate la un sfert de margine. Pliază-i laturile ca linii de munte, apoi pliază câte o cută-vale suplimentară din fiecare colț al foii spre acel pătrat mic.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:40,y1:120,x2:200,y2:120},
+               {type:'existing',x1:80,y1:40,x2:80,y2:200},{type:'existing',x1:160,y1:40,x2:160,y2:200},
+               {type:'existing',x1:40,y1:80,x2:200,y2:80},{type:'existing',x1:40,y1:160,x2:200,y2:160},
+               {type:'mountain',x1:120,y1:80,x2:160,y2:120},{type:'mountain',x1:160,y1:120,x2:120,y2:160},
+               {type:'mountain',x1:120,y1:160,x2:80,y2:120},{type:'mountain',x1:80,y1:120,x2:120,y2:80},
+               {type:'valley',x1:40,y1:40,x2:80,y2:80},{type:'valley',x1:200,y1:40,x2:160,y2:80},
+               {type:'valley',x1:200,y1:200,x2:160,y2:160},{type:'valley',x1:40,y1:200,x2:80,y2:160}] },
+      { text:'Cu toate cutele pregătite, apasă ușor pătratul central și rotește-l — restul foii se pliază singur în jurul lui, în evantai, ca o mică moară de vânt.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:40,y1:120,x2:200,y2:120},
+               {type:'existing',x1:80,y1:40,x2:80,y2:200},{type:'existing',x1:160,y1:40,x2:160,y2:200},
+               {type:'existing',x1:40,y1:80,x2:200,y2:80},{type:'existing',x1:40,y1:160,x2:200,y2:160},
+               {type:'existing',x1:120,y1:80,x2:160,y2:120},{type:'existing',x1:160,y1:120,x2:120,y2:160},
+               {type:'existing',x1:120,y1:160,x2:80,y2:120},{type:'existing',x1:80,y1:120,x2:120,y2:80}],
+        arrows:[{x1:120,y1:60,x2:140,y2:90,curve:15},{x1:180,y1:120,x2:150,y2:140,curve:15},
+                {x1:120,y1:180,x2:100,y2:150,curve:15},{x1:60,y1:120,x2:90,y2:100,curve:15}] },
+      { text:'Ai obținut o „răsucire pătrată” — piesa de bază a teselațiilor origami. O teselație completă repetă exact această răsucire, unitate lângă unitate, pe un grilaj mult mai mare, pliat dinainte pe toată foaia.',
+        badge:'o singură răsucire',
+        shape:[[120,80],[160,120],[120,160],[80,120]] },
+      { text:'Pentru o teselație adevărată, exact același tipar — grilaj plus pătrat rotit — se marchează de mai multe ori, unul lângă altul, pe un grilaj mult mai mare, fără să colapsezi încă nimic.',
+        badge:'grilaj extins',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120},
+               {type:'mountain',x1:80,y1:90,x2:120,y2:120},{type:'mountain',x1:120,y1:120,x2:80,y2:150},
+               {type:'mountain',x1:80,y1:150,x2:40,y2:120},{type:'mountain',x1:40,y1:120,x2:80,y2:90},
+               {type:'mountain',x1:160,y1:90,x2:200,y2:120},{type:'mountain',x1:200,y1:120,x2:160,y2:150},
+               {type:'mountain',x1:160,y1:150,x2:120,y2:120},{type:'mountain',x1:120,y1:120,x2:160,y2:90}] },
+      { text:'Colapsul se face tot unul câte unul, dinspre centrul foii spre margini — fiecare răsucire nouă se pliază exact ca prima, în jurul propriului pătrat rotit. Cu răbdare, tot grilajul devine o teselație completă.',
+        badge:'gata',
+        shape:[[60,60],[100,90],[140,60],[180,90],[180,150],[140,180],[100,150],[60,180]] }
+    ]
+  },
+  { id:'triunghi-baza', name:'Baza triunghiulară', desc:'Un pătrat devine mai întâi triunghi echilateral, apoi se pliază pe cele trei mediane — o mică bază 3D, punctul de plecare pentru structuri modulare triunghiulare.',
+    steps:[
+      { text:'Pornește cu hârtia pătrată. Pliază-o în jumătate, apoi desfă — o singură cută, ca reper.',
+        shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200}] },
+      { text:'Pliază colțul din dreapta-sus în jos, până atinge cuta centrală, aliniind cât mai bine marginea de sus. Crestează.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:85,y1:40,x2:200,y2:125}] },
+      { text:'Pliază la fel colțul din stânga-sus în jos, spre cuta centrală. Crestează.',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:85,y1:40,x2:200,y2:125},
+               {type:'valley',x1:155,y1:40,x2:40,y2:125}] },
+      { text:'Taie de-a lungul celor două cute noi, dinspre vârful de sus până la colțurile de jos. Ai obținut un triunghi echilateral.',
+        badge:'taie',
+        shape:[[40,40],[200,40],[200,200],[40,200]],
+        folds:[{type:'existing',x1:85,y1:40,x2:200,y2:125},{type:'existing',x1:155,y1:40,x2:40,y2:125}] },
+      { text:'Pliază triunghiul în jumătate, dintr-un vârf spre mijlocul laturii opuse — o mediană. Crestează și desfă. Repetă din celelalte două vârfuri.',
+        badge:'×3',
+        shape:[[120,40],[200,155],[40,155]],
+        folds:[{type:'valley',x1:120,y1:40,x2:120,y2:155},{type:'valley',x1:40,y1:155,x2:160,y2:97},
+               {type:'valley',x1:200,y1:155,x2:80,y2:97}] },
+      { text:'Folosind cele trei mediane, ridică ușor mijlocul triunghiului și pliază cele trei colțuri spre centru — o mică bază triunghiulară, în relief.',
+        badge:'gata',
+        shape:[[120,80],[155,135],[85,135]] }
+    ]
+  },
+  { id:'hexagon-baza', name:'Baza hexagonală', desc:'Un pătrat, plisat și tăiat după propriile cute, devine un hexagon regulat — bun pentru cutii și modele cu șase laturi.',
+    steps:[
+      { text:'Pornește cu hârtia pătrată, fața colorată în sus. Pliază pe diagonală (colț în colț), formând un triunghi. Crestează bine.',
+        shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200}] },
+      { text:'În triunghi, pliază un colț spre celălalt doar cât să marchezi un reper scurt la mijlocul unei laturi; desfă. Repetă simetric, marcând încă două repere scurte.',
+        badge:'repere',
+        shape:[[40,200],[200,200],[40,40]] },
+      { text:'Unind reperele făcute, pliază spre interior o parte a triunghiului, astfel încât un colț să ajungă exact pe unul din reperele marcate.',
+        shape:[[40,200],[200,200],[40,40]],
+        folds:[{type:'valley',x1:200,y1:200,x2:110,y2:110}] },
+      { text:'Pliază la fel, din partea opusă — marginile celor două plieri noi ar trebui să se alinieze frumos, una lângă alta.',
+        shape:[[40,200],[200,200],[110,110]],
+        folds:[{type:'valley',x1:40,y1:200,x2:110,y2:135}] },
+      { text:'Taie de-a lungul liniei orizontale formate de cele două plieri.',
+        badge:'taie',
+        shape:[[40,200],[200,200],[110,135]] },
+      { text:'Desfă tot. Gata: o bază hexagonală — un hexagon regulat, cu toate cutele de referință vizibile, gata pentru cutii sau modele cu șase laturi.',
+        badge:'gata',
+        shape:[[100,40],[140,40],[175,95],[140,150],[100,150],[65,95]] }
+    ]
+  }
+];
+var MODELS = [
+{ id:'palarie', name:'Pălărie de hârtie', level:'incepator', category:'traditional', time:'5 min', paper:'Dreptunghiulară (A4)',
+  blurb:'Clasica pălărie de ziar — patru pliuri și gata de purtat.',
+  steps:[
+    { text:'Pornește cu o coală dreptunghiulară (de exemplu A4). Pliază-o în jumătate, aducând marginea de jos peste cea de sus.',
+      shape:[[60,30],[180,30],[180,210],[60,210]], folds:[{type:'valley',x1:60,y1:120,x2:180,y2:120}],
+      arrows:[{x1:120,y1:175,x2:120,y2:135}] },
+    { text:'Pliază cele două colțuri de sus spre linia centrală, formând vârful triunghiului.',
+      shape:[[60,120],[180,120],[180,210],[60,210]],
+      folds:[{type:'valley',x1:60,y1:120,x2:120,y2:165},{type:'valley',x1:180,y1:120,x2:120,y2:165}] },
+    { text:'Pliază în sus marginea de jos, peste baza triunghiului — pe ambele straturi (întoarce hârtia pentru al doilea strat).',
+      shape:[[60,165],[120,120],[180,165],[180,210],[60,210]],
+      folds:[{type:'valley',x1:60,y1:165,x2:180,y2:165}], badge:'×2' },
+    { text:'Deschide ușor baza pentru a o putea purta. Pălăria este gata — este și punctul de plecare pentru barca de hârtie.',
+      shape:[[60,165],[120,120],[180,165],[180,192],[60,192]], badge:'gata' }
+  ]},
+{ id:'barca', name:'Barcă de hârtie', level:'incepator', category:'traditional', time:'8 min', paper:'Dreptunghiulară (A4)',
+  blurb:'Pornește la fel ca pălăria, apoi se deschide într-o ambarcațiune cu două vârfuri.',
+  steps:[
+    { text:'Ca și la pălărie: pliază coala dreptunghiulară în jumătate, aducând marginea de jos peste cea de sus.',
+      shape:[[60,30],[180,30],[180,210],[60,210]], folds:[{type:'valley',x1:60,y1:120,x2:180,y2:120}] },
+    { text:'Pliază cele două colțuri de sus spre linia centrală, formând vârful triunghiului.',
+      shape:[[60,120],[180,120],[180,210],[60,210]],
+      folds:[{type:'valley',x1:60,y1:120,x2:120,y2:165},{type:'valley',x1:180,y1:120,x2:120,y2:165}] },
+    { text:'Pliază în sus marginea de jos peste baza triunghiului, pe ambele straturi.',
+      shape:[[60,165],[120,120],[180,165],[180,210],[60,210]],
+      folds:[{type:'valley',x1:60,y1:165,x2:180,y2:165}], badge:'×2' },
+    { text:'Ai obținut aceeași formă ca la pălărie. De aici, plierea continuă altfel.',
+      shape:[[60,165],[120,120],[180,165],[180,192],[60,192]] },
+    { text:'Deschide pălăria și aplat-o cu cutele din mijloc în față și în spate, până devine un romb (un pătrat așezat pe colț).',
+      shape:[[120,130],[175,165],[120,200],[65,165]] },
+    { text:'Pliază în sus, spre vârful de sus, colțul de jos — pe ambele straturi (față și spate).',
+      shape:[[120,130],[175,165],[120,200],[65,165]],
+      folds:[{type:'valley',x1:65,y1:165,x2:175,y2:165}], badge:'×2' },
+    { text:'Deschide cu grijă modelul dinspre interior, trăgând ușor colțurile laterale în afară, în timp ce împingi baza în jos.',
+      shape:[[120,130],[175,165],[65,165]],
+      arrows:[{x1:150,y1:160,x2:186,y2:170,curve:6},{x1:90,y1:160,x2:54,y2:170,curve:-6}] },
+    { text:'Modelează ușor fundul bărcii, aplatizându-l, pentru ca ambarcațiunea să stea stabilă. Barca este gata de plutit.',
+      shape:[[65,175],[95,140],[120,175],[145,140],[175,175],[175,195],[65,195]], badge:'gata' }
+  ]},
+{ id:'avion', name:'Avion săgeată', level:'incepator', category:'traditional', time:'4 min', paper:'Dreptunghiulară (A4)',
+  blurb:'Cel mai cunoscut avion de hârtie din lume — zboară departe și drept.',
+  steps:[
+    { text:'Pliază coala în jumătate pe lungime, doar pentru a marca centrul, apoi desfă.',
+      shape:[[60,30],[180,30],[180,210],[60,210]], folds:[{type:'valley',x1:120,y1:30,x2:120,y2:210}] },
+    { text:'Pliază cele două colțuri de sus spre linia centrală, formând vârful săgeții.',
+      shape:[[60,30],[180,30],[180,210],[60,210]],
+      folds:[{type:'existing',x1:120,y1:30,x2:120,y2:210},{type:'valley',x1:60,y1:30,x2:120,y2:80},{type:'valley',x1:180,y1:30,x2:120,y2:80}] },
+    { text:'Pliază din nou marginile înclinate spre linia centrală, pentru un vârf și mai ascuțit.',
+      shape:[[60,90],[120,30],[180,90],[180,210],[60,210]],
+      folds:[{type:'existing',x1:120,y1:30,x2:120,y2:210},{type:'valley',x1:60,y1:90,x2:120,y2:50},{type:'valley',x1:180,y1:90,x2:120,y2:50}] },
+    { text:'Pliază tot modelul în jumătate, de-a lungul liniei centrale, aducând o parte peste cealaltă.',
+      shape:[[100,170],[120,30],[140,170],[180,210],[60,210]], folds:[{type:'valley',x1:120,y1:30,x2:120,y2:210}] },
+    { text:'Pliază o aripă în jos, aliniind marginea de sus (coloana) cu marginea de jos a corpului. Întoarce și repetă la fel pe cealaltă parte.',
+      shape:[[120,30],[180,210],[120,210]], folds:[{type:'valley',x1:120,y1:70,x2:180,y2:180}], badge:'×2' },
+    { text:'Deschide aripile la orizontală, de o parte și de alta a corpului. Avionul este gata de start.',
+      shape:[[120,30],[235,150],[130,140],[120,210],[110,140],[5,150]], badge:'gata' }
+  ]},
+{ id:'pahar', name:'Pahar de hârtie', level:'incepator', category:'traditional', time:'6 min', paper:'Pătrată',
+  blurb:'Un pahar simplu; hârtia obișnuită se îmbibă repede, deci ține apă doar scurt timp.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază pe diagonală, formând un triunghi, și lasă cuta pliată.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:200,x2:200,y2:40}] },
+    { text:'Pliază colțul din stânga în sus, de-a lungul laturii drepte a triunghiului, aliniind marginea de jos cu latura dreaptă.',
+      shape:[[40,190],[120,50],[200,190]], folds:[{type:'valley',x1:40,y1:190,x2:150,y2:90}] },
+    { text:'Pliază acum colțul din dreapta în sus, de-a lungul laturii stângi — simetric față de pasul anterior.',
+      shape:[[40,190],[120,50],[200,190]],
+      folds:[{type:'existing',x1:40,y1:190,x2:150,y2:90},{type:'valley',x1:200,y1:190,x2:90,y2:90}] },
+    { text:'Ai obținut corpul paharului, cu două clape în partea de sus — una în față, una în spate.',
+      shape:[[60,190],[60,130],[90,60],[120,110],[150,60],[180,130],[180,190]] },
+    { text:'Pliază în jos clapeta din față, peste marginea superioară a corpului.',
+      shape:[[60,190],[60,130],[90,60],[120,110],[150,60],[180,130],[180,190]],
+      folds:[{type:'valley',x1:60,y1:130,x2:180,y2:130}] },
+    { text:'Întoarce și pliază la fel clapeta din spate. Deschide ușor gura paharului, apăsând pe laturi — este gata să țină lichid.',
+      shape:[[60,190],[60,130],[70,110],[150,60],[180,130],[180,190]], badge:'gata' }
+  ]},
+{ id:'balon', name:'Bombă cu apă (balon)', level:'intermediar', category:'actiune', time:'10 min', paper:'Pătrată',
+  blurb:'Se umflă ca un cub prin suflare — clasicul „balon” de hârtie.',
+  steps:[
+    { text:'Pornește de la baza bombă cu apă (vezi secțiunea Baze): un triunghi plat, cu vârful în sus și latura deschisă jos.',
+      shape:[[120,50],[200,130],[40,130]], badge:'baza bombă cu apă' },
+    { text:'Pe stratul din față, adu cele două colțuri de jos ale triunghiului în sus, până la vârf — se formează un pătrat așezat pe colț.',
+      shape:[[120,50],[200,130],[40,130]],
+      folds:[{type:'valley',x1:80,y1:90,x2:120,y2:130},{type:'valley',x1:160,y1:90,x2:120,y2:130}],
+      arrows:[{x1:52,y1:122,x2:105,y2:68,curve:6},{x1:188,y1:122,x2:135,y2:68,curve:-6}] },
+    { text:'Întoarce modelul și repetă aceeași pliere pe stratul din spate.',
+      side:'back', badge:'spate ×2',
+      shape:[[120,50],[160,90],[120,130],[80,90]] },
+    { text:'Pliază colțurile din stânga și din dreapta spre centru, pe stratul din față (și apoi pe cel din spate).',
+      badge:'×2',
+      shape:[[120,50],[160,90],[120,130],[80,90]],
+      folds:[{type:'valley',x1:100,y1:70,x2:100,y2:110},{type:'valley',x1:140,y1:70,x2:140,y2:110}] },
+    { text:'Strecoară vârfurile triunghiurilor mici rezultate în buzunărelele de sub marginea de jos, ca să se blocheze (pe ambele părți).',
+      badge:'×2',
+      shape:[[120,50],[140,70],[140,110],[120,130],[100,110],[100,70]] },
+    { text:'Găsește orificiul mic din partea de jos și suflă ușor: modelul se umflă într-un cub în trei dimensiuni.',
+      shape:[[80,110],[160,110],[160,190],[80,190]], marks:[[120,190]], badge:'gata' }
+  ]},
+{ id:'lotus', name:'Floare de lotus', level:'intermediar', category:'traditional', time:'15 min', paper:'Pătrată, subțire (washi)',
+  blurb:'Petale trase de dedesubt, în trei straturi — simbol tradițional de puritate.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată, cu fața colorată în jos. Pliază și desfă pe ambele diagonale, doar pentru a găsi centrul.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+    { text:'Pliază toate cele patru colțuri spre centru (prima pliere-plic).',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+             {type:'valley',x1:40,y1:40,x2:120,y2:120},{type:'valley',x1:200,y1:40,x2:120,y2:120},
+             {type:'valley',x1:200,y1:200,x2:120,y2:120},{type:'valley',x1:40,y1:200,x2:120,y2:120}] },
+    { text:'Ai un pătrat mai mic. Fără să întorci hârtia, pliază din nou toate cele patru colțuri spre centru.',
+      shape:[[120,50],[190,120],[120,190],[50,120]],
+      folds:[{type:'valley',x1:120,y1:50,x2:120,y2:120},{type:'valley',x1:190,y1:120,x2:120,y2:120},
+             {type:'valley',x1:120,y1:190,x2:120,y2:120},{type:'valley',x1:50,y1:120,x2:120,y2:120}] },
+    { text:'Tot fără să întorci hârtia, pliază colțurile spre centru încă o dată (a treia pliere).',
+      shape:[[120,75],[165,120],[120,165],[75,120]] },
+    { text:'Întoarce modelul pe partea cealaltă.',
+      side:'back', badge:'spate', shape:[[120,95],[145,120],[120,145],[95,120]] },
+    { text:'Pe această parte, pliază din nou toate cele patru colțuri spre centru (a patra pliere). Ține bine centrul — dedesubt sunt clape ascunse care vor să sară afară.',
+      side:'back', shape:[[120,95],[145,120],[120,145],[95,120]],
+      folds:[{type:'valley',x1:120,y1:95,x2:120,y2:120},{type:'valley',x1:145,y1:120,x2:120,y2:120},
+             {type:'valley',x1:120,y1:145,x2:120,y2:120},{type:'valley',x1:95,y1:120,x2:120,y2:120}] },
+    { text:'Prinde, pe rând, fiecare clapetă mică de pe această parte și trage-o ușor în sus și în afară, răsucind-o — se formează primul rând de petale. Repetă pentru toate cele 4 colțuri.',
+      shape:[[105,105],[135,105],[135,135],[105,135]],
+      arrows:[{x1:110,y1:100,x2:85,y2:75,curve:4},{x1:130,y1:100,x2:155,y2:75,curve:-4}], badge:'×4' },
+    { text:'Întoarce modelul. Trage și răsucește, la fel, clapele de pe această parte — al doilea rând de petale.',
+      shape:[[70,70],[50,120],[70,170],[120,190],[170,170],[190,120],[170,70],[120,50]] },
+    { text:'Pliază în afară și ultimele clape rămase pentru al treilea rând de petale, apoi curbează ușor vârfurile tuturor petalelor spre exterior, pentru un aspect natural.',
+      shape:[[60,60],[40,120],[60,180],[120,200],[180,180],[200,120],[180,60],[120,40]], badge:'gata' }
+  ]},
+{ id:'cocor', name:'Cocor (macara)', level:'avansat', category:'traditional', time:'20 min', paper:'Pătrată',
+  blurb:'Modelul emblematic al origami — simbol japonez de pace și longevitate.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază și desfă pe ambele diagonale (X).',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+    { text:'Întoarce hârtia. Pliază și desfă pe orizontală și pe verticală, margine cu margine — ai acum 4 cute în total (două diagonale, două mediane).',
+      side:'back', badge:'spate', shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+             {type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120}] },
+    { text:'Colapsează hârtia de-a lungul cutelor existente, formând baza preliminară (vezi și secțiunea Baze).',
+      shape:[[120,50],[190,120],[120,190],[50,120]], badge:'baza preliminară' },
+    { text:'Orientează baza cu vârful deschis în jos. Lucrează doar cu stratul din față: pliază cele două margini inferioare spre linia centrală.',
+      shape:[[120,50],[190,120],[120,190],[50,120]],
+      folds:[{type:'valley',x1:50,y1:120,x2:120,y2:140},{type:'valley',x1:190,y1:120,x2:120,y2:140}] },
+    { text:'Pliază vârful de sus (cel închis) în jos, până la nivelul unde se întâlnesc capetele noilor cute, apoi desfă toate cele trei cute înapoi.',
+      shape:[[120,50],[190,120],[120,190],[50,120]],
+      folds:[{type:'existing',x1:50,y1:120,x2:120,y2:140},{type:'existing',x1:190,y1:120,x2:120,y2:140},{type:'valley',x1:80,y1:140,x2:160,y2:140}] },
+    { text:'Ridică vârful de jos de-a lungul cutelor și pliază-l în sus, apăsând marginile spre interior — aceasta este „plierea-petală”. Aplatizează bine.',
+      shape:[[120,50],[140,120],[120,190],[100,120]], arrows:[{x1:120,y1:178,x2:120,y2:128}] },
+    { text:'Întoarce modelul și repetă exact aceeași pliere-petală pe stratul din spate.',
+      side:'back', badge:'spate', shape:[[120,50],[190,120],[120,190],[50,120]] },
+    { text:'Ai obținut baza păsării: un romb lung cu patru vârfuri libere — două sus (viitoarele aripi) și două jos („picioarele”).',
+      shape:[[120,35],[155,110],[130,205],[110,205],[85,110]], badge:'baza păsării' },
+    { text:'Pliază marginile înclinate ale celor două clape inferioare spre linia centrală, îngustând „picioarele” — pe stratul din față și, la fel, pe cel din spate.',
+      shape:[[120,35],[155,110],[130,205],[110,205],[85,110]],
+      folds:[{type:'existing',x1:85,y1:110,x2:110,y2:205},{type:'existing',x1:155,y1:110,x2:130,y2:205},
+             {type:'valley',x1:120,y1:120,x2:110,y2:205},{type:'valley',x1:120,y1:120,x2:130,y2:205}], badge:'×2' },
+    { text:'Picioarele sunt acum subțiri și simetrice.',
+      shape:[[120,35],[155,110],[125,205],[115,205],[85,110]] },
+    { text:'Pliază fiecare picioruș în sus, marchează cuta, apoi desfă. Folosind aceste cute, fă o pliere inversă spre interior la fiecare, astfel încât unul să devină gâtul, iar celălalt coada.',
+      shape:[[120,35],[155,110],[125,205],[115,205],[85,110]],
+      folds:[{type:'valley',x1:115,y1:205,x2:118,y2:150},{type:'valley',x1:125,y1:205,x2:122,y2:150}] },
+    { text:'La capătul gâtului, fă încă o pliere inversă mică pentru a forma capul și ciocul.',
+      shape:[[120,60],[145,105],[175,55],[160,70],[150,110],[90,110],[65,55],[95,105]] },
+    { text:'Pliază cele două aripi în jos, de o parte și de alta. Trage ușor de aripi, îndepărtându-le, pentru a rotunji corpul — cocorul este gata.',
+      shape:[[120,60],[145,105],[230,90],[150,115],[90,115],[10,90],[95,105]], badge:'gata' }
+  ]},
+{ id:'fluture', name:'Fluture', level:'incepator', category:'traditional', time:'6 min', paper:'Pătrată',
+  blurb:'Pornește din baza bombă cu apă și se deschide în aripi simetrice.',
+  steps:[
+    { text:'Pornește de la baza bombă cu apă gata făcută (vezi secțiunea Baze), cu vârful în sus și latura deschisă jos.',
+      shape:[[120,50],[200,130],[40,130]], badge:'baza bombă cu apă' },
+    { text:'Lucrând doar cu stratul din față, pliază cele două colțuri laterale în sus, spre vârful de sus, formând aripile.',
+      shape:[[120,60],[190,120],[120,190],[50,120]],
+      folds:[{type:'valley',x1:50,y1:120,x2:120,y2:60},{type:'valley',x1:190,y1:120,x2:120,y2:60}],
+      arrows:[{x1:75,y1:140,x2:105,y2:85},{x1:165,y1:140,x2:135,y2:85}] },
+    { text:'Întoarce modelul. Pliază în jos vârful de sus, peste marginea aripilor, pentru a forma capul fluturelui.',
+      side:'back', badge:'spate',
+      shape:[[120,60],[160,60],[120,150],[80,60]],
+      folds:[{type:'valley',x1:80,y1:60,x2:160,y2:60}] },
+    { text:'Pliază modelul pe jumătate, pe verticală, aducând o aripă peste cealaltă.',
+      shape:[[80,60],[160,60],[120,150]],
+      folds:[{type:'valley',x1:120,y1:60,x2:120,y2:150}] },
+    { text:'Pliază în sus un colț mic din vârful de jos, pe ambele straturi, pentru a forma corpul și antenele.',
+      shape:[[120,60],[160,60],[120,150],[95,105]], badge:'×2' },
+    { text:'Desfă ușor aripile în lateral, la unghiul dorit. Fluturele este gata.',
+      badge:'gata', shape:[[40,90],[120,60],[200,90],[120,130]] }
+  ]},
+{ id:'peste-simplu', name:'Pește', level:'incepator', category:'traditional', time:'4 min', paper:'Pătrată',
+  blurb:'Cel mai rapid drum spre un pește — direct din baza preliminară.',
+  steps:[
+    { text:'Pornește de la baza preliminară gata făcută (vezi secțiunea Baze), cu vârful închis sus — va fi botul peștelui.',
+      shape:[[120,50],[190,120],[120,190],[50,120]], badge:'baza preliminară' },
+    { text:'Lucrând cu stratul din față, pliază colțul din dreapta în jos și spre interior, la un unghi, spre linia centrală.',
+      shape:[[120,50],[190,120],[120,172],[50,120]],
+      folds:[{type:'valley',x1:190,y1:120,x2:120,y2:150}],
+      arrows:[{x1:170,y1:125,x2:135,y2:145}] },
+    { text:'Pliază la fel colțul din stânga, suprapunându-l peste primul — cele două formează coada peștelui.',
+      shape:[[120,50],[120,150],[120,172],[50,120]],
+      folds:[{type:'valley',x1:50,y1:120,x2:120,y2:150}],
+      arrows:[{x1:70,y1:125,x2:110,y2:145}] },
+    { text:'Gata: peștele este format. Desenează un ochi lângă vârful de sus, aproape de „bot”.',
+      badge:'gata', shape:[[120,50],[135,150],[120,172],[105,150]] }
+  ]},
+{ id:'cutie', name:'Cutie tradițională (Masu)', level:'intermediar', category:'traditional', time:'10 min', paper:'Pătrată',
+  blurb:'O cutiuță reală, funcțională, dintr-o singură foaie, fără lipici — bună pentru mărunțișuri.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază și desfă pe orizontală și pe verticală, apoi pe ambele diagonale — patru cute în total.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120},
+             {type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+    { text:'Pliază fiecare din cele patru colțuri spre centru. Nu desface încă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'existing',x1:40,y1:120,x2:200,y2:120},
+             {type:'valley',x1:40,y1:40,x2:80,y2:80},{type:'valley',x1:200,y1:40,x2:160,y2:80},
+             {type:'valley',x1:200,y1:200,x2:160,y2:160},{type:'valley',x1:40,y1:200,x2:80,y2:160}], badge:'×4' },
+    { text:'Ai un pătrat mai mic, cu colțurile pliate spre centru. Pliază latura de sus spre centru, apoi latura de jos spre centru, peste colțurile deja pliate.',
+      shape:[[80,80],[160,80],[160,160],[80,160]],
+      folds:[{type:'valley',x1:80,y1:120,x2:160,y2:120}], badge:'×2' },
+    { text:'Desfă complet, înapoi la pătratul cu colțurile pliate. Deschide și pliază în sus cele două laturi rămase (stânga și dreapta), astfel încât să stea perpendicular, ca doi pereți.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:40,x2:80,y2:80},{type:'existing',x1:200,y1:40,x2:160,y2:80},
+             {type:'existing',x1:200,y1:200,x2:160,y2:160},{type:'existing',x1:40,y1:200,x2:80,y2:160},
+             {type:'valley',x1:80,y1:40,x2:80,y2:200},{type:'valley',x1:160,y1:40,x2:160,y2:200}],
+      arrows:[{x1:60,y1:60,x2:60,y2:100},{x1:180,y1:60,x2:180,y2:100}] },
+    { text:'Cu cei doi pereți ridicați, împinge ușor cele două laturi libere (sus și jos) una spre cealaltă — fundul cutiei se ridică natural, sub presiunea cutelor deja făcute.',
+      shape:[[80,60],[160,60],[160,180],[80,180]],
+      arrows:[{x1:90,y1:70,x2:110,y2:100},{x1:150,y1:170,x2:130,y2:140}] },
+    { text:'Îndoaie spre interiorul cutiei cele două clapete triunghiulare rămase (sus și jos) — se blochează sub pereții laterali, fără lipici.',
+      badge:'×2', shape:[[80,70],[160,70],[160,170],[80,170]] },
+    { text:'Cutia este gata. Pentru un capac, repetă toți pașii cu o foaie puțin mai mare (2–3 mm pe fiecare latură).',
+      badge:'gata', shape:[[75,65],[165,65],[165,175],[75,175]] }
+  ]},
+{ id:'broasca-saritoare', name:'Broasca săritoare', level:'intermediar', category:'actiune', time:'12 min', paper:'Pătrată',
+  blurb:'Model de acțiune: apasă-i spatele și dă-i drumul — chiar sare.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază-o în jumătate (dreptunghi), apoi desfă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:120,x2:200,y2:120}] },
+    { text:'Pliază colțul din dreapta-sus în diagonală până la linia centrală orizontală, apoi desfă. Repetă cu colțul din stânga-sus.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:120,x2:200,y2:120},{type:'valley',x1:200,y1:40,x2:120,y2:120},{type:'valley',x1:40,y1:40,x2:120,y2:120}],
+      badge:'×2' },
+    { text:'Folosind acele cute, comprimă partea de sus într-un triunghi — colțurile din stânga și din dreapta se adună la mijlocul liniei orizontale.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:120,x2:200,y2:120},{type:'existing',x1:200,y1:40,x2:120,y2:120},{type:'existing',x1:40,y1:40,x2:120,y2:120}],
+      arrows:[{x1:60,y1:60,x2:100,y2:100},{x1:180,y1:60,x2:140,y2:100}] },
+    { text:'Pliază în sus, la un unghi, cele două colțuri de jos ale dreptunghiului rămas, peste baza triunghiului — devin picioarele din față.',
+      shape:[[40,120],[120,80],[200,120],[200,200],[40,200]],
+      folds:[{type:'valley',x1:40,y1:200,x2:100,y2:130},{type:'valley',x1:200,y1:200,x2:140,y2:130}] },
+    { text:'Pliază spre interior laturile din stânga și din dreapta ale părții de jos, spre linia centrală, îngustând corpul.',
+      shape:[[40,120],[120,80],[200,120],[200,190],[40,190]],
+      folds:[{type:'valley',x1:40,y1:190,x2:100,y2:120},{type:'valley',x1:200,y1:190,x2:140,y2:120}] },
+    { text:'Pliază în sus, spre triunghi, toată partea de jos rămasă — pe jumătate.',
+      shape:[[70,120],[120,80],[170,120],[170,190],[70,190]],
+      folds:[{type:'valley',x1:70,y1:155,x2:170,y2:155}] },
+    { text:'Desface ușor fiecare parte laterală a bazei și trage în afară stratul ascuns din interior, ca la baza barcă — apar picioarele din spate.',
+      shape:[[70,120],[120,80],[170,120],[170,155],[70,155]],
+      arrows:[{x1:80,y1:145,x2:60,y2:160},{x1:160,y1:145,x2:180,y2:160}] },
+    { text:'Pliază fiecare picior din spate în jos, apoi îndoaie vârful înapoi în sus, la un unghi — acest zigzag este „arcul” care face broasca să sară. Repetă pe partea opusă.',
+      badge:'×2',
+      shape:[[50,120],[120,80],[190,120],[170,150],[70,150]],
+      folds:[{type:'valley',x1:50,y1:120,x2:70,y2:150},{type:'mountain',x1:70,y1:150,x2:60,y2:170}] },
+    { text:'Broasca săritoare este gata. Apasă cu degetul pe spate, aproape de coadă, și lasă degetul să alunece în afară — sare!',
+      badge:'gata',
+      shape:[[50,120],[120,80],[190,120],[165,145],[130,155],[110,155],[75,145]] }
+  ]},
+{ id:'sonobe', name:'Modul Sonobe (cub)', level:'avansat', category:'modular', time:'35 min', paper:'Pătrată (×6, aceeași mărime)',
+  blurb:'Origami modular: pliază șase module identice și îmbină-le fără lipici într-un cub cu fețe ușor boltite.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază pe verticală, prin mijloc, apoi desfă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200}] },
+    { text:'Pliază ambele margini laterale spre linia centrală, apoi desfă — hârtia e acum împărțită în patru fâșii verticale egale.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:80,y1:40,x2:80,y2:200},{type:'valley',x1:160,y1:40,x2:160,y2:200}] },
+    { text:'Pliază în diagonală colțul din dreapta-sus și colțul din stânga-jos, fără să treacă de cutele verticale — două clapete triunghiulare bine marcate, la capete opuse.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:80,y1:40,x2:80,y2:200},{type:'existing',x1:160,y1:40,x2:160,y2:200},
+             {type:'valley',x1:200,y1:40,x2:160,y2:80},{type:'valley',x1:40,y1:200,x2:80,y2:160}],
+      badge:'×2' },
+    { text:'Pliază de-a lungul celor două cute verticale, aducând ambele margini spre linia centrală — hârtia devine o fâșie lungă și îngustă, cu câte o clapetă triunghiulară la fiecare capăt.',
+      shape:[[80,40],[160,40],[160,200],[80,200]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200}] },
+    { text:'Pliază colțul din stânga-sus spre marginea din dreapta, apoi colțul din dreapta-jos spre marginea din stânga — doar cute de pregătire; desfă-le pe amândouă.',
+      shape:[[80,40],[160,40],[160,200],[80,200]],
+      folds:[{type:'valley',x1:80,y1:40,x2:160,y2:75},{type:'valley',x1:160,y1:200,x2:80,y2:165}],
+      badge:'×2' },
+    { text:'Îndoaie și strecoară colțul din stânga-sus sub clapeta de la capătul opus. Repetă la colțul din dreapta-jos — apar cele două „limbi” caracteristice modulului.',
+      shape:[[80,40],[160,75],[160,200],[80,165]],
+      arrows:[{x1:95,y1:55,x2:130,y2:75},{x1:145,y1:185,x2:110,y2:165}] },
+    { text:'Întoarce piesa. Pliază și desfă, marcând ușor pătratul central. Modulul Sonobe este gata: o „limbă” la fiecare capăt și câte un „buzunar” în care se strecoară limba altui modul.',
+      badge:'gata',
+      shape:[[80,40],[160,75],[160,200],[80,165]] },
+    { text:'Pliază încă cinci module identice (șase în total). Îmbină-le: strecoară limba unui modul în buzunarul altuia, câte trei module în jurul fiecărui colț — cubul se închide singur, cu fiecare față ușor boltită de cutele modulelor.',
+      badge:'asamblare ×6',
+      shape:[[90,90],[150,90],[150,150],[90,150]] }
+  ]},
+{ id:'pasare-fluturatoare', name:'Pasărea care bate din aripi', level:'incepator', category:'actiune', time:'8 min', paper:'Pătrată',
+  blurb:'Trage ușor de coadă și aripile bat, ca la o pasăre adevărată — pornește din baza pasăre.',
+  steps:[
+    { text:'Pornește de la baza pasăre gata făcută (vezi secțiunea Baze).',
+      badge:'baza pasăre',
+      shape:[[120,35],[155,110],[130,205],[110,205],[85,110]] },
+    { text:'Pliază fiecare din cele două clape de jos în sus, de-a lungul marginii exterioare, la un unghi, apoi desfă. Repetă pe ambele.',
+      badge:'×2',
+      shape:[[120,35],[155,110],[130,205],[110,205],[85,110]],
+      folds:[{type:'valley',x1:110,y1:205,x2:155,y2:150},{type:'valley',x1:130,y1:205,x2:85,y2:150}] },
+    { text:'Folosind acele cute, fă o pliere inversă spre interior la fiecare clapă — una va deveni gâtul, cealaltă coada. Amândouă ies acum în afară, la unghi, spre deosebire de cocor, unde sunt mai întâi îngustate.',
+      badge:'×2',
+      shape:[[120,35],[155,110],[175,155],[120,120],[65,155],[85,110]] },
+    { text:'La capătul gâtului (alege oricare parte), pliază vârful în jos, la unghiul care arată bine — nu există un punct de referință fix aici. Crestează și desfă.',
+      shape:[[175,155],[145,140],[120,120],[65,155],[85,110],[120,35],[155,110]],
+      folds:[{type:'valley',x1:175,y1:155,x2:145,y2:140}] },
+    { text:'Folosind acea cută, fă o pliere inversă spre interior la vârful gâtului — se formează capul.',
+      shape:[[160,145],[140,130],[120,120],[65,155],[85,110],[120,35],[155,110]] },
+    { text:'Pliază cele două aripi (clapele de sus) în jos, de ambele părți. Pasărea e gata. Ca să bată din aripi: ține baza gâtului cu o mână, prinde coada cu cealaltă și mișc-o ușor, înainte și înapoi.',
+      badge:'gata',
+      shape:[[160,145],[140,130],[120,120],[65,155],[85,110],[120,35],[230,90],[10,90]] }
+  ]},
+{ id:'toshie', name:'Bijuteria lui Toshie', level:'intermediar', category:'modular', time:'20 min', paper:'Pătrată (×3, aceeași mărime)',
+  blurb:'Trei module Sonobe, împletite într-o mică bipiramidă strălucitoare — fără lipici.',
+  steps:[
+    { text:'Pliază trei module Sonobe identice (vezi modelul Sonobe de mai sus, secțiunea Modele) — poți folosi trei culori diferite sau aceeași culoare.',
+      badge:'×3',
+      shape:[[80,40],[160,75],[160,200],[80,165]] },
+    { text:'Ia două module. Strecoară „limba” primului în „buzunarul” celui de-al doilea, apoi limba celui de-al doilea în buzunarul celui de-al treilea.',
+      shape:[[70,90],[130,90],[130,150],[70,150]] },
+    { text:'Adu limba celui de-al treilea modul peste primul și strecoar-o în buzunarul lui, închizând cercul de trei. Apasă ușor spre centru — se ridică o piramidă cu trei fețe.',
+      badge:'piramidă',
+      shape:[[120,60],[180,150],[60,150]] },
+    { text:'Întoarce piesa. Repetă aceeași închidere în cerc pentru cele trei limbi rămase, de partea cealaltă — se formează a doua piramidă, lipită bază la bază de prima.',
+      shape:[[120,40],[190,120],[120,200],[50,120]] },
+    { text:'Bijuteria lui Toshie este gata — o bipiramidă cu șase fețe triunghiulare, ținută laolaltă doar prin împletirea limbă-în-buzunar, fără lipici.',
+      badge:'gata',
+      shape:[[120,30],[190,120],[120,210],[50,120]] }
+  ]},
+{ id:'stea', name:'Steluță norocoasă', level:'incepator', category:'traditional', time:'6 min', paper:'Fâșie de hârtie (1,5×25 cm)',
+  blurb:'Un nod simplu, aplatizat într-un pentagon și umflat cu unghia — o steluță 3D dintr-o fâșie de hârtie.',
+  steps:[
+    { text:'Pornește cu o fâșie lungă și îngustă de hârtie. Fă o buclă simplă aproape de un capăt și trage ușor, ca la un nod, lăsând un capăt scurt.',
+      shape:[[50,115],[190,115],[190,125],[50,125]] },
+    { text:'Aplatizează ușor nodul, fără să apeși prea tare, până ia forma unui pentagon neted, cu un capăt scurt și unul lung ieșind din el.',
+      shape:[[120,60],[175,100],[155,165],[85,165],[65,100]] },
+    { text:'Înfășoară fâșia lungă în jurul pentagonului, pe rând, peste fiecare latură — întoarce pentagonul de fiecare dată și continuă până se termină fâșia.',
+      badge:'×5',
+      shape:[[120,60],[175,100],[155,165],[85,165],[65,100]] },
+    { text:'Strecoară capătul rămas sub ultimele două straturi, ca să-l blochezi. Ai acum un pentagon plat, gros, cu toate laturile egale.',
+      badge:'plat',
+      shape:[[120,60],[175,100],[155,165],[85,165],[65,100]] },
+    { text:'Ține pentagonul de muchii, nu pe fețe. Cu unghia, împinge ușor spre interior fiecare din cele cinci laturi, pe rând, rotind pentagonul de fiecare dată.',
+      shape:[[120,75],[165,105],[150,155],[90,155],[75,105]],
+      arrows:[{x1:145,y1:80,x2:130,y2:95},{x1:170,y1:125,x2:150,y2:130}] },
+    { text:'Gata: toate cele cinci laturi împinse spre interior fac pentagonul să se umfle într-o stea tridimensională, mică și fermă.',
+      badge:'gata',
+      shape:[[120,65],[135,105],[175,105],[145,130],[155,170],[120,145],[85,170],[95,130],[65,105],[105,105]] }
+  ]},
+{ id:'inima', name:'Inimă', level:'incepator', category:'traditional', time:'6 min', paper:'Pătrată',
+  blurb:'Un clasic pentru felicitări și mesaje scrise — recognoscibil din primele pliuri.',
+  steps:[
+    { text:'Pornește cu hârtia albă în sus. Pliază pe verticală, prin mijloc, apoi desfă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200}] },
+    { text:'Pliază pe orizontală, prin mijloc, apoi desfă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:120,x2:200,y2:120}] },
+    { text:'Pliază marginea de jos în sus, până la cuta orizontală din mijloc.',
+      shape:[[40,40],[200,40],[200,120],[40,120]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:120}] },
+    { text:'Întoarce hârtia.',
+      side:'back', badge:'spate',
+      shape:[[40,40],[200,40],[200,120],[40,120]] },
+    { text:'Pliază cele două colțuri de jos (ale benzii pliate) în diagonală în sus, spre cuta verticală din mijloc — se formează un „acoperiș”.',
+      shape:[[40,40],[200,40],[200,120],[40,120]],
+      folds:[{type:'valley',x1:40,y1:120,x2:120,y2:70},{type:'valley',x1:200,y1:120,x2:120,y2:70}] },
+    { text:'Întoarce din nou hârtia.',
+      side:'back', badge:'spate',
+      shape:[[40,40],[120,70],[200,40],[200,120],[40,120]] },
+    { text:'Pliază colțul din stânga-sus în diagonală în jos, spre cuta verticală centrală. Repetă cu colțul din dreapta-sus.',
+      badge:'×2',
+      shape:[[40,40],[120,70],[200,40],[200,120],[40,120]],
+      folds:[{type:'valley',x1:40,y1:40,x2:120,y2:70},{type:'valley',x1:200,y1:40,x2:120,y2:70}] },
+    { text:'Pliază în jos clapa de sus, lăsând cele două triunghiuri albe laterale neatinse, să iasă în afară — devin cele două „cocoașe” de sus ale inimii. Inima este gata.',
+      badge:'gata',
+      shape:[[120,60],[140,40],[170,40],[200,70],[120,150],[40,70],[70,40],[100,40]] }
+  ]},
+{ id:'pinguin', name:'Pinguin', level:'intermediar', category:'traditional', time:'10 min', paper:'Pătrată',
+  blurb:'Aripi, cioc și picioare care îl țin în picioare singur — și mai drăguț din hârtie bicoloră.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază pe diagonală, colț în colț, formând un triunghi. Crestează și desfă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200}] },
+    { text:'Pliază colțul de jos al triunghiului puțin în sus — nu până la vârf, doar o fâșie îngustă. Crestează.',
+      shape:[[40,200],[200,200],[120,40]],
+      folds:[{type:'valley',x1:60,y1:180,x2:180,y2:180}] },
+    { text:'Ținând acea fâșie pliată, pliază tot triunghiul pe jumătate, de-a lungul aceleiași diagonale — o parte peste cealaltă. Acesta devine corpul pinguinului.',
+      shape:[[40,180],[120,180],[120,40]],
+      folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200}] },
+    { text:'Ia un colț din față și pliază-l înapoi, până vârful abia atinge cuta din mijloc (a „coloanei”) — se formează o aripă. Întoarce și repetă la fel pe spate.',
+      badge:'×2',
+      shape:[[40,180],[120,180],[120,40]],
+      folds:[{type:'valley',x1:40,y1:180,x2:90,y2:120}] },
+    { text:'La celălalt capăt (cel fără fâșia pliată), pliază marginea în sus, spre spate, paralel cu baza aripii. Crestează bine.',
+      shape:[[55,150],[120,180],[120,40]],
+      folds:[{type:'valley',x1:55,y1:150,x2:90,y2:170}] },
+    { text:'Strecoară acea margine în interiorul corpului, folosind cuta făcută — se formează picioarele, iar pinguinul stă în picioare singur.',
+      shape:[[70,168],[120,180],[120,40]] },
+    { text:'Pliază ușor vârful de sus, la un unghi mic, pentru cioc. Pinguinul este gata.',
+      badge:'gata',
+      shape:[[70,168],[120,180],[135,55],[120,40]] }
+  ]},
+{ id:'floare-kusudama', name:'Floare Kusudama (modul)', level:'intermediar', category:'modular', time:'25 min', paper:'Pătrată (×12 pentru o minge întreagă)',
+  blurb:'Spre deosebire de modulul Sonobe, acesta se lipește ușor — 12 flori identice formează o minge decorativă.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată, cu fața colorată în jos. Pliază pe diagonală, formând un triunghi. Crestează bine.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200}] },
+    { text:'Pliază colțurile din stânga și din dreapta ale triunghiului în sus, spre vârf.',
+      shape:[[40,200],[200,200],[120,40]],
+      folds:[{type:'valley',x1:40,y1:200,x2:120,y2:40},{type:'valley',x1:200,y1:200,x2:120,y2:40}] },
+    { text:'Pliază marginea exterioară a fiecărei clapete noi spre interior, aliniind-o cu marginea vecină. Repetă pe ambele părți.',
+      badge:'×2',
+      shape:[[120,40],[160,120],[120,200],[80,120]] },
+    { text:'Pune degetul într-unul din buzunarele laterale și fă o pliere-comprimare („squash fold”), aplatizând-o într-un mic romb. Repetă pe partea cealaltă.',
+      badge:'×2',
+      shape:[[120,40],[160,120],[120,200],[80,120]],
+      arrows:[{x1:150,y1:90,x2:130,y2:110},{x1:90,y1:90,x2:110,y2:110}] },
+    { text:'Pliază în jos ambele vârfuri rămase sus. Gata: o mică floare cu patru petale. Pliază încă 11 identice și lipește-le, cu puțin lipici, într-o minge kusudama.',
+      badge:'gata',
+      shape:[[120,60],[155,100],[120,140],[85,100]] }
+  ]},
+{ id:'ghicitoare', name:'Ghicitoare (prinzătoare)', level:'incepator', category:'actiune', time:'8 min', paper:'Pătrată',
+  blurb:'Jucăria clasică de recreație — se deschide în două direcții și ascunde câte un mesaj sub fiecare clapetă.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată, fața colorată în jos. Pliază și desfă pe ambele diagonale (X) — la fel ca la începutul florii de lotus.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200},{type:'valley',x1:200,y1:40,x2:40,y2:200}] },
+    { text:'Pliază fiecare din cele patru colțuri spre centru, folosind cutele existente ca ghid.',
+      badge:'×4',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:40,x2:200,y2:200},{type:'existing',x1:200,y1:40,x2:40,y2:200},
+             {type:'valley',x1:40,y1:40,x2:120,y2:120},{type:'valley',x1:200,y1:40,x2:120,y2:120},
+             {type:'valley',x1:200,y1:200,x2:120,y2:120},{type:'valley',x1:40,y1:200,x2:120,y2:120}] },
+    { text:'Întoarce modelul pe partea cealaltă.',
+      side:'back', badge:'spate',
+      shape:[[120,40],[200,120],[120,200],[40,120]] },
+    { text:'Pliază din nou fiecare din cele patru colțuri spre centru — un al doilea rând de plicuri, peste primul.',
+      badge:'×4',
+      shape:[[120,40],[200,120],[120,200],[40,120]],
+      folds:[{type:'valley',x1:120,y1:40,x2:120,y2:120},{type:'valley',x1:200,y1:120,x2:120,y2:120},
+             {type:'valley',x1:120,y1:200,x2:120,y2:120},{type:'valley',x1:40,y1:120,x2:120,y2:120}] },
+    { text:'Ai acum un pătrat mic, cu opt clapete triunghiulare vizibile dedesubt (patru de fiecare parte). Scrie câte un număr sau o culoare pe cele patru clapete de deasupra, apoi ridică fiecare și scrie câte un mesaj sub cele opt clapete mici.',
+      badge:'scrie mesaje',
+      shape:[[120,80],[160,120],[120,160],[80,120]] },
+    { text:'Pliază modelul pe jumătate, apoi desfă; pliază-l pe jumătate și în cealaltă direcție, apoi desfă — două cute suplimentare, care ajută modelul să se deschidă ca un acordeon.',
+      shape:[[120,80],[160,120],[120,160],[80,120]],
+      folds:[{type:'valley',x1:120,y1:80,x2:120,y2:160},{type:'valley',x1:80,y1:120,x2:160,y2:120}] },
+    { text:'Strecoară degetele mari și arătătoarele sub cele patru clapete rămase și apasă-le ușor unele spre altele — modelul se deschide ca un cioc cu patru colțuri. Ghicitoarea este gata.',
+      badge:'gata',
+      shape:[[120,70],[170,120],[120,170],[70,120]] }
+  ]},
+{ id:'sonobe-stelat', name:'Octaedru stelat Sonobe', level:'avansat', category:'modular', time:'70 min', paper:'Pătrată (×12, 3 culori, 4 din fiecare)',
+  blurb:'Aceleași module Sonobe, de data asta 12 la număr — opt piramide țepoase, într-o singură formă.',
+  steps:[
+    { text:'Pliază 12 module Sonobe identice (vezi modelul Sonobe de mai sus, secțiunea Modele), în 3 culori — câte 4 din fiecare.',
+      badge:'×12',
+      shape:[[80,40],[160,75],[160,200],[80,165]] },
+    { text:'Formează o primă piramidă din 3 module, câte una din fiecare culoare — exact ca la Bijuteria lui Toshie, de mai sus.',
+      badge:'piramida 1',
+      shape:[[120,60],[180,150],[60,150]] },
+    { text:'Pe fiecare din cele trei muchii ale piramidei (fiecare arată două culori), adaugă câte două module noi și închide bucla la fel ca prima dată — se ridică o nouă piramidă pe fiecare muchie. Așa se folosesc 6 din cele 12 module.',
+      badge:'×3 piramide',
+      shape:[[120,45],[195,100],[170,190],[70,190],[45,100]] },
+    { text:'Întoarce toată piesa. Cele 3 module rămase completează piramidele de pe partea cealaltă, folosind aceeași logică „limbă-în-buzunar” pe muchiile încă libere.',
+      shape:[[120,45],[195,100],[170,190],[70,190],[45,100]] },
+    { text:'Strânge orice limbă rămasă liberă. Gata: un octaedru stelat — opt piramide țepoase, dintr-un singur set de 12 module Sonobe, fără lipici.',
+      badge:'gata',
+      shape:[[120,30],[170,80],[210,120],[170,160],[190,200],[120,175],[50,200],[70,160],[30,120],[70,80]] }
+  ]},
+{ id:'plic', name:'Plic din foaie A4', level:'incepator', category:'traditional', time:'6 min', paper:'Dreptunghiulară (A4)',
+  blurb:'Un plic funcțional, fără lipici, direct dintr-o foaie de imprimantă — bun pentru un bilet sau o felicitare mică.',
+  steps:[
+    { text:'Pornește cu o foaie A4, verticală. Pliază-o în jumătate pe lungime (marginea de sus peste cea de jos), apoi desfă — rămâne doar cuta, ca reper.',
+      shape:[[60,30],[180,30],[180,210],[60,210]], folds:[{type:'valley',x1:60,y1:120,x2:180,y2:120}] },
+    { text:'Pliază toate cele patru colțuri spre cuta centrală.',
+      badge:'×4',
+      shape:[[60,30],[180,30],[180,210],[60,210]],
+      folds:[{type:'existing',x1:60,y1:120,x2:180,y2:120},
+             {type:'valley',x1:60,y1:30,x2:105,y2:75},{type:'valley',x1:180,y1:30,x2:135,y2:75},
+             {type:'valley',x1:60,y1:210,x2:105,y2:165},{type:'valley',x1:180,y1:210,x2:135,y2:165}] },
+    { text:'Pliază latura de sus (cea scurtă, dintre cele două colțuri tăiate) în jos, spre cuta centrală.',
+      shape:[[105,30],[135,30],[180,75],[180,165],[135,210],[105,210],[60,165],[60,75]],
+      folds:[{type:'valley',x1:60,y1:75,x2:180,y2:75}] },
+    { text:'Pliază la fel latura de jos în sus, spre cuta centrală — acum ai o fâșie îngustă, cu câte un vârf ascuțit la fiecare capăt.',
+      shape:[[60,75],[180,75],[180,165],[135,210],[105,210],[60,165]],
+      folds:[{type:'valley',x1:60,y1:165,x2:180,y2:165}] },
+    { text:'Pliază spre interior cele două vârfuri ascuțite, de la fiecare capăt al fâșiei.',
+      badge:'×2',
+      shape:[[60,120],[90,75],[150,75],[180,120],[150,165],[90,165]],
+      folds:[{type:'valley',x1:90,y1:75,x2:90,y2:165},{type:'valley',x1:150,y1:75,x2:150,y2:165}] },
+    { text:'Întoarce foaia pe partea cealaltă.',
+      side:'back', badge:'spate',
+      shape:[[90,75],[150,75],[150,165],[90,165]] },
+    { text:'Pliază în sus partea de jos, ca o clapă de plic, și strecoar-o sub colțurile de deasupra. Plicul este gata — încape ușor o felicitare mică.',
+      badge:'gata',
+      shape:[[90,75],[150,75],[150,165],[90,165]],
+      folds:[{type:'valley',x1:90,y1:140,x2:150,y2:140}] }
+  ]},
+{ id:'evantai', name:'Evantai', level:'incepator', category:'traditional', time:'5 min', paper:'Semicerc (orice diametru)',
+  blurb:'Plieri simple în acordeon, pe un semicerc — se deschide într-un evantai complet, rotund.',
+  steps:[
+    { text:'Pornește cu o foaie tăiată în formă de semicerc (jumătate de cerc).',
+      shape:[[40,180],[50,140],[75,105],[120,85],[165,105],[190,140],[200,180]] },
+    { text:'Pliază marginea curbă în fâșii înguste și egale, în acordeon — o dată în față, o dată în spate, alternativ, de la un capăt la altul.',
+      badge:'acordeon',
+      shape:[[40,180],[50,140],[75,105],[120,85],[165,105],[190,140],[200,180]],
+      folds:[{type:'valley',x1:120,y1:180,x2:120,y2:85},{type:'mountain',x1:80,y1:180,x2:95,y2:105},
+             {type:'mountain',x1:160,y1:180,x2:145,y2:105},{type:'valley',x1:55,y1:180,x2:70,y2:135},
+             {type:'valley',x1:185,y1:180,x2:170,y2:135}] },
+    { text:'Ai obținut o fâșie lungă, pliată în evantai, cu baza dreaptă la un capăt.',
+      shape:[[110,180],[130,180],[130,90],[110,90]] },
+    { text:'Strânge toate pliurile la bază și leagă-le cu un fir sau o capsă, ca să nu se desfacă.',
+      badge:'leagă baza',
+      shape:[[112,180],[128,180],[128,95],[112,95]] },
+    { text:'Deschide celălalt capăt în evantai. Gata — complet rotund, dacă ai pornit de la un semicerc întreg.',
+      badge:'gata',
+      shape:[[40,180],[70,110],[120,80],[170,110],[200,180]] }
+  ]},
+{ id:'inel-bancnota', name:'Inel din bancnotă', level:'intermediar', category:'traditional', time:'12 min', paper:'Bancnotă sau fâșie îngustă (~1:2,4)',
+  blurb:'Un inel purtabil, dintr-o bancnotă sau dintr-o fâșie de hârtie de aceleași proporții — fără lipici, doar pliuri, ca la baza bombă cu apă. Exersează întâi pe hârtie; înainte de a plia bani reali, verifică legislația locală privind alterarea bancnotelor.',
+  steps:[
+    { text:'Pornește cu o bancnotă (sau o fâșie dreptunghiulară îngustă, de aceleași proporții), cu fața în jos. Pliază-o în jumătate pe lungime, apoi desfă.',
+      shape:[[30,105],[210,105],[210,135],[30,135]], folds:[{type:'valley',x1:30,y1:120,x2:210,y2:120}] },
+    { text:'Pliază marginea de sus și cea de jos spre cuta centrală.',
+      shape:[[30,105],[210,105],[210,135],[30,135]],
+      folds:[{type:'existing',x1:30,y1:120,x2:210,y2:120},{type:'valley',x1:30,y1:113,x2:210,y2:113},{type:'valley',x1:30,y1:127,x2:210,y2:127}] },
+    { text:'Pliază fâșia în jumătate pe lățime (capătul din dreapta peste cel din stânga), apoi desfă — o cută verticală, la mijloc.',
+      shape:[[30,113],[210,113],[210,127],[30,127]],
+      folds:[{type:'valley',x1:120,y1:113,x2:120,y2:127}] },
+    { text:'În jumătatea din dreapta: pliază colțul de jos spre cuta verticală, apoi desfă. Pliază la fel colțul de sus. Repetă identic în jumătatea din stânga — patru cute diagonale în total.',
+      badge:'×4',
+      shape:[[30,113],[210,113],[210,127],[30,127]],
+      folds:[{type:'existing',x1:120,y1:113,x2:120,y2:127},
+             {type:'valley',x1:210,y1:127,x2:165,y2:120},{type:'valley',x1:210,y1:113,x2:165,y2:120},
+             {type:'valley',x1:30,y1:127,x2:75,y2:120},{type:'valley',x1:30,y1:113,x2:75,y2:120}] },
+    { text:'Preschimbă cuta verticală din mijloc într-o linie de munte. Apoi, folosind toate cutele, adu jumătatea din dreapta spre stânga — hârtia se ridică singură, ca la o mică bază bombă cu apă.',
+      shape:[[75,113],[120,120],[165,113],[165,127],[120,120],[75,127]] },
+    { text:'Pliază acel mic triunghi ridicat înapoi spre dreapta, aplatizându-l. Apoi pliază marginile de sus și de jos ale acelei jumătăți, câte o treime spre centru — se formează un „braț” îngust, viitoarea verigă a inelului.',
+      badge:'×2 margini',
+      shape:[[120,116],[165,116],[165,124],[120,124]] },
+    { text:'Repetă exact aceiași pași și în jumătatea din stânga — al doilea braț îngust, identic cu primul.',
+      shape:[[75,116],[120,116],[120,124],[75,124]] },
+    { text:'Îndoaie inelul în jurul degetului, suprapune cele două brațe și strecoară unul sub celălalt, ca să se blocheze. Inelul este gata.',
+      badge:'gata',
+      shape:[[90,100],[150,100],[165,120],[150,140],[90,140],[75,120]] }
+  ]},
+{ id:'stea-6colturi', name:'Steluță cu 6 colțuri', level:'intermediar', category:'traditional', time:'15 min', paper:'Dreptunghi lung (ideal ~1,73:1, dar merge și A4)',
+  blurb:'Un dreptunghi alungit, plisat pe cele trei laturi ale unui triunghi ascuns înăuntru — o stea cu șase colțuri egale.',
+  steps:[
+    { text:'Pornește cu un dreptunghi alungit (ideal cu raportul laturilor ~1,73:1 — de exemplu, dublul diagonalei unui pătrat; merge și A4, doar cu puțin mai mult surplus de pliat). Pliază-l în jumătate pe lungime; desfă.',
+      shape:[[30,80],[210,80],[210,160],[30,160]], folds:[{type:'valley',x1:30,y1:120,x2:210,y2:120}] },
+    { text:'Adu colțul din stânga-sus în jos, până atinge cuta centrală, astfel încât colțul din stânga-jos să rămână un vârf ascuțit.',
+      shape:[[30,80],[210,80],[210,160],[30,160]],
+      folds:[{type:'existing',x1:30,y1:120,x2:210,y2:120},{type:'valley',x1:30,y1:80,x2:120,y2:120}] },
+    { text:'Pliază partea din dreapta peste stratul făcut anterior — ar trebui să vezi conturul unui triunghi echilateral, cu un surplus de hârtie ieșind dincolo de bază.',
+      shape:[[30,160],[120,120],[190,80],[210,80],[210,160]],
+      folds:[{type:'valley',x1:120,y1:120,x2:190,y2:80}] },
+    { text:'Pliază și strecoară surplusul de hârtie între straturile triunghiului.',
+      shape:[[30,160],[120,120],[190,80],[210,160]] },
+    { text:'Ținând straturile fixe, pliază triunghiul în jumătate, din fiecare vârf spre mijlocul laturii opuse, apoi desfă — câte o cută din fiecare vârf. Întoarce modelul.',
+      badge:'×3',
+      side:'back', shape:[[30,160],[120,80],[210,160]],
+      folds:[{type:'valley',x1:120,y1:80,x2:120,y2:160},{type:'valley',x1:30,y1:160,x2:165,y2:120},
+             {type:'valley',x1:210,y1:160,x2:75,y2:120}] },
+    { text:'Pe partea cealaltă: pliază fiecare vârf spre mijlocul triunghiului, apoi desfă — încă trei cute, de data asta pornind la jumătatea distanței.',
+      badge:'×3',
+      shape:[[30,160],[120,80],[210,160]],
+      folds:[{type:'valley',x1:120,y1:80,x2:120,y2:140},{type:'valley',x1:30,y1:160,x2:145,y2:127},
+             {type:'valley',x1:210,y1:160,x2:95,y2:127}] },
+    { text:'Folosind toate cutele, plisează în acordeon fiecare din cele trei colțuri, pe rând, iar la ultimul strecoară surplusul sub primul pliu. Gata — o stea cu șase colțuri egale.',
+      badge:'gata',
+      shape:[[120,75],[140,105],[170,100],[150,130],[165,160],[120,140],[75,160],[90,130],[70,100],[100,105]] }
+  ]},
+{ id:'iepuras', name:'Iepuraș', level:'intermediar', category:'traditional', time:'8 min', paper:'Pătrată',
+  blurb:'Urechi înalte, coadă mică prin pliere inversă — poate sta chiar în picioare.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată. Pliază-o în jumătate (stânga peste dreapta), apoi desfă.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200}] },
+    { text:'Pliază marginea din stânga și cea din dreapta spre cuta centrală.',
+      shape:[[40,40],[200,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:40,y1:40,x2:120,y2:40},{type:'valley',x1:200,y1:40,x2:120,y2:40}] },
+    { text:'Pliază marginea de sus spre cuta centrală, apoi desfă — cuta rămâne la un sfert din înălțime, de sus.',
+      shape:[[80,40],[160,40],[160,200],[80,200]],
+      folds:[{type:'valley',x1:80,y1:80,x2:160,y2:80}] },
+    { text:'Folosind acea cută, pliază astfel încât colțurile de sus să se deschidă simetric în lateral, ca o pliere-petală dublă.',
+      shape:[[80,40],[160,40],[160,80],[80,80]],
+      arrows:[{x1:100,y1:55,x2:85,y2:70},{x1:140,y1:55,x2:155,y2:70}] },
+    { text:'Pliază în jos stratul din spate și apasă bine colțurile, aplatizând. Întoarce modelul.',
+      side:'back', badge:'spate',
+      shape:[[80,80],[160,80],[160,200],[80,200]] },
+    { text:'Îngustează urechile, pliind partea de sus a modelului spre interior, pe fiecare parte.',
+      badge:'×2',
+      shape:[[80,80],[160,80],[160,200],[80,200]],
+      folds:[{type:'valley',x1:80,y1:80,x2:105,y2:130},{type:'valley',x1:160,y1:80,x2:135,y2:130}] },
+    { text:'La baza modelului, pliază spre interior cele două colțuri de jos.',
+      shape:[[105,80],[135,80],[160,200],[80,200]],
+      folds:[{type:'valley',x1:80,y1:200,x2:105,y2:175},{type:'valley',x1:160,y1:200,x2:135,y2:175}] },
+    { text:'Pliază modelul pe jumătate (stânga peste dreapta), apoi rotește-l un sfert de tură spre stânga.',
+      shape:[[105,80],[135,80],[135,200],[105,200]] },
+    { text:'La capătul din spate, fă o pliere inversă spre interior, pentru coadă. Iepurașul e gata — poți îndoi puțin capul, ca să stea în picioare.',
+      badge:'gata',
+      shape:[[80,105],[200,105],[200,135],[165,135],[145,120],[80,135]] }
+  ]},
+{ id:'vulpe', name:'Vulpe (față)', level:'incepator', category:'traditional', time:'5 min', paper:'Pătrată',
+  blurb:'O față de vulpe cu urechi ascuțite, din doar șase pliuri simple.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată, fața colorată în jos. Pliază pe diagonală, formând un triunghi.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200}] },
+    { text:'Pliază triunghiul în jumătate și deschide-l la loc — rămâne doar o cută, la mijloc, ca reper.',
+      shape:[[40,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:120,y2:120}] },
+    { text:'Pliază vârful de sus în jos, până atinge marginea lungă de jos (ipotenuza).',
+      shape:[[40,40],[200,200],[40,200]],
+      folds:[{type:'existing',x1:40,y1:40,x2:120,y2:120},{type:'valley',x1:75,y1:75,x2:165,y2:165}] },
+    { text:'Pliază marginea din dreapta spre cuta centrală — se formează o ureche ascuțită.',
+      shape:[[75,75],[200,200],[40,200]],
+      folds:[{type:'valley',x1:200,y1:200,x2:120,y2:130}] },
+    { text:'Pliază la fel marginea din stânga spre cuta centrală — a doua ureche.',
+      shape:[[75,75],[160,165],[40,200]],
+      folds:[{type:'valley',x1:40,y1:200,x2:120,y2:130}] },
+    { text:'Întoarce hârtia. Vulpea e gata — desenează ochii și botul.',
+      badge:'gata',
+      shape:[[100,105],[160,165],[120,160],[80,165]] }
+  ]},
+{ id:'bufnita', name:'Bufniță', level:'intermediar', category:'traditional', time:'12 min', paper:'Pătrată',
+  blurb:'Urechi, cioc și aripi ridicate — și poate sta în picioare, ca o bufniță adevărată.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată, fața colorată în afară. Pliază pe diagonală, formând un triunghi.',
+      shape:[[40,40],[200,40],[200,200],[40,200]], folds:[{type:'valley',x1:40,y1:40,x2:200,y2:200}] },
+    { text:'Pliază un colț în jos, astfel încât vârful lui să atingă un punct aflat la circa două treimi pe latura opusă. Repetă cu celălalt colț — obții o formă alungită, cu cinci laturi.',
+      badge:'×2',
+      shape:[[40,40],[200,200],[40,200]],
+      folds:[{type:'valley',x1:40,y1:40,x2:160,y2:200},{type:'valley',x1:40,y1:200,x2:200,y2:80}] },
+    { text:'Pliază fiecare „aripă” înapoi, aliniind marginea ei închisă cu marginea formei.',
+      badge:'×2',
+      shape:[[40,120],[120,40],[160,200],[80,200],[200,120]] },
+    { text:'Dă formă aripilor cu un mic pliu pe fiecare, ca să se ridice puțin.',
+      badge:'×2',
+      shape:[[40,120],[120,40],[160,200],[80,200],[200,120]] },
+    { text:'Am lucrat până acum pe spatele modelului — întoarce-l pe partea cealaltă.',
+      side:'back', badge:'spate',
+      shape:[[40,120],[120,40],[160,200],[80,200],[200,120]] },
+    { text:'Pliază vârful de sus în jos, puțin — acesta va fi capul.',
+      shape:[[40,120],[120,40],[160,200],[80,200],[200,120]],
+      folds:[{type:'valley',x1:80,y1:65,x2:160,y2:65}] },
+    { text:'La mijlocul acelei clapete mici, pliază câte un triunghi din fiecare parte, deschizând ușor hârtia pe măsură ce pliezi — se formează cele două urechi, iar între ele, un mic cioc.',
+      badge:'×2',
+      shape:[[80,65],[160,65],[160,200],[80,200]] },
+    { text:'Plisează vârful ciocului, ca să-l rotunjești.',
+      shape:[[100,65],[140,65],[120,80]] },
+    { text:'Pliază spre interior cele două colțuri de jos, ca bufnița să poată sta în picioare.',
+      badge:'×2',
+      shape:[[40,120],[120,50],[200,120],[160,200],[80,200]] },
+    { text:'Pliază puțin lateralele spre interior, pentru forma finală. Bufnița e gata.',
+      badge:'gata',
+      shape:[[55,120],[120,55],[185,120],[150,195],[90,195]] }
+  ]},
+{ id:'lebada', name:'Lebădă', level:'incepator', category:'traditional', time:'6 min', paper:'Pătrată',
+  blurb:'Gât lung și grațios, dintr-o bază-zmeu dublă — stă în picioare singură, fără sprijin.',
+  steps:[
+    { text:'Pornește cu hârtia pătrată, așezată ca un romb (un colț în sus). Pliază-o în jumătate pe verticală, apoi desfă — o cută centrală.',
+      shape:[[120,40],[200,120],[120,200],[40,120]], folds:[{type:'valley',x1:120,y1:40,x2:120,y2:200}] },
+    { text:'Pliază cele două margini de jos spre cuta centrală — o pliere „zmeu”.',
+      badge:'×2',
+      shape:[[120,40],[200,120],[120,200],[40,120]],
+      folds:[{type:'existing',x1:120,y1:40,x2:120,y2:200},{type:'valley',x1:120,y1:200,x2:160,y2:90},{type:'valley',x1:120,y1:200,x2:80,y2:90}] },
+    { text:'Întoarce hârtia pe partea cealaltă.',
+      side:'back', badge:'spate',
+      shape:[[120,40],[160,90],[120,200],[80,90]] },
+    { text:'Pliază din nou cele două margini de jos spre cuta centrală — a doua pliere „zmeu”, mai îngustă.',
+      badge:'×2',
+      shape:[[120,40],[160,90],[120,200],[80,90]],
+      folds:[{type:'valley',x1:120,y1:200,x2:140,y2:110},{type:'valley',x1:120,y1:200,x2:100,y2:110}] },
+    { text:'Pliază vârful de jos în sus, până întâlnește vârful de sus.',
+      shape:[[120,40],[140,110],[120,200],[100,110]],
+      folds:[{type:'valley',x1:100,y1:120,x2:140,y2:120}] },
+    { text:'Rotește modelul un sfert de tură spre stânga.',
+      shape:[[40,120],[90,105],[190,120],[90,135]] },
+    { text:'Pliază colțul clapei de sus într-o parte, la un unghi — nu există un punct de referință fix, alege ce arată bine. Acesta devine gâtul.',
+      shape:[[40,120],[90,105],[190,120],[90,135]],
+      folds:[{type:'valley',x1:150,y1:112,x2:190,y2:80}] },
+    { text:'Pliază din nou, doar vârful gâtului, la fel de mic — capul și ciocul. (O mică pliere-încrețire aici dă gâtului o curbă și mai elegantă — vezi secțiunea Tehnici.)',
+      shape:[[40,120],[90,105],[150,112],[190,80]],
+      folds:[{type:'valley',x1:175,y1:90,x2:190,y2:75}] },
+    { text:'Deschide ușor corpul, la unghiul dorit pentru aripi. Lebăda e gata — stă în picioare singură.',
+      badge:'gata',
+      shape:[[40,110],[90,90],[150,112],[175,90],[190,75],[195,65]] }
+  ]},
+{ id:'broasca-testoasa', name:'Broască țestoasă', level:'avansat', category:'traditional', time:'18 min', paper:'Pătrată',
+  blurb:'Patru aripioare, cap mic și coadă, într-o carapace joasă și lată — pornește din baza preliminară.',
+  steps:[
+    { text:'Pornește de la baza preliminară gata făcută (vezi secțiunea Baze), cu vârful deschis în jos.',
+      badge:'baza preliminară',
+      shape:[[120,50],[190,120],[120,190],[50,120]] },
+    { text:'Lucrând doar cu stratul din față: pliază cele două margini spre linia centrală, apoi pliază vârful de sus în jos, aliniindu-l cu marginile pliate. Desfă totul.',
+      shape:[[120,50],[190,120],[120,190],[50,120]],
+      folds:[{type:'valley',x1:50,y1:120,x2:120,y2:140},{type:'valley',x1:190,y1:120,x2:120,y2:140},{type:'valley',x1:80,y1:140,x2:160,y2:140}] },
+    { text:'Folosind acele cute, ridică stratul din față și pliază-l în sus — o pliere-petală (vezi secțiunea Tehnici) — marginile se adună pe linia centrală.',
+      shape:[[120,50],[140,120],[120,190],[100,120]], arrows:[{x1:120,y1:178,x2:120,y2:128}] },
+    { text:'Întoarce modelul și repetă exact aceeași pliere-petală pe stratul din spate.',
+      side:'back', badge:'×2 (și spate)',
+      shape:[[120,50],[190,120],[120,190],[50,120]] },
+    { text:'Pliază vârful de sus în jos, spre linia orizontală de mijloc, apoi pliază acea clapă din nou în jos, de-a lungul liniei.',
+      shape:[[120,50],[140,120],[120,190],[100,120]],
+      folds:[{type:'valley',x1:100,y1:120,x2:140,y2:120}] },
+    { text:'Pliază vârful din stânga-jos spre stânga, aliniindu-l cu marginea de jos; crestează și desfă. Fă o pliere inversă spre interior, folosind acea cută — primul picior din față. Repetă la fel în dreapta.',
+      badge:'×2',
+      shape:[[100,120],[140,120],[140,190],[100,190]] },
+    { text:'Pliază clapa de sus în sus, de-a lungul liniei orizontale.',
+      shape:[[80,120],[160,120],[140,190],[100,190]] },
+    { text:'Pliază vârful acelei clape în sus, la unghiul dorit — nu există un punct de referință fix. Apoi pliază-l puțin înapoi în jos: acesta e capul.',
+      shape:[[80,120],[120,60],[160,120]],
+      folds:[{type:'valley',x1:100,y1:90,x2:140,y2:90}] },
+    { text:'Pliază clapa capului în jos, de-a lungul liniei orizontale. Întoarce modelul.',
+      side:'back', badge:'spate',
+      shape:[[80,120],[110,95],[150,95],[160,120]] },
+    { text:'Pliază partea de sus în jos, doar un strat. Pliază colțul de jos în sus, puțin deasupra colțului de sus. Taie stratul de deasupra pe din două, de la vârf până la linia orizontală din spate.',
+      badge:'taie',
+      shape:[[80,120],[160,120],[140,190],[100,190]] },
+    { text:'Pliază fiecare din cele două clapete rezultate din tăietură, simetric, spre lateral — vor deveni picioarele din spate. Deschide-le și aplatizează-le cu o pliere-comprimare.',
+      badge:'×2',
+      shape:[[100,190],[120,160],[140,190]] },
+    { text:'Pliază cele două clapete în sus, ca să iasă în afara carapacei. Întoarce modelul o ultimă dată.',
+      badge:'×2',
+      shape:[[70,175],[100,190],[140,190],[170,175]] },
+    { text:'Broasca țestoasă e gata — patru aripioare, cap mic și coadă, într-o formă joasă și lată.',
+      badge:'gata',
+      shape:[[120,55],[160,120],[190,150],[140,175],[100,175],[50,150],[80,120]] }
+  ]},
+{ id:'semn-de-carte', name:'Semn de carte (colț)', level:'incepator', category:'traditional', time:'3 min', paper:'Pătrată',
+  blurb:'Cel mai practic model din toată aplicația — se prinde direct de colțul paginii, fără să alunece.',
+  steps:[
+    { text:'Așază hârtia pătrată ca un romb (un colț în sus). Pliază colțul de jos în sus, până la colțul de sus, formând un triunghi.',
+      shape:[[120,40],[200,120],[120,200],[40,120]], folds:[{type:'valley',x1:40,y1:120,x2:200,y2:120}] },
+    { text:'Pliază colțul din dreapta al triunghiului în sus, până la vârf. Repetă cu colțul din stânga.',
+      badge:'×2',
+      shape:[[40,120],[200,120],[120,40]],
+      folds:[{type:'valley',x1:200,y1:120,x2:120,y2:40},{type:'valley',x1:40,y1:120,x2:120,y2:40}] },
+    { text:'Desfă ambele colțuri înapoi — rămâi cu triunghiul simplu, plus cele două cute noi, ca reper.',
+      shape:[[40,120],[200,120],[120,40]] },
+    { text:'Lucrând doar cu stratul din față, pliază vârful de sus în jos, până la marginea de jos — se formează „buzunarul”.',
+      shape:[[40,120],[200,120],[120,40]],
+      folds:[{type:'valley',x1:80,y1:120,x2:160,y2:120}] },
+    { text:'Pliază din nou colțul din stânga în sus, dar de data asta strecoară-l în buzunar, folosind cuta de mai devreme. Repetă la fel în dreapta.',
+      badge:'×2',
+      shape:[[40,120],[80,120],[160,120],[200,120]] },
+    { text:'Gata — semnul de carte se prinde direct pe colțul paginii, fără să se desprindă ușor.',
+      badge:'gata',
+      shape:[[70,120],[120,80],[170,120],[120,160]] }
+  ]}
+];
+var NOPROV = 'Proveniență neverificată: model răspândit; nu am putut confirma dacă este tradițional sau creația unui autor anume.';
+var PROV = {
+  cocor:'Model tradițional japonez; autor necunoscut.',
+  palarie:'Model popular; autor necunoscut.', barca:'Model popular; autor necunoscut.', avion:'Model popular de avion de hârtie; autor necunoscut.',
+  pahar:'Model popular; autor necunoscut.', balon:'Model tradițional („bombă cu apă”); autor necunoscut.',
+  lotus:'Model tradițional, cu multe variante.', 'pasare-fluturatoare':'Model tradițional („pasărea care bate din aripi”); autor necunoscut.',
+  stea:'Model popular (steluța norocoasă); autor necunoscut.', ghicitoare:'Jucărie populară; autor necunoscut.',
+  cutie:'Cutie „masu”, formă tradițională japoneză; pașii de aici sunt o variantă simplificată.',
+  sonobe:'Modulul Sonobe a fost creat de Mitsunobu Sonobe.',
+  toshie:'Creație a lui Toshie Takahama („Toshie’s Jewel”), din trei module Sonobe.',
+  'sonobe-stelat':'Construcție modulară din module Sonobe (creație: Mitsunobu Sonobe); autorul acestui aranjament nu a fost verificat.',
+  'floare-kusudama':'Modul de tip kusudama; autor neverificat.'
+};
+var GLOSSARY = [
+  { term:'Kirigami', def:'Variantă a plierii hârtiei care permite și tăieturi cu foarfeca — spre deosebire de origami tradițional, unde regula este o singură foaie, fără tăieturi și fără lipici.' },
+  { term:'Origami modular', def:'Modele compuse din mai multe piese identice, pliate separat și îmbinate apoi între ele fără lipici — multe „kusudama” funcționează așa.' },
+  { term:'Kusudama', def:'Bile decorative origami, adesea florale, asamblate din module identice.' },
+  { term:'Pliere umedă (wet-folding)', def:'Tehnică introdusă de Akira Yoshizawa, în care hârtia este umezită ușor înainte de pliere, pentru curbe line, sculpturale, în locul cutelor drepte.' },
+  { term:'Teselație origami', def:'Modele geometrice repetitive, obținute prin plieri repetate ale unei singure foi, formând un model regulat, ca un mozaic.' },
+  { term:'Washi', def:'Hârtie japoneză tradițională, făcută manual din fibre de plante (adesea kōzo), apreciată în origami pentru rezistență și textură.' },
+  { term:'Bază de pliere', def:'O formă intermediară standardizată, obținută prin câteva plieri inițiale, folosită ca punct de plecare pentru mai multe modele diferite.' },
+  { term:'Origami rigid', def:'Ramură aplicată a origami, folosită în inginerie — de la panouri solare pliabile pentru sateliți, la structuri de urgență și dispozitive medicale.' },
+  { term:'Papiroflexia / Zhezhi', def:'Numele plierii hârtiei în lumea hispanică, respectiv în China — tradiții înrudite, dezvoltate independent de origami-ul japonez.' }
+];
+var TIPS = [
+  { title:'Alege hârtie potrivită', text:'Hârtia origami standard (kami) e subțire și ține bine cutele. Pentru modele cu multe straturi, precum lotusul, o hârtie și mai subțire (washi) ajută.' },
+  { title:'Pliază pe o suprafață tare', text:'O masă sau o placă rigidă dă cute mai clare decât o pernă sau genunchii.' },
+  { title:'Apasă fiecare cută cu unghia', text:'O cută bine marcată face pașii următori mult mai ușori și mai preciși.' },
+  { title:'Nu sări etape', text:'Chiar dacă o pliere pare evidentă, o cută lipsă sau inversată se resimte la pașii următori.' },
+  { title:'Verifică simetria', text:'La modelele simetrice, precum cocorul, aliniază marginile și colțurile exact înainte să apeși cuta.' },
+  { title:'Ai răbdare cu modelele avansate', text:'Plierea-petală și plierea inversă spre interior sunt normal dificile la primele încercări — câteva exersări pe hârtie de rezervă ajută mult.' }
+];
+
+/* ============================================================
+   SVG DIAGRAM BUILDER
+   ============================================================ */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+function arrowPath(x1,y1,x2,y2,curve){
+  curve = curve||0;
+  var mx=(x1+x2)/2, my=(y1+y2)/2;
+  var dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy)||1;
+  var nx=-dy/len, ny=dx/len;
+  var cx=mx+nx*curve, cy=my+ny*curve;
+  return 'M'+x1+','+y1+' Q'+cx+','+cy+' '+x2+','+y2;
+}
+
+var __diagId = 0;
+function buildDiagramSVG(step){
+  var N=240;
+  var mid = 'ah'+(++__diagId);
+  var parts=[];
+  parts.push('<svg viewBox="0 0 '+N+' '+N+'" class="fold-diagram" role="img" aria-label="'+esc(step.alt||('Diagramă schematică'+(step.badge?' ('+step.badge+')':'')+' — descrierea pasului este scrisă alături'))+'">');
+  parts.push('<defs><marker id="'+mid+'" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker></defs>');
+  parts.push('<rect class="diagram-bg" x="1" y="1" width="'+(N-2)+'" height="'+(N-2)+'"/>');
+  if(step.ghost){
+    parts.push('<polygon class="paper-ghost" points="'+step.ghost.map(function(p){return p.join(',');}).join(' ')+'"/>');
+  }
+  if(step.shape){
+    var cls='paper-shape'+(step.side==='back'?' side-back':'');
+    parts.push('<polygon class="'+cls+'" points="'+step.shape.map(function(p){return p.join(',');}).join(' ')+'"/>');
+  }
+  (step.folds||[]).forEach(function(f){
+    var cls = f.type==='mountain'?'fold-mountain':(f.type==='existing'?'fold-existing':'fold-valley');
+    parts.push('<line class="'+cls+'" x1="'+f.x1+'" y1="'+f.y1+'" x2="'+f.x2+'" y2="'+f.y2+'"/>');
+  });
+  (step.arrows||[]).forEach(function(a){
+    parts.push('<path class="fold-arrow" marker-end="url(#'+mid+')" d="'+arrowPath(a.x1,a.y1,a.x2,a.y2,a.curve)+'"/>');
+  });
+  (step.marks||[]).forEach(function(m){
+    parts.push('<circle class="mark-dot" cx="'+m[0]+'" cy="'+m[1]+'" r="3.2"/>');
+  });
+  if(step.badge){
+    parts.push('<text class="diagram-badge" x="'+(N-10)+'" y="18" text-anchor="end">'+esc(step.badge)+'</text>');
+  }
+  parts.push('</svg>');
+  return parts.join('');
+}
+
+/* ============================================================
+   STORAGE (per-viewer convenience only — this is a standalone
+   file opened directly in the browser, not a hosted artifact)
+   ============================================================ */
+function loadDone(){
+  try{ var o = JSON.parse(localStorage.getItem('origami-done')||'{}'); return (o && typeof o==='object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; }
+}
+function saveDone(obj){
+  try{ localStorage.setItem('origami-done', JSON.stringify(obj)); }catch(e){}
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+var LEVEL_LABELS = {incepator:'Începător', intermediar:'Intermediar', avansat:'Avansat'};
+var CATEGORY_LABELS = {traditional:'Tradițional', actiune:'Acțiune', modular:'Modular'};
+
+function renderSymbols(){
+  document.getElementById('symbols-grid').innerHTML = SYMBOLS.map(function(s){
+    return '<div class="symbol-card">'+s.svg+'<h4>'+esc(s.name)+'</h4><p>'+esc(s.desc)+'</p></div>';
+  }).join('');
+}
+
+function renderTechniques(){
+  document.getElementById('techniques-grid').innerHTML = TECHNIQUES.map(function(t){
+    return '<div class="symbol-card">'+t.svg+'<h4>'+esc(t.name)+'</h4><p>'+esc(t.desc)+'</p></div>';
+  }).join('');
+}
+
+function renderBases(){
+  document.getElementById('bases-content').innerHTML = BASES.map(function(b){
+    var tiles = b.steps.map(function(st,i){
+      return '<div class="step-tile">'+buildDiagramSVG(st)+'<div class="step-no">Pasul '+(i+1)+'</div><p>'+esc(st.text)+'</p></div>';
+    }).join('');
+    return '<div class="base-block"><h3>'+esc(b.name)+'</h3><p class="base-desc">'+esc(b.desc)+'</p>'+
+           '<div class="step-strip" tabindex="0" role="group" aria-label="Pașii bazei, derulabili orizontal">'+tiles+'</div></div>';
+  }).join('');
+}
+
+function renderGlossary(){
+  document.getElementById('glossary-list').innerHTML = GLOSSARY.map(function(g){
+    return '<div><dt>'+esc(g.term)+'</dt><dd>'+esc(g.def)+'</dd></div>';
+  }).join('');
+}
+
+function renderTips(){
+  document.getElementById('tips-grid').innerHTML = TIPS.map(function(t){
+    return '<div class="tip-card"><h4>'+esc(t.title)+'</h4><p>'+esc(t.text)+'</p></div>';
+  }).join('');
+}
+
+/* ---- Model catalog: search + level + category filter ---- */
+var doneMap = loadDone();
+var currentFilter = { level:'all', category:'all', q:'' };
+
+function norm(t){
+  var r = String(t==null?'':t).toLowerCase();
+  try{ r = r.normalize('NFD').replace(/[\u0300-\u036f]/g,''); }catch(e){}
+  return r;
+}
+function modelMatches(m){
+  if(currentFilter.level!=='all' && m.level!==currentFilter.level) return false;
+  if(currentFilter.category!=='all' && m.category!==currentFilter.category) return false;
+  if(currentFilter.q){
+    var q = norm(currentFilter.q).trim();
+    if(!m.searchBlob) m.searchBlob = norm(m.name+' '+m.blurb+' '+m.paper+' '+m.steps.map(function(s){return s.text;}).join(' '));
+    if(m.searchBlob.indexOf(q)===-1) return false;
+  }
+  return true;
+}
+
+function renderModelGrid(){
+  var grid = document.getElementById('model-grid');
+  var empty = document.getElementById('model-empty');
+  var list = MODELS.filter(modelMatches);
+  if(list.length===0){ grid.innerHTML=''; empty.hidden=false; return; }
+  empty.hidden=true;
+  grid.innerHTML = list.map(function(m){
+    var isDone = !!doneMap[m.id];
+    var cat = m.category || 'traditional';
+    var catTag = cat!=='traditional' ? '<span class="cat-tag" data-cat="'+cat+'">'+CATEGORY_LABELS[cat]+'</span>' : '';
+    return '<button type="button" class="model-card" data-id="'+m.id+'" data-level="'+m.level+'" data-category="'+cat+'" data-done="'+(isDone?'true':'false')+'">'+
+      catTag+
+      '<h4>'+esc(m.name)+'</h4>'+
+      '<div class="meta">'+LEVEL_LABELS[m.level]+' · '+esc(m.time)+' · '+esc(m.paper)+'</div>'+
+      '<p>'+esc(m.blurb)+'</p>'+
+      '<div class="done-mark">Realizat ✓</div>'+
+    '</button>';
+  }).join('');
+}
+
+/* ============================================================
+   STEP VIEWER
+   ============================================================ */
+var overlay = document.getElementById('viewer-overlay');
+var viewerState = { model:null, index:0, opener:null };
+var BACKGROUND = ['.skip-link','.site-nav','main','footer'];
+function setBackgroundInert(on){
+  BACKGROUND.forEach(function(sel){
+    var el = document.querySelector(sel); if(!el) return;
+    if(on) el.setAttribute('inert',''); else el.removeAttribute('inert');
+  });
+}
+
+function openViewer(id){
+  var matches = MODELS.filter(function(x){ return x.id===id; });
+  if(!matches.length) return;
+  viewerState.model = matches[0];
+  document.getElementById('viewer-title').textContent = viewerState.model.name;
+  document.getElementById('viewer-meta').textContent =
+    LEVEL_LABELS[viewerState.model.level]+' · '+viewerState.model.time+' · '+viewerState.model.paper;
+  document.getElementById('viewer-prov').textContent = 'Atribuire: ' + (PROV[viewerState.model.id] || NOPROV);
+  viewerState.opener = document.activeElement;
+  updateDoneButton();
+  showStep(0);
+  overlay.classList.add('open');
+  setBackgroundInert(true);
+  document.body.style.overflow = 'hidden';
+  document.getElementById('viewer-close').focus();
+}
+function closeViewer(){
+  var reopenId = viewerState.model ? viewerState.model.id : null;
+  overlay.classList.remove('open');
+  setBackgroundInert(false);
+  document.body.style.overflow = '';
+  renderModelGrid();
+  var card = reopenId ? document.querySelector('.model-card[data-id="'+reopenId+'"]') : null;
+  if(card) card.focus();
+  else if(viewerState.opener && document.contains(viewerState.opener) && viewerState.opener.focus) viewerState.opener.focus();
+  else document.getElementById('model-search').focus();
+  viewerState.opener = null;
+}
+function showStep(i){
+  var m = viewerState.model; if(!m) return;
+  var n = m.steps.length;
+  i = Math.max(0, Math.min(n-1, i));
+  viewerState.index = i;
+  var st = m.steps[i];
+  document.getElementById('viewer-stage').innerHTML =
+    buildDiagramSVG(st) +
+    '<p class="viewer-instruction"><span class="step-label">Pasul '+(i+1)+' din '+n+'</span>'+esc(st.text)+'</p>';
+  document.getElementById('viewer-progress-bar').style.width = (((i+1)/n)*100)+'%';
+  document.getElementById('viewer-count').textContent = (i+1)+' / '+n;
+  var prevB = document.getElementById('viewer-prev'), nextB = document.getElementById('viewer-next');
+  var hadFocus = document.activeElement;
+  prevB.disabled = (i===0);
+  nextB.disabled = (i===n-1);
+  if(hadFocus && hadFocus.disabled){
+    // a focused button was just disabled: keep keyboard focus inside the dialog
+    (hadFocus===nextB ? (prevB.disabled ? document.getElementById('viewer-done') : prevB) : (nextB.disabled ? document.getElementById('viewer-done') : nextB)).focus();
+  }
+}
+function markDone(){
+  var id = viewerState.model.id;
+  doneMap[id] = !doneMap[id];
+  saveDone(doneMap);
+  updateDoneButton();
+}
+function updateDoneButton(){
+  document.getElementById('viewer-done').textContent =
+    doneMap[viewerState.model.id] ? 'Realizat ✓ — anulează' : 'Marchează ca realizat';
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.getElementById('model-grid').addEventListener('click', function(e){
+  var card = e.target.closest('.model-card');
+  if(card) openViewer(card.getAttribute('data-id'));
+});
+document.getElementById('model-search').addEventListener('input', function(e){
+  currentFilter.q = e.target.value;
+  renderModelGrid();
+});
+document.getElementById('level-filters').addEventListener('click', function(e){
+  var btn = e.target.closest('.chip');
+  if(!btn) return;
+  currentFilter.level = btn.getAttribute('data-level');
+  Array.prototype.forEach.call(document.querySelectorAll('#level-filters .chip'), function(c){
+    c.setAttribute('aria-pressed', c===btn ? 'true' : 'false');
+  });
+  renderModelGrid();
+});
+document.getElementById('category-filters').addEventListener('click', function(e){
+  var btn = e.target.closest('.chip');
+  if(!btn) return;
+  currentFilter.category = btn.getAttribute('data-category');
+  Array.prototype.forEach.call(document.querySelectorAll('#category-filters .chip'), function(c){
+    c.setAttribute('aria-pressed', c===btn ? 'true' : 'false');
+  });
+  renderModelGrid();
+});
+document.getElementById('viewer-close').addEventListener('click', closeViewer);
+overlay.addEventListener('click', function(e){ if(e.target===overlay) closeViewer(); });
+document.getElementById('viewer-prev').addEventListener('click', function(){ showStep(viewerState.index-1); });
+document.getElementById('viewer-next').addEventListener('click', function(){ showStep(viewerState.index+1); });
+document.getElementById('viewer-done').addEventListener('click', markDone);
+document.getElementById('viewer-print').addEventListener('click', function(){ window.print(); });
+
+/* Print: when the viewer is open, print ALL steps of the model (not only the visible one). */
+var printSheet = document.getElementById('print-sheet');
+window.addEventListener('beforeprint', function(){
+  var m = viewerState.model;
+  if(!overlay.classList.contains('open') || !m) return;
+  printSheet.innerHTML = '<h1>'+esc(m.name)+'</h1><p class="ps-meta">'+esc(LEVEL_LABELS[m.level]+' · '+m.time+' · '+m.paper)+'<br>'+esc('Atribuire: '+(PROV[m.id]||NOPROV))+'</p>'+
+    m.steps.map(function(st,i){
+      return '<div class="ps-step">'+buildDiagramSVG(st)+'<p><strong>Pasul '+(i+1)+'.</strong> '+esc(st.text)+'</p></div>';
+    }).join('');
+  document.body.classList.add('print-viewer');
+});
+window.addEventListener('afterprint', function(){
+  document.body.classList.remove('print-viewer');
+  printSheet.innerHTML = '';
+});
+document.addEventListener('keydown', function(e){
+  if(!overlay.classList.contains('open')) return;
+  if(e.key==='Escape'){ e.preventDefault(); closeViewer(); }
+  else if(e.altKey || e.ctrlKey || e.metaKey){ return; }
+  else if(e.key==='ArrowRight') showStep(viewerState.index+1);
+  else if(e.key==='ArrowLeft') showStep(viewerState.index-1);
+  else if(e.key==='Tab'){
+    var focusable = Array.prototype.slice.call(
+      overlay.querySelectorAll('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    );
+    if(!focusable.length){ e.preventDefault(); return; }
+    var first = focusable[0], last = focusable[focusable.length-1];
+    var ae = document.activeElement;
+    if(!overlay.contains(ae)){ e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+    else if(e.shiftKey && ae===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && ae===last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+var navButtons = Array.prototype.slice.call(document.querySelectorAll('.navlink'));
+var navLinksPanel = document.getElementById('nav-links');
+var navToggle = document.getElementById('nav-toggle');
+function closeNavMenu(){
+  navLinksPanel.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.textContent = '☰';
+  navToggle.setAttribute('aria-label', 'Deschide meniul');
+}
+function openNavMenu(){
+  navLinksPanel.classList.add('open');
+  navToggle.setAttribute('aria-expanded', 'true');
+  navToggle.textContent = '✕';
+  navToggle.setAttribute('aria-label', 'Închide meniul');
+}
+navButtons.forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var el = document.getElementById(btn.getAttribute('data-nav'));
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(el) el.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+    closeNavMenu();
+  });
+});
+navToggle.addEventListener('click', function(){
+  if(navLinksPanel.classList.contains('open')) closeNavMenu(); else openNavMenu();
+});
+document.addEventListener('click', function(e){
+  if(!navLinksPanel.classList.contains('open')) return;
+  if(navLinksPanel.contains(e.target) || navToggle.contains(e.target)) return;
+  closeNavMenu();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape' && navLinksPanel.classList.contains('open')) closeNavMenu();
+});
+if('IntersectionObserver' in window){
+  var sectionIds = ['intro','simboluri','tehnici','baze','modele','glosar','sfaturi'];
+  var sections = sectionIds.map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id;
+        navButtons.forEach(function(b){
+          b.setAttribute('aria-current', b.getAttribute('data-nav')===id ? 'true' : 'false');
+        });
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  sections.forEach(function(s){ obs.observe(s); });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.getElementById('stat-tech').firstChild.nodeValue = String(TECHNIQUES.length);
+document.getElementById('stat-bases').firstChild.nodeValue = String(BASES.length);
+document.getElementById('stat-models').firstChild.nodeValue = String(MODELS.length);
+renderSymbols();
+renderTechniques();
+renderBases();
+renderModelGrid();
+renderGlossary();
+renderTips();
+var firstNav = document.querySelector('[data-nav="intro"]');
+if(firstNav) firstNav.setAttribute('aria-current','true');
+
+})();
+</script>
+
+</body>
+</html>
