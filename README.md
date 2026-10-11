@@ -4,6 +4,8 @@ Ghid offline de origami într-un singur fișier HTML: simboluri de pliere, tehni
 
 **Live:** https://chiuta.github.io/Origami/
 
+**Ultima actualizare:** 11 octombrie 2026
+
 ![Captura de ecran](screenshot.png)
 
 ## Ce este
@@ -48,6 +50,13 @@ Verificate în cod și în browser (Chromium, Playwright):
 ## Rulare locală / offline
 
 Descarcă `index.html` și deschide-l în browser; nu necesită internet.
+
+## Istoric / Changelog
+
+### 11 octombrie 2026
+- Accesibilitate: titlurile cardurilor (simboluri, tehnici, modele, sfaturi) sunt acum `h3` sub secțiunile `h2` (axe: 0 violări).
+- Cocor: pasul 6 (plierea-petală) a fost împărțit în două diagrame (ridicarea cu cutele de referință și rezultatul „petală”), deci modelul are acum 14 pași; Pălăria: plierea borului este detaliată separat pe fața și pe spatele hârtiei (5 pași).
+- Diagramele rămân schematice; modelele foarte scurte (de exemplu Peștele, 4 pași) nu au fost extinse.
 
 ## Licență
 

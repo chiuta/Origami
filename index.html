@@ -233,7 +233,7 @@ section.block{ padding:46px 0; }
   padding:14px 14px 12px;
 }
 .symbol-card svg{ width:100%; height:64px; margin-bottom:8px; }
-.symbol-card h4{ font-family:var(--font-body); font-size:.86rem; color:var(--ink); margin:0 0 .3em; font-weight:600; }
+.symbol-card h3{ font-family:var(--font-body); font-size:.86rem; color:var(--ink); margin:0 0 .3em; font-weight:600; }
 .symbol-card p{ font-size:.78rem; color:var(--ink-soft); margin:0; }
 .legend-line{ fill:none; }
 .legend-valley{ stroke:var(--valley); stroke-width:2; stroke-dasharray:5 4; }
@@ -340,7 +340,7 @@ noscript .note-box{ margin:20px auto; max-width:640px; }
 }
 .cat-tag[data-cat="actiune"]{ background:var(--vermillion); color:var(--paper); }
 .cat-tag[data-cat="modular"]{ background:var(--indigo); color:var(--paper); }
-.model-card h4{ font-family:var(--font-display); font-size:1.05rem; margin:0 0 .2em; padding-right:20px; }
+.model-card h3{ font-family:var(--font-display); font-size:1.05rem; margin:0 0 .2em; padding-right:20px; }
 .model-card .meta{ font-size:.76rem; color:var(--ink-faint); margin-bottom:.5em; }
 .model-card p{ font-size:.82rem; color:var(--ink-soft); margin:0; }
 .model-card .done-mark{ display:none; font-size:.72rem; color:var(--indigo); margin-top:8px; font-weight:600; }
@@ -406,7 +406,7 @@ noscript .note-box{ margin:20px auto; max-width:640px; }
 
 .tips-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
 .tip-card{ border-left:2.5px dashed var(--paper-edge); padding-left:14px; }
-.tip-card h4{ font-family:var(--font-body); font-size:.95rem; margin-bottom:.3em; }
+.tip-card h3{ font-family:var(--font-body); font-size:.95rem; margin-bottom:.3em; }
 .tip-card p{ font-size:.85rem; color:var(--ink-soft); margin:0; }
 
 /* ============================================================
@@ -894,9 +894,12 @@ var MODELS = [
     { text:'Pliază cele două colțuri de sus spre linia centrală, formând vârful triunghiului.',
       shape:[[60,120],[180,120],[180,210],[60,210]],
       folds:[{type:'valley',x1:60,y1:120,x2:120,y2:165},{type:'valley',x1:180,y1:120,x2:120,y2:165}] },
-    { text:'Pliază în sus marginea de jos, peste baza triunghiului — pe ambele straturi (întoarce hârtia pentru al doilea strat).',
-      shape:[[60,165],[120,120],[180,165],[180,210],[60,210]],
-      folds:[{type:'valley',x1:60,y1:165,x2:180,y2:165}], badge:'×2' },
+    { text:'Pliază în sus marginea de jos a stratului din față, peste baza triunghiului — aceasta formează borul pălăriei. Apasă bine cuta.',
+      shape:[[60,120],[120,120],[180,120],[180,210],[60,210]],
+      folds:[{type:'valley',x1:60,y1:165,x2:180,y2:165}], arrows:[{x1:120,y1:200,x2:120,y2:172}], badge:'strat din față' },
+    { text:'Întoarce hârtia și pliază în sus și marginea de jos a celuilalt strat, exact la aceeași înălțime, ca borul să fie simetric.',
+      side:'back', shape:[[60,165],[120,120],[180,165],[180,210],[60,210]],
+      folds:[{type:'valley',x1:60,y1:165,x2:180,y2:165}], arrows:[{x1:120,y1:200,x2:120,y2:172}], badge:'spate' },
     { text:'Deschide ușor baza pentru a o putea purta. Pălăria este gata — este și punctul de plecare pentru barca de hârtie.',
       shape:[[60,165],[120,120],[180,165],[180,192],[60,192]], badge:'gata' }
   ]},
@@ -1030,7 +1033,12 @@ var MODELS = [
       shape:[[120,50],[190,120],[120,190],[50,120]],
       folds:[{type:'existing',x1:50,y1:120,x2:120,y2:140},{type:'existing',x1:190,y1:120,x2:120,y2:140},{type:'valley',x1:80,y1:140,x2:160,y2:140}] },
     { text:'Ridică vârful de jos de-a lungul cutelor și pliază-l în sus, apăsând marginile spre interior — aceasta este „plierea-petală”. Aplatizează bine.',
-      shape:[[120,50],[140,120],[120,190],[100,120]], arrows:[{x1:120,y1:178,x2:120,y2:128}] },
+      shape:[[120,50],[190,120],[120,190],[50,120]],
+      folds:[{type:'existing',x1:50,y1:120,x2:120,y2:140},{type:'existing',x1:190,y1:120,x2:120,y2:140},{type:'existing',x1:80,y1:140,x2:160,y2:140},
+             {type:'valley',x1:120,y1:190,x2:120,y2:120}],
+      arrows:[{x1:120,y1:178,x2:120,y2:128}], badge:'ridică' },
+    { text:'Pe măsură ce vârful de jos urcă, marginile laterale se strâng spre linia centrală. Aplatizează: se formează un romb îngust, „petala”, cu vârful în sus.',
+      shape:[[120,40],[152,120],[120,195],[88,120]], folds:[{type:'existing',x1:120,y1:40,x2:120,y2:195},{type:'existing',x1:88,y1:120,x2:152,y2:120}], badge:'petală' },
     { text:'Întoarce modelul și repetă exact aceeași pliere-petală pe stratul din spate.',
       side:'back', badge:'spate', shape:[[120,50],[190,120],[120,190],[50,120]] },
     { text:'Ai obținut baza păsării: un romb lung cu patru vârfuri libere — două sus (viitoarele aripi) și două jos („picioarele”).',
@@ -1735,13 +1743,13 @@ var CATEGORY_LABELS = {traditional:'Tradițional', actiune:'Acțiune', modular:'
 
 function renderSymbols(){
   document.getElementById('symbols-grid').innerHTML = SYMBOLS.map(function(s){
-    return '<div class="symbol-card">'+s.svg+'<h4>'+esc(s.name)+'</h4><p>'+esc(s.desc)+'</p></div>';
+    return '<div class="symbol-card">'+s.svg+'<h3>'+esc(s.name)+'</h3><p>'+esc(s.desc)+'</p></div>';
   }).join('');
 }
 
 function renderTechniques(){
   document.getElementById('techniques-grid').innerHTML = TECHNIQUES.map(function(t){
-    return '<div class="symbol-card">'+t.svg+'<h4>'+esc(t.name)+'</h4><p>'+esc(t.desc)+'</p></div>';
+    return '<div class="symbol-card">'+t.svg+'<h3>'+esc(t.name)+'</h3><p>'+esc(t.desc)+'</p></div>';
   }).join('');
 }
 
@@ -1763,7 +1771,7 @@ function renderGlossary(){
 
 function renderTips(){
   document.getElementById('tips-grid').innerHTML = TIPS.map(function(t){
-    return '<div class="tip-card"><h4>'+esc(t.title)+'</h4><p>'+esc(t.text)+'</p></div>';
+    return '<div class="tip-card"><h3>'+esc(t.title)+'</h3><p>'+esc(t.text)+'</p></div>';
   }).join('');
 }
 
@@ -1799,7 +1807,7 @@ function renderModelGrid(){
     var catTag = cat!=='traditional' ? '<span class="cat-tag" data-cat="'+cat+'">'+CATEGORY_LABELS[cat]+'</span>' : '';
     return '<button type="button" class="model-card" data-id="'+m.id+'" data-level="'+m.level+'" data-category="'+cat+'" data-done="'+(isDone?'true':'false')+'">'+
       catTag+
-      '<h4>'+esc(m.name)+'</h4>'+
+      '<h3>'+esc(m.name)+'</h3>'+
       '<div class="meta">'+LEVEL_LABELS[m.level]+' · '+esc(m.time)+' · '+esc(m.paper)+'</div>'+
       '<p>'+esc(m.blurb)+'</p>'+
       '<div class="done-mark">Realizat ✓</div>'+
