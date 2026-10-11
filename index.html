@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ORIGAMI — Arta plierii hârtiei</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src  'sha256-O7KuOjmHvTVvpaLvpPZOCZIWe9tMosImsZKHGqv5ZfU='; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="description" content="Ghid offline de origami: simboluri de pliere, baze fundamentale și modele pas cu pas, de la începător la avansat.">
 <meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
@@ -347,6 +347,10 @@ noscript .note-box{ margin:20px auto; max-width:640px; }
 .model-card[data-done="true"] .done-mark{ display:block; }
 .model-card:hover{ border-color:var(--gold); }
 
+.catalog-status{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:10px 0 14px; font-size:.9rem; color:var(--ink-soft); }
+.btn.small{ min-height:36px; padding:4px 12px; font-size:.85rem; }
+.kbd-hint kbd{ border:1px solid var(--paper-edge); border-radius:4px; padding:0 5px; font-family:inherit; }
+.resume-note{ font-size:.8rem; color:var(--ink-soft); }
 .empty-note{ color:var(--ink-faint); font-size:.9rem; font-style:italic; }
 
 /* ============================================================
@@ -421,7 +425,7 @@ footer a{ color:var(--ink-soft); }
    ============================================================ */
 #print-sheet{ display:none; }
 @media print{
-  .site-nav, .catalog-controls, .hero .stat-line, footer, .icon-btn, .skip-link{ display:none !important; }
+  .site-nav, .catalog-controls, .catalog-status, .hero .stat-line, footer, .icon-btn, .skip-link{ display:none !important; }
   body{ background:#fff; }
   .viewer-overlay{ display:none !important; }
   body.print-viewer > *:not(#print-sheet){ display:none !important; }
@@ -577,9 +581,15 @@ footer a{ color:var(--ink-soft); }
         <button type="button" class="chip" data-category="actiune" aria-pressed="false">Acțiune</button>
         <button type="button" class="chip" data-category="modular" aria-pressed="false">Modular</button>
       </div>
+      <div class="chip-group" id="status-filters" role="group" aria-label="Filtrează după progres">
+        <button type="button" class="chip" data-status="all" aria-pressed="true">Toate</button>
+        <button type="button" class="chip" data-status="todo" aria-pressed="false">De făcut</button>
+        <button type="button" class="chip" data-status="done" aria-pressed="false">Realizate</button>
+      </div>
     </div>
+    <p class="catalog-status" id="catalog-status" aria-live="polite"><span id="progress-text"></span> <button type="button" class="btn ghost small" id="random-model">Alege-mi un model</button> <span class="kbd-hint">Scurtătură: <kbd>/</kbd> caută</span></p>
     <div class="model-grid" id="model-grid"></div>
-    <p class="empty-note" id="model-empty" hidden>Niciun model nu corespunde căutării.</p>
+    <p class="empty-note" id="model-empty" hidden>Niciun model nu corespunde căutării. <button type="button" class="btn ghost small" id="reset-filters">Resetează filtrele</button></p>
   </div>
 </section>
 
@@ -630,7 +640,7 @@ footer a{ color:var(--ink-soft); }
     <div class="viewer-stage" id="viewer-stage" aria-live="polite" aria-atomic="true"></div>
     <div class="viewer-nav">
       <button type="button" class="btn secondary" id="viewer-prev">← Înapoi</button>
-      <span id="viewer-count" class="ink-soft" style="font-size:.8rem;"></span>
+      <span id="viewer-count" class="ink-soft" style="font-size:.8rem;"></span><span id="viewer-resume" class="resume-note" role="status"></span>
       <button type="button" class="btn" id="viewer-next">Înainte →</button>
     </div>
     <div class="viewer-foot">
@@ -1728,6 +1738,12 @@ function buildDiagramSVG(step){
    STORAGE (per-viewer convenience only — this is a standalone
    file opened directly in the browser, not a hosted artifact)
    ============================================================ */
+function loadSteps(){
+  try{ var o = JSON.parse(localStorage.getItem('origami-step')||'{}'); return (o && typeof o==='object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; }
+}
+function saveStep(id,i){
+  try{ var o = loadSteps(); if(i>0) o[id]=i; else delete o[id]; localStorage.setItem('origami-step', JSON.stringify(o)); }catch(e){}
+}
 function loadDone(){
   try{ var o = JSON.parse(localStorage.getItem('origami-done')||'{}'); return (o && typeof o==='object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; }
 }
@@ -1777,7 +1793,7 @@ function renderTips(){
 
 /* ---- Model catalog: search + level + category filter ---- */
 var doneMap = loadDone();
-var currentFilter = { level:'all', category:'all', q:'' };
+var currentFilter = { level:'all', category:'all', status:'all', q:'' };
 
 function norm(t){
   var r = String(t==null?'':t).toLowerCase();
@@ -1787,6 +1803,8 @@ function norm(t){
 function modelMatches(m){
   if(currentFilter.level!=='all' && m.level!==currentFilter.level) return false;
   if(currentFilter.category!=='all' && m.category!==currentFilter.category) return false;
+  if(currentFilter.status==='done' && !doneMap[m.id]) return false;
+  if(currentFilter.status==='todo' && doneMap[m.id]) return false;
   if(currentFilter.q){
     var q = norm(currentFilter.q).trim();
     if(!m.searchBlob) m.searchBlob = norm(m.name+' '+m.blurb+' '+m.paper+' '+m.steps.map(function(s){return s.text;}).join(' '));
@@ -1795,7 +1813,12 @@ function modelMatches(m){
   return true;
 }
 
+function updateProgress(){
+  var n = MODELS.filter(function(m){ return !!doneMap[m.id]; }).length;
+  document.getElementById('progress-text').textContent = 'Realizate: '+n+' din '+MODELS.length+' modele (salvat doar în acest browser).';
+}
 function renderModelGrid(){
+  updateProgress();
   var grid = document.getElementById('model-grid');
   var empty = document.getElementById('model-empty');
   var list = MODELS.filter(modelMatches);
@@ -1838,7 +1861,10 @@ function openViewer(id){
   document.getElementById('viewer-prov').textContent = 'Atribuire: ' + (PROV[viewerState.model.id] || NOPROV);
   viewerState.opener = document.activeElement;
   updateDoneButton();
-  showStep(0);
+  var saved = loadSteps()[viewerState.model.id];
+  saved = (typeof saved==='number' && saved>0 && saved<viewerState.model.steps.length) ? Math.floor(saved) : 0;
+  showStep(saved);
+  document.getElementById('viewer-resume').textContent = saved>0 ? 'Reluat de la pasul '+(saved+1)+' (ultimul văzut).' : '';
   overlay.classList.add('open');
   setBackgroundInert(true);
   document.body.style.overflow = 'hidden';
@@ -1861,6 +1887,7 @@ function showStep(i){
   var n = m.steps.length;
   i = Math.max(0, Math.min(n-1, i));
   viewerState.index = i;
+  saveStep(m.id, i);
   var st = m.steps[i];
   document.getElementById('viewer-stage').innerHTML =
     buildDiagramSVG(st) +
@@ -1880,6 +1907,7 @@ function markDone(){
   var id = viewerState.model.id;
   doneMap[id] = !doneMap[id];
   saveDone(doneMap);
+  updateProgress();
   updateDoneButton();
 }
 function updateDoneButton(){
@@ -1916,6 +1944,39 @@ document.getElementById('category-filters').addEventListener('click', function(e
   });
   renderModelGrid();
 });
+document.getElementById('status-filters').addEventListener('click', function(e){
+  var btn = e.target.closest('.chip');
+  if(!btn) return;
+  currentFilter.status = btn.getAttribute('data-status');
+  Array.prototype.forEach.call(document.querySelectorAll('#status-filters .chip'), function(c){
+    c.setAttribute('aria-pressed', c===btn ? 'true' : 'false');
+  });
+  renderModelGrid();
+});
+document.getElementById('reset-filters').addEventListener('click', function(){
+  currentFilter = { level:'all', category:'all', status:'all', q:'' };
+  document.getElementById('model-search').value = '';
+  Array.prototype.forEach.call(document.querySelectorAll('.catalog-controls .chip-group'), function(g){
+    Array.prototype.forEach.call(g.querySelectorAll('.chip'), function(c,i){ c.setAttribute('aria-pressed', i===0 ? 'true' : 'false'); });
+  });
+  renderModelGrid();
+  document.getElementById('model-search').focus();
+});
+document.getElementById('random-model').addEventListener('click', function(){
+  var pool = MODELS.filter(modelMatches).filter(function(m){ return !doneMap[m.id]; });
+  if(!pool.length) pool = MODELS.filter(modelMatches);
+  if(!pool.length) return;
+  openViewer(pool[Math.floor(Math.random()*pool.length)].id);
+});
+document.addEventListener('keydown', function(e){
+  if(e.key!=='/' || e.altKey || e.ctrlKey || e.metaKey || overlay.classList.contains('open')) return;
+  var t = e.target && e.target.tagName;
+  if(t==='INPUT' || t==='TEXTAREA' || t==='SELECT') return;
+  e.preventDefault();
+  var f = document.getElementById('model-search');
+  f.scrollIntoView({block:'center'});
+  f.focus();
+});
 document.getElementById('viewer-close').addEventListener('click', closeViewer);
 overlay.addEventListener('click', function(e){ if(e.target===overlay) closeViewer(); });
 document.getElementById('viewer-prev').addEventListener('click', function(){ showStep(viewerState.index-1); });
@@ -1944,6 +2005,8 @@ document.addEventListener('keydown', function(e){
   else if(e.altKey || e.ctrlKey || e.metaKey){ return; }
   else if(e.key==='ArrowRight') showStep(viewerState.index+1);
   else if(e.key==='ArrowLeft') showStep(viewerState.index-1);
+  else if(e.key==='Home'){ e.preventDefault(); showStep(0); }
+  else if(e.key==='End'){ e.preventDefault(); showStep(viewerState.model.steps.length-1); }
   else if(e.key==='Tab'){
     var focusable = Array.prototype.slice.call(
       overlay.querySelectorAll('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')

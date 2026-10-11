@@ -21,6 +21,8 @@ Verificate în cod și în browser (Chromium, Playwright):
 - „Marchează ca realizat” (salvat local, vezi mai jos).
 - Printare: din vizualizator se tipăresc toți pașii modelului, nu doar pasul curent.
 - Fiecare model arată atribuirea (tradițional / autor cunoscut / „neverificat”).
+- Progres: contor „Realizate: N din 30”, filtru Toate / De făcut / Realizate, buton „Alege-mi un model” (alege la întâmplare dintre cele nerealizate din filtrul curent), buton „Resetează filtrele” când nu există rezultate.
+- Vizualizatorul își amintește ultimul pas văzut la fiecare model („Reluat de la pasul N”); Home / End sar la primul / ultimul pas; tasta `/` mută focusul pe căutare.
 - Respectă `prefers-reduced-motion`; layout adaptat la mobil (testat la 390 px, fără scroll orizontal).
 
 ## Manual de utilizare
@@ -35,8 +37,8 @@ Verificate în cod și în browser (Chromium, Playwright):
 
 ## Confidențialitate și rețea
 
-- Stocare locală: se folosește `localStorage`, cheia `origami-done`, doar pentru lista modelelor marcate „realizat”. Dacă browserul blochează stocarea, aplicația funcționează fără ea.
-- Rețea: nu există niciun apel extern (nu am găsit în cod `fetch`, scripturi, fonturi sau imagini de pe alte gazde). Pagina include și o politică Content-Security-Policy care interzice conexiunile și resursele externe.
+- Stocare locală: se folosește `localStorage`, cheile `origami-done` (modelele marcate „realizat”) și `origami-step` (ultimul pas văzut per model). Dacă browserul blochează stocarea, aplicația funcționează fără ea.
+- Rețea: nu există niciun apel extern (nu am găsit în cod `fetch`, scripturi, fonturi sau imagini de pe alte gazde). Pagina include și o politică Content-Security-Policy (script pe hash, fără `'unsafe-inline'` pentru scripturi) care interzice conexiunile și resursele externe.
 - Permisiuni ale browserului: nu cere niciuna. Nu conține telemetrie sau cont.
 
 ## Limite și avertismente
@@ -45,7 +47,7 @@ Verificate în cod și în browser (Chromium, Playwright):
 - „Tradițional / popular” înseamnă model de circulație populară. Atribuirea este afișată în vizualizator: unde autorul este cunoscut (de exemplu modulul Sonobe — Mitsunobu Sonobe; „Toshie’s Jewel” — Toshie Takahama) este numit, iar unde proveniența nu a fost verificată, scrie explicit asta.
 - Unele modele (evantai, steluță cu 6 colțuri) folosesc hârtie care nu este un pătrat simplu; nu respectă regula clasică „un singur pătrat, fără tăieturi”. „Inel din bancnotă”: exersează pe hârtie și verifică legislația locală înainte de a plia bani reali.
 - Diagramele folosesc linia punctată pentru „munte”; în cărți se folosește de obicei linia punct–linie.
-- Tema este deschisă la culoare (fără mod întunecat).
+- Tema urmează `prefers-color-scheme` (mod întunecat automat).
 
 ## Rulare locală / offline
 
@@ -54,6 +56,7 @@ Descarcă `index.html` și deschide-l în browser; nu necesită internet.
 ## Istoric / Changelog
 
 ### 11 octombrie 2026
+- Nou: contor de progres, filtru de stare, „Alege-mi un model”, reluare de la ultimul pas, Home/End, scurtătura `/`, resetare filtre; CSP cu hash pentru script. README: corectat că există mod întunecat. Captura de ecran actualizată.
 - Accesibilitate: titlurile cardurilor (simboluri, tehnici, modele, sfaturi) sunt acum `h3` sub secțiunile `h2` (axe: 0 violări).
 - Cocor: pasul 6 (plierea-petală) a fost împărțit în două diagrame (ridicarea cu cutele de referință și rezultatul „petală”), deci modelul are acum 14 pași; Pălăria: plierea borului este detaliată separat pe fața și pe spatele hârtiei (5 pași).
 - Diagramele rămân schematice; modelele foarte scurte (de exemplu Peștele, 4 pași) nu au fost extinse.
