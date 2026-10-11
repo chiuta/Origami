@@ -23,6 +23,8 @@ Verificate în cod și în browser (Chromium, Playwright):
 - Fiecare model arată atribuirea (tradițional / autor cunoscut / „neverificat”).
 - Progres: contor „Realizate: N din 30”, filtru Toate / De făcut / Realizate, buton „Alege-mi un model” (alege la întâmplare dintre cele nerealizate din filtrul curent), buton „Resetează filtrele” când nu există rezultate.
 - Vizualizatorul își amintește ultimul pas văzut la fiecare model („Reluat de la pasul N”); Home / End sar la primul / ultimul pas; tasta `/` mută focusul pe căutare.
+- „Exportă progresul” / „Importă progresul”: copie de siguranță în fișierul `origami-progres.json` (modelele realizate și ultimul pas văzut); la import se acceptă doar fișiere ORIGAMI valide, se ignoră modelele necunoscute și nu se șterge progresul existent.
+- La modelele de nivel avansat, vizualizatorul afișează o notă: diagramele sunt schematice, textul pasului are prioritate, se recomandă hârtie de probă și compararea cu o diagramă publicată.
 - Respectă `prefers-reduced-motion`; layout adaptat la mobil (testat la 390 px, fără scroll orizontal).
 
 ## Manual de utilizare
@@ -54,6 +56,10 @@ Verificate în cod și în browser (Chromium, Playwright):
 Descarcă `index.html` și deschide-l în browser; nu necesită internet.
 
 ## Istoric / Changelog
+
+### 11 octombrie 2026 (a treia intrare)
+- Export/import al progresului (JSON), testat: export, ștergere locală, import, fișier invalid.
+- Notă în vizualizator pentru modelele avansate, despre caracterul schematic al diagramelor.
 
 ### 11 octombrie 2026
 - Nou: contor de progres, filtru de stare, „Alege-mi un model”, reluare de la ultimul pas, Home/End, scurtătura `/`, resetare filtre; CSP cu hash pentru script. README: corectat că există mod întunecat. Captura de ecran actualizată.

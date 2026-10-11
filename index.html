@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ORIGAMI — Arta plierii hârtiei</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src  'sha256-O7KuOjmHvTVvpaLvpPZOCZIWe9tMosImsZKHGqv5ZfU='; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-ZBBwkD3UwjuKm1cobw0W1T/Og8LQ2+puUBz7d+1hEPQ='; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="description" content="Ghid offline de origami: simboluri de pliere, baze fundamentale și modele pas cu pas, de la începător la avansat.">
 <meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
@@ -445,6 +445,8 @@ footer a{ color:var(--ink-soft); }
 .visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
 .skip-link{ position:absolute; left:-999px; top:0; background:var(--indigo-deep); color:var(--paper); padding:10px 14px; z-index:200; }
 .skip-link:focus{ left:10px; top:10px; }
+.viewer-note{ font-size:.8rem; line-height:1.45; margin:.5em 0 0; padding:.45em .7em; border-left:3px solid var(--paper-edge); color:var(--ink-soft); }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -587,7 +589,7 @@ footer a{ color:var(--ink-soft); }
         <button type="button" class="chip" data-status="done" aria-pressed="false">Realizate</button>
       </div>
     </div>
-    <p class="catalog-status" id="catalog-status" aria-live="polite"><span id="progress-text"></span> <button type="button" class="btn ghost small" id="random-model">Alege-mi un model</button> <span class="kbd-hint">Scurtătură: <kbd>/</kbd> caută</span></p>
+    <p class="catalog-status" id="catalog-status" aria-live="polite"><span id="progress-text"></span> <button type="button" class="btn ghost small" id="random-model">Alege-mi un model</button> <button type="button" class="btn ghost small" id="progress-export">Exportă progresul</button> <button type="button" class="btn ghost small" id="progress-import">Importă progresul</button><input type="file" id="progress-file" accept="application/json,.json" hidden><span class="sr-only" id="progress-msg" role="status"></span> <span class="kbd-hint">Scurtătură: <kbd>/</kbd> caută</span></p>
     <div class="model-grid" id="model-grid"></div>
     <p class="empty-note" id="model-empty" hidden>Niciun model nu corespunde căutării. <button type="button" class="btn ghost small" id="reset-filters">Resetează filtrele</button></p>
   </div>
@@ -632,6 +634,7 @@ footer a{ color:var(--ink-soft); }
         <h3 id="viewer-title"></h3>
         <div class="meta" id="viewer-meta"></div>
         <div class="viewer-prov" id="viewer-prov"></div>
+        <p class="viewer-note" id="viewer-note" hidden></p>
       </div>
       <button type="button" class="icon-btn" id="viewer-print" title="Printează" aria-label="Printează instrucțiunile">⎙</button>
       <button type="button" class="icon-btn" id="viewer-close" title="Închide" aria-label="Închide">✕</button>
@@ -1859,6 +1862,11 @@ function openViewer(id){
   document.getElementById('viewer-meta').textContent =
     LEVEL_LABELS[viewerState.model.level]+' · '+viewerState.model.time+' · '+viewerState.model.paper;
   document.getElementById('viewer-prov').textContent = 'Atribuire: ' + (PROV[viewerState.model.id] || NOPROV);
+  var vnote = document.getElementById('viewer-note');
+  vnote.hidden = viewerState.model.level !== 'avansat';
+  vnote.textContent = viewerState.model.level === 'avansat'
+    ? 'Model avansat: diagramele sunt schematice și pot omite detalii. Urmărește mereu textul fiecărui pas, încearcă întâi pe hârtie de probă și, dacă te blochezi, compară cu o diagramă publicată a modelului (notația Yoshizawa–Randlett).'
+    : '';
   viewerState.opener = document.activeElement;
   updateDoneButton();
   var saved = loadSteps()[viewerState.model.id];
@@ -1962,6 +1970,46 @@ document.getElementById('reset-filters').addEventListener('click', function(){
   renderModelGrid();
   document.getElementById('model-search').focus();
 });
+/* copie de siguranță a progresului (Realizate + ultimul pas văzut), ca fișier JSON local */
+(function(){
+  var msg = document.getElementById('progress-msg');
+  function say(t){ msg.textContent = t; }
+  document.getElementById('progress-export').addEventListener('click', function(){
+    var doneOnly = {}; Object.keys(doneMap).forEach(function(k){ if(doneMap[k]) doneOnly[k] = true; });
+    var data = { app:'origami', version:1, exportedAt:new Date().toISOString(), done:doneOnly, step:loadSteps() };
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+    a.download = 'origami-progres.json'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    say('Progres exportat: ' + Object.keys(doneOnly).length + ' modele realizate.');
+  });
+  document.getElementById('progress-import').addEventListener('click', function(){ document.getElementById('progress-file').click(); });
+  document.getElementById('progress-file').addEventListener('change', function(e){
+    var f = e.target.files[0]; e.target.value = '';
+    if(!f) return;
+    if(f.size > 1048576){ say('Fișier prea mare pentru un export de progres.'); return; }
+    var r = new FileReader();
+    r.onload = function(){
+      try{
+        var d = JSON.parse(r.result);
+        if(!d || d.app !== 'origami' || typeof d.done !== 'object' || d.done === null || Array.isArray(d.done)) throw new Error('format');
+        var ids = {}; MODELS.forEach(function(m){ ids[m.id] = m.steps.length; });
+        var added = 0;
+        Object.keys(d.done).forEach(function(k){ if(ids[k] !== undefined && d.done[k] && !doneMap[k]){ doneMap[k] = true; added++; } });
+        saveDone(doneMap);
+        var st = loadSteps();
+        if(d.step && typeof d.step === 'object' && !Array.isArray(d.step)) Object.keys(d.step).forEach(function(k){
+          var v = d.step[k]; if(ids[k] !== undefined && typeof v === 'number' && v > 0 && v < ids[k] && !(st[k] > 0)) saveStep(k, Math.floor(v));
+        });
+        renderModelGrid();
+        say('Progres importat: ' + added + ' modele noi marcate ca realizate.');
+      }catch(err){ say('Fișierul nu este un export valid de progres ORIGAMI.'); }
+    };
+    r.onerror = function(){ say('Fișierul nu a putut fi citit.'); };
+    r.readAsText(f);
+  });
+})();
+
 document.getElementById('random-model').addEventListener('click', function(){
   var pool = MODELS.filter(modelMatches).filter(function(m){ return !doneMap[m.id]; });
   if(!pool.length) pool = MODELS.filter(modelMatches);
