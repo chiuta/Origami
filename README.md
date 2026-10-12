@@ -4,7 +4,7 @@ Ghid offline de origami într-un singur fișier HTML: simboluri de pliere, tehni
 
 **Live:** https://chiuta.github.io/Origami/
 
-**Ultima actualizare:** 11 octombrie 2026
+**Versiune:** 1.0.0 · **Ultima actualizare:** 12 octombrie 2026
 
 ![Captura de ecran](screenshot.png)
 
@@ -56,6 +56,9 @@ Verificate în cod și în browser (Chromium, Playwright):
 Descarcă `index.html` și deschide-l în browser; nu necesită internet.
 
 ## Istoric / Changelog
+
+### 12 octombrie 2026 (v1.0.0)
+- 1.0.0 — 2026-10-12: versiunea și data ultimei actualizări sunt afișate în aplicație
 
 ### 11 octombrie 2026 (a treia intrare)
 - Export/import al progresului (JSON), testat: export, ștergere locală, import, fișier invalid.
