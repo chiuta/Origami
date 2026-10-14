@@ -4,7 +4,7 @@ Ghid offline de origami într-un singur fișier HTML: simboluri de pliere, tehni
 
 **Live:** https://chiuta.github.io/Origami/
 
-**Versiune:** 1.0.0 · **Ultima actualizare:** 12 octombrie 2026
+**Versiune:** 1.1.0 · **Ultima actualizare:** 14 octombrie 2026
 
 ![Captura de ecran](screenshot.png)
 
@@ -27,6 +27,17 @@ Verificate în cod și în browser (Chromium, Playwright):
 - La modelele de nivel avansat, vizualizatorul afișează o notă: diagramele sunt schematice, textul pasului are prioritate, se recomandă hârtie de probă și compararea cu o diagramă publicată.
 - Respectă `prefers-reduced-motion`; layout adaptat la mobil (testat la 390 px, fără scroll orizontal).
 
+## Funcții noi (v1.1.0, 14 octombrie 2026)
+
+### Exersare cu repetiție spațiată
+Secțiune nouă „Exersare” (meniu → Exersare): cartonașe cu **față/verso** pentru **simbolurile de pliere, tehnicile compuse, bazele și glosarul** (față = „Simbol de pliere: …”, „Tehnică: …”, „Bază: …”, „Glosar: …”; verso = descrierea din aplicație). Te autoevaluezi cu „Din nou / Greu / Bine / Ușor” (tastele 1–4; Spațiu arată răspunsul); algoritmul este **SM-2** (Woźniak, 1990), maximum 20 de cartonașe noi pe zi, cu statistici (scadente, noi, mature, reținere) și export al pachetului în `.fff.json`. Folosește modulul `srs` din fff-kit; cartonașele sunt create din textele aplicației, nu din surse externe.
+- **Stocare:** progresul se păstrează în `localStorage` (cheile `fff.origami.srs.origami` și `fff.origami.srs.__decks`), doar în acest browser; poate fi șters din „Transparență” → „Șterge”.
+- **Limite:** cartonașele testează *vocabularul și notația*, nu priceperea de a plia; modelele (cele 30) nu sunt cartonașe. Dacă fișierul este folosit fără kit (după `fff-kit/build.mjs remove`), secțiunea afișează un mesaj și restul ghidului funcționează normal.
+
+### Transparență și copie de siguranță (fff-kit)
+
+Un clic (sau Enter) pe versiunea afișată (`v 1.1.0 · 2026-10-14`) deschide fereastra „Transparență”: gazdele de rețea declarate (0 cereri externe), cheile de stocare locală cu dimensiuni, API-urile folosite, mărimea și SHA-256 al fișierului (cu verificator pentru un fișier descărcat) și **copia de siguranță** a datelor aplicației într-un fișier `.fff.json` (opțional criptat cu parolă, AES-GCM 256 / PBKDF2; parola nu poate fi recuperată), import cu confirmare și ștergerea datelor aplicației. Kitul (`fff-kit`, module: core, label, bundle, srs) este lipit în `index.html`, nu face cereri de rețea și nu schimbă datele existente; fără el aplicația funcționează la fel. Copia de siguranță include și progresul de exersare și cheile existente `origami-done` / `origami-step`. Textele kitului sunt în 8 limbi (ro, en, fr, it, es, pt, hu, de); **traducerile fr/it/es/pt/hu/de sunt automate și neverificate nativ**. Interfața aplicației însăși rămâne în română.
+
 ## Manual de utilizare
 
 1. Deschide pagina și alege o secțiune din meniul de sus (pe mobil, butonul ☰).
@@ -39,6 +50,7 @@ Verificate în cod și în browser (Chromium, Playwright):
 
 ## Confidențialitate și rețea
 
+- Stocare locală (adăugire v1.1.0): exersarea cu repetiție spațiată păstrează progresul în cheile `fff.origami.srs.origami` și `fff.origami.srs.__decks`.
 - Stocare locală: se folosește `localStorage`, cheile `origami-done` (modelele marcate „realizat”) și `origami-step` (ultimul pas văzut per model). Dacă browserul blochează stocarea, aplicația funcționează fără ea.
 - Rețea: nu există niciun apel extern (nu am găsit în cod `fetch`, scripturi, fonturi sau imagini de pe alte gazde). Pagina include și o politică Content-Security-Policy (script pe hash, fără `'unsafe-inline'` pentru scripturi) care interzice conexiunile și resursele externe.
 - Permisiuni ale browserului: nu cere niciuna. Nu conține telemetrie sau cont.
@@ -56,6 +68,9 @@ Verificate în cod și în browser (Chromium, Playwright):
 Descarcă `index.html` și deschide-l în browser; nu necesită internet.
 
 ## Istoric / Changelog
+
+### 14 octombrie 2026 (v1.1.0)
+- Secțiunea „Exersare” cu repetiție spațiată (fff-kit `srs`); kit fff-kit (Transparență + copie de siguranță). Catalogul de modele și diagramele nu s-au schimbat.
 
 ### 12 octombrie 2026 (v1.0.0)
 - 1.0.0 — 2026-10-12: versiunea și data ultimei actualizări sunt afișate în aplicație

@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "slug": "origami",
+  "name": "ORIGAMI — Arta plierii hârtiei",
+  "version": "1.1.0",
+  "updated": "2026-10-14",
+  "description": "Ghid offline de origami: simboluri de pliere, baze fundamentale și modele pas cu pas, de la începător la avansat.",
+  "egress": [],
+  "permissions": [
+    "serviceWorker",
+    "localStorage"
+  ],
+  "storageKeys": [
+    "origami-done",
+    "origami-step"
+  ],
+  "sizeBytes": 261376,
+  "sha256": "b53127b3d79c98648c1da3c1d39c540a73c562caf80f9afe1dc293f3c5b6e303",
+  "csp": {
+    "present": true,
+    "directives": {
+      "default-src": "'none'",
+      "script-src": "sha256×3",
+      "style-src": "'unsafe-inline'",
+      "img-src": "'self' data:",
+      "base-uri": "'none'",
+      "form-action": "'none'",
+      "manifest-src": "'self'",
+      "worker-src": "'self'"
+    },
+    "scriptInline": "hash",
+    "connect": "'none'"
+  },
+  "features": {
+    "export": true,
+    "import": true,
+    "i18n": [],
+    "pwa": {
+      "manifest": true,
+      "serviceWorker": true
+    },
+    "modules": [
+      "core",
+      "label",
+      "bundle",
+      "srs"
+    ]
+  },
+  "kit": {
+    "version": "1.0.0",
+    "modules": [
+      "core",
+      "label",
+      "bundle",
+      "srs"
+    ]
+  },
+  "selfSerializing": false
+}
