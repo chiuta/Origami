@@ -14,8 +14,8 @@
     "origami-done",
     "origami-step"
   ],
-  "sizeBytes": 262977,
-  "sha256": "f47fc905f6ed48f10fafc9e8cc30e138ce942ddab68a0de6c64c20b3be7f749c",
+  "sizeBytes": 263613,
+  "sha256": "0532d22f6b298f8d44570431d539eceffc4bffe67e2076c04290c54156bd7cd2",
   "csp": {
     "present": true,
     "directives": {
@@ -47,7 +47,7 @@
     ]
   },
   "kit": {
-    "version": "1.0.0",
+    "version": "1.1.1",
     "modules": [
       "core",
       "label",
