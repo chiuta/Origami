@@ -1,98 +1,100 @@
-# ORIGAMI — Arta plierii hârtiei
+# ORIGAMI — The Art of Paper Folding
 
-Ghid offline de origami într-un singur fișier HTML: simboluri de pliere, tehnici, baze fundamentale și 30 de modele pas cu pas.
+**English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
+
+**Version:** 1.1.0 · **Last updated:** 2026-10-14
+
+Offline origami guide in a single HTML file: folding symbols, techniques, fundamental bases and 30 step-by-step models.
 
 **Live:** https://chiuta.github.io/Origami/
 
-**Versiune:** 1.1.0 · **Ultima actualizare:** 14 octombrie 2026
+![Screenshot](screenshot.png)
 
-![Captura de ecran](screenshot.png)
+## What it is
 
-## Ce este
+ORIGAMI is an interactive guide in Romanian: a short historical introduction, the symbols of the Yoshizawa–Randlett notation, 5 compound techniques, 8 bases and a catalogue of 30 models with schematic SVG diagrams and step-by-step descriptions. It opens from a single `index.html` file, with no server and no account.
 
-ORIGAMI este un ghid interactiv în limba română: o introducere istorică scurtă, simbolurile notației Yoshizawa–Randlett, 5 tehnici compuse, 8 baze și un catalog de 30 de modele cu diagrame schematice SVG și descrieri pe pași. Se deschide dintr-un singur fișier `index.html`, fără server și fără cont.
+## Features
 
-## Funcții
+Verified in the code and in the browser (Chromium, Playwright):
+- Catalogue of 30 models, filterable by level (beginner / intermediate / advanced) and type (traditional-popular / action / modular), with diacritic-free search (for example "palarie" finds "Pălărie").
+- Step viewer (SVG diagram + text), with Back / Next buttons, a progress bar and navigation with the left/right arrows; Esc closes it.
+- The dialog traps focus (Tab / Shift+Tab), blocks the rest of the page while it is open and returns focus to the model's card on closing.
+- "Mark as done" (saved locally, see below).
+- Printing: from the viewer all the steps of the model are printed, not just the current step.
+- Each model shows its attribution (traditional / known author / "unverified").
+- Progress: "Done: N of 30" counter, All / To do / Done filter, "Pick a model for me" button (picks at random among the not-yet-done ones in the current filter), "Reset filters" button when there are no results.
+- The viewer remembers the last step seen for each model ("Resumed from step N"); Home / End jump to the first / last step; the `/` key moves focus to search.
+- "Export progress" / "Import progress": backup in the file `origami-progres.json` (the models done and the last step seen); on import only valid ORIGAMI files are accepted, unknown models are ignored and existing progress is not deleted.
+- For advanced-level models, the viewer displays a note: the diagrams are schematic, the step text takes priority, practice paper is recommended and comparison with a published diagram.
+- Respects `prefers-reduced-motion`; mobile-friendly layout (tested at 390 px, no horizontal scroll).
 
-Verificate în cod și în browser (Chromium, Playwright):
-- Catalog de 30 de modele, filtrabil după nivel (începător / intermediar / avansat) și tip (tradițional-popular / acțiune / modular), cu căutare fără diacritice (de exemplu „palarie” găsește „Pălărie”).
-- Vizualizator pe pași (diagramă SVG + text), cu butoane Înapoi / Înainte, bară de progres și navigare cu săgețile stânga/dreapta; Esc închide.
-- Dialogul reține focusul (Tab / Shift+Tab), blochează restul paginii cât e deschis și readuce focusul pe cardul modelului la închidere.
-- „Marchează ca realizat” (salvat local, vezi mai jos).
-- Printare: din vizualizator se tipăresc toți pașii modelului, nu doar pasul curent.
-- Fiecare model arată atribuirea (tradițional / autor cunoscut / „neverificat”).
-- Progres: contor „Realizate: N din 30”, filtru Toate / De făcut / Realizate, buton „Alege-mi un model” (alege la întâmplare dintre cele nerealizate din filtrul curent), buton „Resetează filtrele” când nu există rezultate.
-- Vizualizatorul își amintește ultimul pas văzut la fiecare model („Reluat de la pasul N”); Home / End sar la primul / ultimul pas; tasta `/` mută focusul pe căutare.
-- „Exportă progresul” / „Importă progresul”: copie de siguranță în fișierul `origami-progres.json` (modelele realizate și ultimul pas văzut); la import se acceptă doar fișiere ORIGAMI valide, se ignoră modelele necunoscute și nu se șterge progresul existent.
-- La modelele de nivel avansat, vizualizatorul afișează o notă: diagramele sunt schematice, textul pasului are prioritate, se recomandă hârtie de probă și compararea cu o diagramă publicată.
-- Respectă `prefers-reduced-motion`; layout adaptat la mobil (testat la 390 px, fără scroll orizontal).
+## New features (v1.1.0, 14 October 2026)
 
-## Funcții noi (v1.1.0, 14 octombrie 2026)
+### Spaced-repetition practice
+New "Practice" section (menu → Practice): **front/back** flashcards for the **folding symbols, compound techniques, bases and glossary** (front = "Folding symbol: …", "Technique: …", "Base: …", "Glossary: …"; back = the description from the app). You self-assess with "Again / Hard / Good / Easy" (keys 1–4; Space shows the answer); the algorithm is **SM-2** (Woźniak, 1990), at most 20 new cards per day, with statistics (due, new, mature, retention) and export of the deck to `.fff.json`. It uses the `srs` module of fff-kit; the cards are created from the app's texts, not from external sources.
+- **Storage:** progress is kept in `localStorage` (keys `fff.origami.srs.origami` and `fff.origami.srs.__decks`), only in this browser; it can be deleted from "Transparency" → "Delete".
+- **Limits:** the cards test *vocabulary and notation*, not folding skill; the models (the 30) are not cards. If the file is used without the kit (after `fff-kit/build.mjs remove`), the section shows a message and the rest of the guide works normally.
 
-### Exersare cu repetiție spațiată
-Secțiune nouă „Exersare” (meniu → Exersare): cartonașe cu **față/verso** pentru **simbolurile de pliere, tehnicile compuse, bazele și glosarul** (față = „Simbol de pliere: …”, „Tehnică: …”, „Bază: …”, „Glosar: …”; verso = descrierea din aplicație). Te autoevaluezi cu „Din nou / Greu / Bine / Ușor” (tastele 1–4; Spațiu arată răspunsul); algoritmul este **SM-2** (Woźniak, 1990), maximum 20 de cartonașe noi pe zi, cu statistici (scadente, noi, mature, reținere) și export al pachetului în `.fff.json`. Folosește modulul `srs` din fff-kit; cartonașele sunt create din textele aplicației, nu din surse externe.
-- **Stocare:** progresul se păstrează în `localStorage` (cheile `fff.origami.srs.origami` și `fff.origami.srs.__decks`), doar în acest browser; poate fi șters din „Transparență” → „Șterge”.
-- **Limite:** cartonașele testează *vocabularul și notația*, nu priceperea de a plia; modelele (cele 30) nu sunt cartonașe. Dacă fișierul este folosit fără kit (după `fff-kit/build.mjs remove`), secțiunea afișează un mesaj și restul ghidului funcționează normal.
+### Transparency and backup (fff-kit)
 
-### Transparență și copie de siguranță (fff-kit)
+A click (or Enter) on the displayed version (`v 1.1.0 · 2026-10-14`) opens the "Transparency" window: the declared network hosts (0 external requests), the local storage keys with sizes, the APIs used, the size and SHA-256 of the file (with a checker for a downloaded file) and the **backup** of the app's data to a `.fff.json` file (optionally encrypted with a password, AES-GCM 256 / PBKDF2; the password cannot be recovered), import with confirmation and deletion of the app's data. The kit (`fff-kit`, modules: core, label, bundle, srs) is pasted into `index.html`, makes no network requests and does not change existing data; without it the app works the same. The backup also includes the practice progress and the existing keys `origami-done` / `origami-step`. The kit's texts are in 8 languages (ro, en, fr, it, es, pt, hu, de); **the fr/it/es/pt/hu/de translations are automatic and not verified by native speakers**. The app's own interface remains in Romanian.
 
-Un clic (sau Enter) pe versiunea afișată (`v 1.1.0 · 2026-10-14`) deschide fereastra „Transparență”: gazdele de rețea declarate (0 cereri externe), cheile de stocare locală cu dimensiuni, API-urile folosite, mărimea și SHA-256 al fișierului (cu verificator pentru un fișier descărcat) și **copia de siguranță** a datelor aplicației într-un fișier `.fff.json` (opțional criptat cu parolă, AES-GCM 256 / PBKDF2; parola nu poate fi recuperată), import cu confirmare și ștergerea datelor aplicației. Kitul (`fff-kit`, module: core, label, bundle, srs) este lipit în `index.html`, nu face cereri de rețea și nu schimbă datele existente; fără el aplicația funcționează la fel. Copia de siguranță include și progresul de exersare și cheile existente `origami-done` / `origami-step`. Textele kitului sunt în 8 limbi (ro, en, fr, it, es, pt, hu, de); **traducerile fr/it/es/pt/hu/de sunt automate și neverificate nativ**. Interfața aplicației însăși rămâne în română.
+## User guide
 
-## Manual de utilizare
+1. Open the page and choose a section from the top menu (on mobile, the ☰ button).
+2. Read "Folding symbols" and "Compound techniques" before the first model.
+3. In "Bases" scroll each strip of steps horizontally (with a mouse, a finger or the keyboard, after giving it focus).
+4. In "Models" search by name or filter by level and type.
+5. Press a model; follow the diagram and the text and move through the steps with "Next →" or with the right arrow.
+6. At the end press "Mark as done"; the card gets the "Done ✓" tick.
+7. For a paper copy, press ⎙ in the viewer.
 
-1. Deschide pagina și alege o secțiune din meniul de sus (pe mobil, butonul ☰).
-2. Citește „Simbolurile plierii” și „Tehnici compuse” înainte de primul model.
-3. La „Baze” derulează orizontal fiecare bandă de pași (cu mouse, deget sau tastatura, după ce îi dai focus).
-4. La „Modele” caută după nume sau filtrează după nivel și tip.
-5. Apasă pe un model; urmărește diagrama și textul și treci prin pași cu „Înainte →” sau cu săgeata dreapta.
-6. La final apasă „Marchează ca realizat”; cardul primește bifa „Realizat ✓”.
-7. Pentru o copie pe hârtie, apasă ⎙ din vizualizator.
+## Privacy and network
 
-## Confidențialitate și rețea
+- Local storage (added in v1.1.0): spaced-repetition practice keeps its progress in the keys `fff.origami.srs.origami` and `fff.origami.srs.__decks`.
+- Local storage: `localStorage` is used, with the keys `origami-done` (the models marked "done") and `origami-step` (the last step seen per model). If the browser blocks storage, the app works without it.
+- Network: there are no external calls (I found no `fetch`, scripts, fonts or images from other hosts in the code). The page also includes a Content-Security-Policy (script by hash, no `'unsafe-inline'` for scripts) that forbids external connections and resources.
+- Browser permissions: it requests none. It contains no telemetry or account.
 
-- Stocare locală (adăugire v1.1.0): exersarea cu repetiție spațiată păstrează progresul în cheile `fff.origami.srs.origami` și `fff.origami.srs.__decks`.
-- Stocare locală: se folosește `localStorage`, cheile `origami-done` (modelele marcate „realizat”) și `origami-step` (ultimul pas văzut per model). Dacă browserul blochează stocarea, aplicația funcționează fără ea.
-- Rețea: nu există niciun apel extern (nu am găsit în cod `fetch`, scripturi, fonturi sau imagini de pe alte gazde). Pagina include și o politică Content-Security-Policy (script pe hash, fără `'unsafe-inline'` pentru scripturi) care interzice conexiunile și resursele externe.
-- Permisiuni ale browserului: nu cere niciuna. Nu conține telemetrie sau cont.
+## Limits and warnings
 
-## Limite și avertismente
+- The instructions are didactic reconstructions, and the diagrams are schematic, not scale drawings. I could not physically verify each of the 30 models on paper; some steps are approximate (angles, proportions) and may differ from the versions in books. For the advanced models, compare with an origami book.
+- "Traditional / popular" means a model in popular circulation. The attribution is shown in the viewer: where the author is known (for example the Sonobe module — Mitsunobu Sonobe; "Toshie's Jewel" — Toshie Takahama) he or she is named, and where the provenance has not been verified, it says so explicitly.
+- Some models (fan, 6-point star) use paper that is not a simple square; they do not follow the classic "a single square, no cuts" rule. "Banknote ring": practise on paper and check local legislation before folding real money.
+- The diagrams use the dotted line for "mountain"; in books the dash–dot line is usually used.
+- The theme follows `prefers-color-scheme` (automatic dark mode).
 
-- Instrucțiunile sunt reconstituiri didactice, iar diagramele sunt schematice, nu desene la scară. Nu am putut verifica fizic, pe hârtie, fiecare dintre cei 30 de modele; unele pași sunt aproximativi (unghiuri, proporții) și pot diferi de variantele din cărți. Pentru modelele avansate compară cu o carte de origami.
-- „Tradițional / popular” înseamnă model de circulație populară. Atribuirea este afișată în vizualizator: unde autorul este cunoscut (de exemplu modulul Sonobe — Mitsunobu Sonobe; „Toshie’s Jewel” — Toshie Takahama) este numit, iar unde proveniența nu a fost verificată, scrie explicit asta.
-- Unele modele (evantai, steluță cu 6 colțuri) folosesc hârtie care nu este un pătrat simplu; nu respectă regula clasică „un singur pătrat, fără tăieturi”. „Inel din bancnotă”: exersează pe hârtie și verifică legislația locală înainte de a plia bani reali.
-- Diagramele folosesc linia punctată pentru „munte”; în cărți se folosește de obicei linia punct–linie.
-- Tema urmează `prefers-color-scheme` (mod întunecat automat).
+## Running locally / offline
 
-## Rulare locală / offline
+Download `index.html` and open it in a browser; it does not require internet.
 
-Descarcă `index.html` și deschide-l în browser; nu necesită internet.
+## History / Changelog
 
-## Istoric / Changelog
+### 14 October 2026 (v1.1.0)
+- "Practice" section with spaced repetition (fff-kit `srs`); fff-kit (Transparency + backup). The catalogue of models and the diagrams did not change.
 
-### 14 octombrie 2026 (v1.1.0)
-- Secțiunea „Exersare” cu repetiție spațiată (fff-kit `srs`); kit fff-kit (Transparență + copie de siguranță). Catalogul de modele și diagramele nu s-au schimbat.
+### 12 October 2026 (v1.0.0)
+- 1.0.0 — 2026-10-12: the version and the date of the last update are shown in the app
 
-### 12 octombrie 2026 (v1.0.0)
-- 1.0.0 — 2026-10-12: versiunea și data ultimei actualizări sunt afișate în aplicație
+### 11 October 2026 (third entry)
+- Export/import of progress (JSON), tested: export, local deletion, import, invalid file.
+- Note in the viewer for advanced models, about the schematic nature of the diagrams.
 
-### 11 octombrie 2026 (a treia intrare)
-- Export/import al progresului (JSON), testat: export, ștergere locală, import, fișier invalid.
-- Notă în vizualizator pentru modelele avansate, despre caracterul schematic al diagramelor.
+### 11 October 2026
+- New: progress counter, status filter, "Pick a model for me", resume from the last step, Home/End, the `/` shortcut, filter reset; CSP with a hash for the script. README: corrected that dark mode exists. Screenshot updated.
+- Accessibility: the card titles (symbols, techniques, models, tips) are now `h3` under the `h2` sections (axe: 0 violations).
+- Crane: step 6 (petal fold) was split into two diagrams (the lift with the reference creases and the "petal" result), so the model now has 14 steps; Hat: the folding of the brim is detailed separately on the front and back of the paper (5 steps).
+- The diagrams remain schematic; very short models (for example the Fish, 4 steps) were not extended.
 
-### 11 octombrie 2026
-- Nou: contor de progres, filtru de stare, „Alege-mi un model”, reluare de la ultimul pas, Home/End, scurtătura `/`, resetare filtre; CSP cu hash pentru script. README: corectat că există mod întunecat. Captura de ecran actualizată.
-- Accesibilitate: titlurile cardurilor (simboluri, tehnici, modele, sfaturi) sunt acum `h3` sub secțiunile `h2` (axe: 0 violări).
-- Cocor: pasul 6 (plierea-petală) a fost împărțit în două diagrame (ridicarea cu cutele de referință și rezultatul „petală”), deci modelul are acum 14 pași; Pălăria: plierea borului este detaliată separat pe fața și pe spatele hârtiei (5 pași).
-- Diagramele rămân schematice; modelele foarte scurte (de exemplu Peștele, 4 pași) nu au fost extinse.
+## License
 
-## Licență
+MIT — see the LICENSE file.
 
-MIT — vezi fișierul LICENSE.
-
-## Autor
+## Author
 
 Alexio — Alexandru-Ionuț Chiuță, contact: alexio@trom.tf
 
-## English summary
+## Summary
 
 ORIGAMI is a single-file, offline Romanian-language origami guide: notation symbols, 5 compound techniques, 8 bases and 30 step-by-step models with schematic SVG diagrams. It makes no network requests, has no telemetry, and stores only a "done" checklist in localStorage. The step viewer is keyboard-accessible (focus trap, Esc, arrow keys) and prints all steps of a model. Instructions are didactic reconstructions and have not all been verified on paper; model attribution is shown in-app, with "unverified" where provenance could not be confirmed.
