@@ -97,6 +97,6 @@ MIT — vezi fișierul LICENSE.
 
 Alexio — Alexandru-Ionuț Chiuță, contact: alexio@trom.tf
 
-## English summary
+## Rezumat
 
-ORIGAMI is a single-file, offline Romanian-language origami guide: notation symbols, 5 compound techniques, 8 bases and 30 step-by-step models with schematic SVG diagrams. It makes no network requests, has no telemetry, and stores only a "done" checklist in localStorage. The step viewer is keyboard-accessible (focus trap, Esc, arrow keys) and prints all steps of a model. Instructions are didactic reconstructions and have not all been verified on paper; model attribution is shown in-app, with "unverified" where provenance could not be confirmed.
+ORIGAMI este un ghid de origami offline într-un singur fișier, în limba română: simboluri de notație, 5 tehnici compuse, 8 baze și 30 de modele pas cu pas cu diagrame schematice SVG. Nu face cereri de rețea, nu are telemetrie și stochează în localStorage doar o listă de verificare „făcut”. Vizualizatorul de pași este accesibil cu tastatura (capcană de focus, Esc, taste săgeți) și tipărește toți pașii unui model. Instrucțiunile sunt reconstrucții didactice și nu toate au fost verificate pe hârtie; atribuirea modelelor este afișată în aplicație, cu mențiunea „neverificat” acolo unde proveniența nu a putut fi confirmată.
