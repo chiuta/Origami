@@ -10,7 +10,7 @@ Guida all'origami offline in un unico file HTML: simboli di piegatura, tecniche,
 
 **Online:** https://chiuta.github.io/Origami/
 
-![Schermata](screenshot.png)
+![Schermata](screenshot.it.png)
 
 ## Che cos'è
 

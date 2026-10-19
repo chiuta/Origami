@@ -10,7 +10,7 @@ Guía de papiroflexia sin conexión en un único archivo HTML: símbolos de pleg
 
 **En línea:** https://chiuta.github.io/Origami/
 
-![Captura de pantalla](screenshot.png)
+![Captura de pantalla](screenshot.es.png)
 
 ## Qué es
 

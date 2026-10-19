@@ -10,7 +10,7 @@ Guide d'origami hors ligne dans un seul fichier HTML : symboles de pliage, techn
 
 **En ligne :** https://chiuta.github.io/Origami/
 
-![Capture d'écran](screenshot.png)
+![Capture d'écran](screenshot.fr.png)
 
 ## De quoi s'agit-il
 

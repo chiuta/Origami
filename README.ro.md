@@ -10,7 +10,7 @@ Ghid offline de origami într-un singur fișier HTML: simboluri de pliere, tehni
 
 **Live:** https://chiuta.github.io/Origami/
 
-![Captura de ecran](screenshot.png)
+![Captura de ecran](screenshot.ro.png)
 
 ## Ce este
 

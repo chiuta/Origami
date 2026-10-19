@@ -10,7 +10,7 @@ Offline-Origami-Anleitung in einer einzigen HTML-Datei: Faltsymbole, Techniken, 
 
 **Online:** https://chiuta.github.io/Origami/
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.de.png)
 
 ## Was es ist
 

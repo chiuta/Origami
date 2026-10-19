@@ -10,7 +10,7 @@ Offline origami guide in a single HTML file: folding symbols, techniques, fundam
 
 **Live:** https://chiuta.github.io/Origami/
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.en.png)
 
 ## What it is
 

@@ -10,7 +10,7 @@ Guia de origami offline num único ficheiro HTML: símbolos de dobragem, técnic
 
 **Online:** https://chiuta.github.io/Origami/
 
-![Captura de ecrã](screenshot.png)
+![Captura de ecrã](screenshot.pt.png)
 
 ## O que é
 

@@ -10,7 +10,7 @@ Offline origami-útmutató egyetlen HTML-fájlban: hajtogatási jelek, techniká
 
 **Élő változat:** https://chiuta.github.io/Origami/
 
-![Képernyőkép](screenshot.png)
+![Képernyőkép](screenshot.hu.png)
 
 ## Mi ez
 
