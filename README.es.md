@@ -77,6 +77,8 @@ Descarga `index.html` y ábrelo en un navegador; no requiere internet.
 - Sección «Práctica» con repetición espaciada (fff-kit `srs`); fff-kit (Transparencia + copia de seguridad). El catálogo de modelos y los diagramas no han cambiado.
 
 ### 12 de octubre de 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22: En móvil la página ya no salta al panel de práctica al abrir (se restauran el foco y la posición de desplazamiento); texto ≥ 12 px; los diagramas ya se escalan (la tira de pasos se desplaza en horizontal).
+
 - 1.0.0 — 2026-10-12: la versión y la fecha de la última actualización se muestran en la aplicación
 
 ### 11 de octubre de 2026 (tercera entrada)

@@ -77,6 +77,8 @@ Scarica `index.html` e aprilo nel browser; non richiede internet.
 - Sezione «Esercizio» con ripetizione dilazionata (fff-kit `srs`); fff-kit (Trasparenza + copia di sicurezza). Il catalogo dei modelli e i diagrammi non sono cambiati.
 
 ### 12 ottobre 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22: Su mobile la pagina non salta più al pannello di esercizio all'apertura (focus e posizione di scorrimento ripristinati); testo ≥ 12 px; i diagrammi si adattano già (la fascia dei passi scorre in orizzontale).
+
 - 1.0.0 — 2026-10-12: la versione e la data dell'ultimo aggiornamento sono mostrate nell'app
 
 ### 11 ottobre 2026 (terza voce)

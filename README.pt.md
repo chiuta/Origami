@@ -77,6 +77,8 @@ Descarregue `index.html` e abra-o no navegador; não requer internet.
 - Secção «Treino» com repetição espaçada (fff-kit `srs`); fff-kit (Transparência + cópia de segurança). O catálogo de modelos e os diagramas não mudaram.
 
 ### 12 de outubro de 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22: No telemóvel a página já não salta para o painel de prática ao abrir (foco e posição de deslocamento restaurados); texto ≥ 12 px; os diagramas já se adaptam (a faixa de passos desloca-se na horizontal).
+
 - 1.0.0 — 2026-10-12: a versão e a data da última atualização são apresentadas na aplicação
 
 ### 11 de outubro de 2026 (terceira entrada)

@@ -77,6 +77,8 @@ Töltsd le az `index.html` fájlt, és nyisd meg böngészőben; nem igényel in
 - „Gyakorlás” szakasz elosztott ismétléssel (fff-kit `srs`); fff-kit (Átláthatóság + biztonsági mentés). A modellkatalógus és a diagramok nem változtak.
 
 ### 2026. október 12. (v1.0.0)
+- 1.2.2 — 2026-10-22: Mobilon az oldal megnyitáskor már nem ugrik a gyakorlópanelre (a fókusz és a görgetési pozíció visszaáll); szöveg ≥ 12 px; a diagramok már skálázódnak (a lépéssáv vízszintesen görgethető).
+
 - 1.0.0 — 2026-10-12: a verzió és az utolsó frissítés dátuma megjelenik az alkalmazásban
 
 ### 2026. október 11. (harmadik bejegyzés)

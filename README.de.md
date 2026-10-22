@@ -77,6 +77,8 @@ Lade `index.html` herunter und öffne sie im Browser; sie benötigt kein Interne
 - Abschnitt „Üben" mit verteilter Wiederholung (fff-kit `srs`); fff-kit (Transparenz + Sicherung). Der Modellkatalog und die Diagramme haben sich nicht geändert.
 
 ### 12. Oktober 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22: Auf dem Handy springt die Seite beim Öffnen nicht mehr zum Übungsbereich (Fokus und Scrollposition werden wiederhergestellt); Text ≥ 12 px; die Diagramme skalieren bereits (der Schrittstreifen scrollt horizontal).
+
 - 1.0.0 — 2026-10-12: Version und Datum der letzten Aktualisierung werden in der App angezeigt
 
 ### 11. Oktober 2026 (dritter Eintrag)

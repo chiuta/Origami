@@ -77,6 +77,8 @@ Download `index.html` and open it in a browser; it does not require internet.
 - "Practice" section with spaced repetition (fff-kit `srs`); fff-kit (Transparency + backup). The catalogue of models and the diagrams did not change.
 
 ### 12 October 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22: On mobile the page no longer jumps to the practice panel on load (focus and scroll position are restored); text ≥ 12 px; diagrams already scale (the strip of steps scrolls horizontally).
+
 - 1.0.0 — 2026-10-12: the version and the date of the last update are shown in the app
 
 ### 11 October 2026 (third entry)

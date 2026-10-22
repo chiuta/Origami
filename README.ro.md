@@ -77,6 +77,8 @@ Descarcă `index.html` și deschide-l în browser; nu necesită internet.
 - Secțiunea „Exersare” cu repetiție spațiată (fff-kit `srs`); kit fff-kit (Transparență + copie de siguranță). Catalogul de modele și diagramele nu s-au schimbat.
 
 ### 12 octombrie 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22: Pe mobil pagina nu mai sare la panoul de exersare la deschidere (focusul și poziția de derulare sunt restabilite); text ≥ 12 px; diagramele se scalează deja (banda de pași derulează orizontal).
+
 - 1.0.0 — 2026-10-12: versiunea și data ultimei actualizări sunt afișate în aplicație
 
 ### 11 octombrie 2026 (a treia intrare)

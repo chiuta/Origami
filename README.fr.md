@@ -77,6 +77,8 @@ Téléchargez `index.html` et ouvrez-le dans un navigateur ; il ne nécessite pa
 - Section « Entraînement » avec répétition espacée (fff-kit `srs`) ; fff-kit (Transparence + sauvegarde). Le catalogue de modèles et les diagrammes n'ont pas changé.
 
 ### 12 octobre 2026 (v1.0.0)
+- 1.2.2 — 2026-10-22 : Sur mobile, la page ne saute plus au panneau d'exercice à l'ouverture (focus et position de défilement restaurés) ; texte ≥ 12 px ; les diagrammes s'adaptent déjà (la bande d'étapes défile horizontalement).
+
 - 1.0.0 — 2026-10-12 : la version et la date de la dernière mise à jour sont affichées dans l'application
 
 ### 11 octobre 2026 (troisième entrée)
