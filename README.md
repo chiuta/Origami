@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.2.3 · **Last updated:** 2026-10-22
+**Version:** 1.2.4 · **Last updated:** 2026-10-22
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -72,6 +72,10 @@ A click (or Enter) on the displayed version (`v 1.1.0 · 2026-10-14`) opens the 
 Download `index.html` and open it in a browser; it does not require internet.
 
 ## History / Changelog
+
+### 1.2.4 — 2026-10-22
+
+fff-kit 1.1.4: touch targets and minimum text size.
 
 ### 1.2.3 — 2026-10-22
 - fff-kit 1.1.2: PBKDF2 600,000 iterations, anti-clickjacking protection
