@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versión:** 1.2.1 · **Última actualización:** 2026-10-19
+**Versión:** 1.2.3 · **Última actualización:** 2026-10-22
 
 Idiomas de la interfaz: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -72,6 +72,9 @@ Un clic (o Intro) en la versión mostrada (`v 1.1.0 · 2026-10-14`) abre la vent
 Descarga `index.html` y ábrelo en un navegador; no requiere internet.
 
 ## Historial / Changelog
+
+### 1.2.3 — 2026-10-22
+- fff-kit 1.1.2: PBKDF2 con 600.000 iteraciones, protección anti-clickjacking
 
 ### 14 de octubre de 2026 (v1.1.0)
 - Sección «Práctica» con repetición espaciada (fff-kit `srs`); fff-kit (Transparencia + copia de seguridad). El catálogo de modelos y los diagramas no han cambiado.

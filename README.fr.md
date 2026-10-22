@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · **Français** · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version :** 1.2.1 · **Dernière mise à jour :** 2026-10-19
+**Version :** 1.2.3 · **Dernière mise à jour :** 2026-10-22
 
 Langues de l'interface : **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -72,6 +72,9 @@ Un clic (ou Entrée) sur la version affichée (`v 1.1.0 · 2026-10-14`) ouvre la
 Téléchargez `index.html` et ouvrez-le dans un navigateur ; il ne nécessite pas internet.
 
 ## Historique / Changelog
+
+### 1.2.3 — 2026-10-22
+- fff-kit 1.1.2 : PBKDF2 à 600 000 itérations, protection anti-clickjacking
 
 ### 14 octobre 2026 (v1.1.0)
 - Section « Entraînement » avec répétition espacée (fff-kit `srs`) ; fff-kit (Transparence + sauvegarde). Le catalogue de modèles et les diagrammes n'ont pas changé.
