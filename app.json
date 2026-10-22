@@ -15,8 +15,8 @@
     "origami-lang",
     "origami-step"
   ],
-  "sizeBytes": 728448,
-  "sha256": "d5c38871a8b6d9681f394e8f90fc7c193a123f3dd75e37d8444479c0f32da9cf",
+  "sizeBytes": 728855,
+  "sha256": "937974ca92956dfc5bd41f6341d8b0926ea71be89bf4e9519484e42dca027fed",
   "csp": {
     "present": true,
     "directives": {
@@ -69,5 +69,11 @@
       "srs"
     ]
   },
-  "selfSerializing": false
+  "selfSerializing": false,
+  "exceptions": [
+    {
+      "rule": "i18n-parity",
+      "reason": "Fals pozitiv: româna este limba-sursă. Textele ro (simboluri, tehnici, glosar, proveniență, hârtie, baze, modele) rămân în HTML și în datele aplicației; funcțiile tx()/tm()/lc()/lcs() întorc direct sursa pentru ro, iar I18N.ro conține doar cheile de interfață. Cele șapte limbi traduse (en, fr, it, es, pt, de, hu) sunt complete între ele."
+    }
+  ]
 }
