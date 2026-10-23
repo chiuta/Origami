@@ -13,7 +13,9 @@
   "storageKeys": [
     "origami-done",
     "origami-lang",
-    "origami-step"
+    "origami-step",
+    "origami.srs.__decks",
+    "origami.srs.origami"
   ],
   "sizeBytes": 728855,
   "sha256": "937974ca92956dfc5bd41f6341d8b0926ea71be89bf4e9519484e42dca027fed",

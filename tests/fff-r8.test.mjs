@@ -44,11 +44,11 @@ console.log("2. cartonașe cu repetiție spațiată");
   check("statistica revizuirilor crește", /1/.test(await page.locator("#srs-host .fff-srs-stats li").nth(3).innerText()) || true);
   // „Din nou” reintră în aceeași zi
   await page.keyboard.press("Space"); await page.keyboard.press("1");
-  const keys = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("fff.origami.")));
-  check("progresul e salvat în localStorage (fff.origami.srs.origami)", keys.some(k => k === "fff.origami.srs.origami"), keys);
+  const keys = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("origami.")));
+  check("progresul e salvat în localStorage (origami.srs.origami)", keys.some(k => k === "origami.srs.origami"), keys);
   // persistă după reîncărcare
   await page.reload(); await page.waitForTimeout(600);
-  const raw = await page.evaluate(() => JSON.parse(localStorage.getItem("fff.origami.srs.origami")));
+  const raw = await page.evaluate(() => JSON.parse(localStorage.getItem("origami.srs.origami")));
   check("după reîncărcare: 2 revizuiri păstrate", raw && raw.log && raw.log.rev === 2, raw && raw.log);
   // export
   const dl = page.waitForEvent("download");
