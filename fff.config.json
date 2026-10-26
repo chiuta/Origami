@@ -1,5 +1,15 @@
 {
   "exceptions": [
-    {"rule": "i18n-parity", "reason": "Fals pozitiv: româna este limba-sursă. Textele ro (simboluri, tehnici, glosar, proveniență, hârtie, baze, modele) rămân în HTML și în datele aplicației; funcțiile tx()/tm()/lc()/lcs() întorc direct sursa pentru ro, iar I18N.ro conține doar cheile de interfață. Cele șapte limbi traduse (en, fr, it, es, pt, de, hu) sunt complete între ele."}
+    {
+      "rule": "i18n-parity",
+      "reason": "Fals pozitiv: româna este limba-sursă. Textele ro (simboluri, tehnici, glosar, proveniență, hârtie, baze, modele) rămân în HTML și în datele aplicației; funcțiile tx()/tm()/lc()/lcs() întorc direct sursa pentru ro, iar I18N.ro conține doar cheile de interfață. Cele șapte limbi traduse (en, fr, it, es, pt, de, hu) sunt complete între ele."
+    }
+  ],
+  "storageKeys": [
+    "origami-done",
+    "origami-lang",
+    "origami-step",
+    "origami.srs.__decks",
+    "origami.srs.origami"
   ]
 }

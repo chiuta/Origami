@@ -13,10 +13,12 @@
   "storageKeys": [
     "origami-done",
     "origami-lang",
-    "origami-step"
+    "origami-step",
+    "origami.srs.__decks",
+    "origami.srs.origami"
   ],
-  "sizeBytes": 728855,
-  "sha256": "6a4679e194b8a7996ed1ab70edd02bc83aada3c3c60a249d4393bb952bade0f9",
+  "sizeBytes": 728899,
+  "sha256": "de547ac3931cfbd766ee26942429ebb3176be6e954e54ccb716dadc5d836c12b",
   "csp": {
     "present": true,
     "directives": {

@@ -1,4 +1,8 @@
 // ORIGAMI — teste pentru funcția nouă (runda 8): exersare cu repetiție spațiată (FFF.srs din kit).
+// [fff-portable] versiunea/data/kitul aplicației se citesc din app.json (nu mai sunt hard-codate în teste)
+import {readFileSync as __fffRF} from 'node:fs';
+const __FFF_APP = JSON.parse(__fffRF(new URL('../app.json', import.meta.url), 'utf8'));
+const __fffRe = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 import fs from "fs";
 import os from "os";
 import path from "path";
@@ -15,8 +19,8 @@ console.log("1. pornire");
   check("0 erori", st.errs.length === 0, st.errs);
   check("0 cereri de rețea", st.net.length === 0, st.net);
   check("0 violări CSP", (await page.evaluate(() => window.__csp)).length === 0);
-  check("meta application-version 1.2.6", (await page.getAttribute('meta[name="application-version"]', "content")) === "1.2.6");
-  check("#app-version", /1\.2\.6 · 2026-10-26/.test(await page.textContent("#app-version")));
+  check(`meta application-version ${__FFF_APP.version}`, (await page.getAttribute('meta[name="application-version"]', "content")) === __FFF_APP.version);
+  check("#app-version", new RegExp(String.raw`${__fffRe(__FFF_APP.version)} · ${__fffRe(__FFF_APP.updated)}`).test(await page.textContent("#app-version")));
   check("fără depășire orizontală 1280", (await hOverflow(page)) <= 0);
   check("30 de modele în catalog (neschimbat)", (await page.locator("#model-grid > *").count()) === 30);
   check("link de navigare „Exersare” prezent", (await page.locator('.navlink[data-nav="exersare"]').count()) === 1);
