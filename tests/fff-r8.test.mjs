@@ -9,7 +9,7 @@ import path from "path";
 import {execFileSync} from "child_process";
 import {launch, axeRun, hOverflow, check, summary, kitSmoke, kitLabel, INDEX} from "./_lib.mjs";
 
-const KIT_BUILD = process.env.FFF_BUILD || "/home/claude/chiuta.github.io/fff-kit/build.mjs";
+const KIT_BUILD = process.env.FFF_BUILD || (process.env.KIT ? process.env.KIT + "/build.mjs" : "/home/claude/chiuta.github.io/fff-kit/build.mjs");
 const goto = async (page, id) => { await page.evaluate(i => document.getElementById(i).scrollIntoView(), id); await page.waitForTimeout(250); };
 
 console.log("1. pornire");
