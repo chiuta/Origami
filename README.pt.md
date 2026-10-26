@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · **Português** · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versão:** 1.2.6 · **Última atualização:** 2026-10-26
+**Versão:** 2.0.0 · **Última atualização:** 2026-10-26
 
 Idiomas da interface: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -19,6 +19,7 @@ O ORIGAMI é um guia interativo em romeno: uma breve introdução histórica, os
 ## Funcionalidades
 
 Verificadas no código e no navegador (Chromium, Playwright):
+- **Novo na 2.0.0:** dobras animadas, modelos próprios passo a passo, ficha imprimível, dificuldade, ordenação e modo crianças.
 - Catálogo de 30 modelos, filtrável por nível (iniciante / intermédio / avançado) e tipo (tradicional-popular / ação / modular), com pesquisa sem diacríticos (por exemplo, «palarie» encontra «Pălărie»).
 - Visualizador passo a passo (diagrama SVG + texto), com botões Anterior / Seguinte, barra de progresso e navegação com as setas esquerda/direita; Esc fecha-o.
 - A caixa de diálogo retém o foco (Tab / Shift+Tab), bloqueia o resto da página enquanto está aberta e devolve o foco ao cartão do modelo ao fechar.

@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · **Magyar**
 
-**Verzió:** 1.2.6 · **Utolsó frissítés:** 2026-10-26
+**Verzió:** 2.0.0 · **Utolsó frissítés:** 2026-10-26
 
 A felület nyelvei: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -19,6 +19,7 @@ Az ORIGAMI egy interaktív útmutató román nyelven: rövid történeti bevezet
 ## Funkciók
 
 Kódban és böngészőben ellenőrizve (Chromium, Playwright):
+- **Újdonság a 2.0.0-ban:** animált hajtások, saját modellek lépésenként, nyomtatható lap, nehézség, rendezés és gyerekmód.
 - 30 modell katalógusa, szűrhető szint (kezdő / haladó / profi) és típus (hagyományos-népi / mozgó / moduláris) szerint, ékezetek nélküli kereséssel (például a „palarie” megtalálja a „Pălărie” szót).
 - Lépésenkénti megjelenítő (SVG-diagram + szöveg), Vissza / Tovább gombokkal, folyamatjelzővel és a bal/jobb nyilakkal történő navigációval; az Esc bezárja.
 - A párbeszédablak megtartja a fókuszt (Tab / Shift+Tab), nyitott állapotában blokkolja az oldal többi részét, bezáráskor pedig visszaadja a fókuszt a modell kártyájának.

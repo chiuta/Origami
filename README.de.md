@@ -2,7 +2,7 @@
 
 [English](README.md) · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · **Deutsch** · [Magyar](README.hu.md)
 
-**Version:** 1.2.6 · **Zuletzt aktualisiert:** 2026-10-26
+**Version:** 2.0.0 · **Zuletzt aktualisiert:** 2026-10-26
 
 Oberflächensprachen: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -19,6 +19,7 @@ ORIGAMI ist eine interaktive Anleitung auf Rumänisch: eine kurze historische Ei
 ## Funktionen
 
 Im Code und im Browser geprüft (Chromium, Playwright):
+- **Neu in 2.0.0:** animierte Faltungen, eigene Modelle Schritt für Schritt, druckbares Blatt, Schwierigkeit, Sortierung und Kindermodus.
 - Katalog von 30 Modellen, filterbar nach Stufe (Anfänger / Fortgeschritten / Profi) und Typ (traditionell-volkstümlich / Aktion / modular), mit diakritikfreier Suche (zum Beispiel findet „palarie" „Pălărie").
 - Schrittbetrachter (SVG-Diagramm + Text), mit den Schaltflächen Zurück / Weiter, Fortschrittsbalken und Navigation mit den Pfeiltasten links/rechts; Esc schließt ihn.
 - Der Dialog hält den Fokus (Tab / Umschalt+Tab), sperrt den Rest der Seite, solange er geöffnet ist, und gibt beim Schließen den Fokus an die Karte des Modells zurück.

@@ -2,7 +2,7 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 1.2.6 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -19,6 +19,8 @@ ORIGAMI este un ghid interactiv în limba română: o introducere istorică scur
 ## Funcții
 
 Verificate în cod și în browser (Chromium, Playwright):
+- **Nou în 2.0.0:** pliuri animate (butoanele „Animează pliul” / „Redă tot” sau opțiunea de a anima trecerea la „Înainte”; respectă reduced-motion), înregistrarea modelelor proprii pas cu pas („＋ Model propriu”: formă, pliuri vale/munte și săgeți prin două clicuri, salvate local în `origami-mine`, incluse în exportul progresului) și fișă tipăribilă (tipar listă sau grilă + descărcare HTML autonom).
+- Catalog cu dificultate (stele), sortare după dificultate/timp și mod pentru copii (doar modele pentru începători, text mărit).
 - Catalog de 30 de modele, filtrabil după nivel (începător / intermediar / avansat) și tip (tradițional-popular / acțiune / modular), cu căutare fără diacritice (de exemplu „palarie” găsește „Pălărie”).
 - Vizualizator pe pași (diagramă SVG + text), cu butoane Înapoi / Înainte, bară de progres și navigare cu săgețile stânga/dreapta; Esc închide.
 - Dialogul reține focusul (Tab / Shift+Tab), blochează restul paginii cât e deschis și readuce focusul pe cardul modelului la închidere.

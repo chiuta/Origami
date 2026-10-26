@@ -2,7 +2,7 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 1.2.6 · **Last updated:** 2026-10-26
+**Version:** 2.0.0 · **Last updated:** 2026-10-26
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -19,6 +19,7 @@ ORIGAMI is an interactive guide in Romanian: a short historical introduction, th
 ## Features
 
 Verified in the code and in the browser (Chromium, Playwright):
+- **New in 2.0.0:** animated folds, step-by-step recording of your own models (stored locally in `origami-mine`), printable sheet (list or grid, standalone HTML download), difficulty stars, sorting and a kids mode.
 - Catalogue of 30 models, filterable by level (beginner / intermediate / advanced) and type (traditional-popular / action / modular), with diacritic-free search (for example "palarie" finds "Pălărie").
 - Step viewer (SVG diagram + text), with Back / Next buttons, a progress bar and navigation with the left/right arrows; Esc closes it.
 - The dialog traps focus (Tab / Shift+Tab), blocks the rest of the page while it is open and returns focus to the model's card on closing.
