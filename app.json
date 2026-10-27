@@ -17,8 +17,8 @@
     "origami.srs.__decks",
     "origami.srs.origami"
   ],
-  "sizeBytes": 776651,
-  "sha256": "bb020f2e2e1b2684d218f7be889b11434849a30a897bd4f6e97270378ce110a1",
+  "sizeBytes": 776788,
+  "sha256": "a12d0fa73a6078667c8e60f6437f961b0c5dffdba3cb3219f11c6ec76acb4fe8",
   "csp": {
     "present": true,
     "directives": {
