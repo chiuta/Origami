@@ -2,7 +2,11 @@
 
 **English** · [Română](README.ro.md) · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Version:** 2.0.0 · **Last updated:** 2026-10-26
+**Version:** 2.0.1 · **Last updated:** 2026-10-27
+
+**Status:** stable (2.0.1). The folding diagrams are schematic; for advanced models check against a published diagram.
+
+**Offline:** yes, complete. No external requests; the guide, the animations and the practice section work without a network.
 
 Interface languages: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -43,6 +47,12 @@ New "Practice" section (menu → Practice): **front/back** flashcards for the **
 
 A click (or Enter) on the displayed version (`v 1.1.0 · 2026-10-14`) opens the "Transparency" window: the declared network hosts (0 external requests), the local storage keys with sizes, the APIs used, the size and SHA-256 of the file (with a checker for a downloaded file) and the **backup** of the app's data to a `.fff.json` file (optionally encrypted with a password, AES-GCM 256 / PBKDF2; the password cannot be recovered), import with confirmation and deletion of the app's data. The kit (`fff-kit`, modules: core, label, bundle, srs) is pasted into `index.html`, makes no network requests and does not change existing data; without it the app works the same. The backup also includes the practice progress and the existing keys `origami-done` / `origami-step`. The kit's texts are in 8 languages (ro, en, fr, it, es, pt, hu, de); **the fr/it/es/pt/hu/de translations are automatic and not verified by native speakers**. The app's own interface remains in Romanian.
 
+## Animated diagrams and difficulty filters (checked in the code)
+
+- **Animated diagrams:** since 2.0.0 every one of the 30 models has an animated fold: the "▶ Animate the fold" button interpolates between the shape of one step and the next, and "Animate the move to the next step" does it automatically on "Next". All 187 step transitions in the 30 models have a start and an end shape, so all can be animated. It respects `prefers-reduced-motion` (with it, the step simply changes). The animation is a schematic interpolation of the outline, not a physical simulation of the paper.
+- **Difficulty filters:** the Beginner / Intermediate / Advanced chips (15 / 11 / 4 models), combinable with the type filter, search and All / To do / Done; sorting by difficulty or time; difficulty marked on the cards.
+- Nothing needs to be added for these two points; this version only documents them.
+
 ## User guide
 
 1. Open the page and choose a section from the top menu (on mobile, the ☰ button).
@@ -74,6 +84,10 @@ Download `index.html` and open it in a browser; it does not require internet.
 
 ## History / Changelog
 
+
+### 2.0.1 — 2026-10-27
+
+Text only: README states exactly what the animated diagrams and the difficulty filters cover (checked in the code), Status / Offline lines. See CHANGELOG.md.
 ### 1.2.4 — 2026-10-22
 
 fff-kit 1.1.4: touch targets and minimum text size.
