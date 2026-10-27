@@ -2,7 +2,11 @@
 
 [English](README.md) · **Română** · [Français](README.fr.md) · [Italiano](README.it.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Magyar](README.hu.md)
 
-**Versiune:** 2.0.0 · **Ultima actualizare:** 2026-10-26
+**Versiune:** 2.0.1 · **Ultima actualizare:** 2026-10-27
+
+**Stare:** stabilă (2.0.1). Diagramele de pliere sunt schematice; pentru modelele avansate compară cu o diagramă publicată.
+
+**Offline:** da, complet. Fără cereri externe; ghidul, animațiile și secțiunea de exersare funcționează fără rețea.
 
 Limbile interfeței: **Română, English, Français, Italiano, Español, Português (PT), Deutsch, Magyar**
 
@@ -44,6 +48,12 @@ Secțiune nouă „Exersare” (meniu → Exersare): cartonașe cu **față/vers
 
 Un clic (sau Enter) pe versiunea afișată (`v 1.1.0 · 2026-10-14`) deschide fereastra „Transparență”: gazdele de rețea declarate (0 cereri externe), cheile de stocare locală cu dimensiuni, API-urile folosite, mărimea și SHA-256 al fișierului (cu verificator pentru un fișier descărcat) și **copia de siguranță** a datelor aplicației într-un fișier `.fff.json` (opțional criptat cu parolă, AES-GCM 256 / PBKDF2; parola nu poate fi recuperată), import cu confirmare și ștergerea datelor aplicației. Kitul (`fff-kit`, module: core, label, bundle, srs) este lipit în `index.html`, nu face cereri de rețea și nu schimbă datele existente; fără el aplicația funcționează la fel. Copia de siguranță include și progresul de exersare și cheile existente `origami-done` / `origami-step`. Textele kitului sunt în 8 limbi (ro, en, fr, it, es, pt, hu, de); **traducerile fr/it/es/pt/hu/de sunt automate și neverificate nativ**. Interfața aplicației însăși rămâne în română.
 
+## Diagrame animate și filtre de dificultate (verificat în cod)
+
+- **Diagrame animate:** din 2.0.0 fiecare dintre cele 30 de modele are pliu animat: butonul „▶ Animează pliul” interpolează între forma unui pas și a următorului, iar „Animează trecerea la pasul următor” o face automat la „Înainte”. Toate cele 187 de treceri dintre pași din cele 30 de modele au formă de start și de final, deci toate se pot anima. Respectă `prefers-reduced-motion` (atunci pasul doar se schimbă). Animația este o interpolare schematică a conturului, nu o simulare fizică a hârtiei.
+- **Filtre de dificultate:** butoanele Începător / Intermediar / Avansat (15 / 11 / 4 modele), combinabile cu filtrul de tip, căutarea și Toate / De făcut / Făcute; sortare după dificultate sau timp; dificultatea apare pe carduri.
+- Pentru aceste două puncte nu era nimic de adăugat; această versiune doar le documentează.
+
 ## Manual de utilizare
 
 1. Deschide pagina și alege o secțiune din meniul de sus (pe mobil, butonul ☰).
@@ -75,6 +85,10 @@ Descarcă `index.html` și deschide-l în browser; nu necesită internet.
 
 ## Istoric / Changelog
 
+
+### 2.0.1 — 2026-10-27
+
+Doar text: README spune exact ce acoperă diagramele animate și filtrele de dificultate (verificat în cod), linii Stare / Offline. Vezi CHANGELOG.md.
 ### 1.2.4 — 2026-10-22
 
 fff-kit 1.1.4: ținte tactile și text minim.
