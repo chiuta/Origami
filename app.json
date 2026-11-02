@@ -17,8 +17,8 @@
     "origami.srs.__decks",
     "origami.srs.origami"
   ],
-  "sizeBytes": 776788,
-  "sha256": "a12d0fa73a6078667c8e60f6437f961b0c5dffdba3cb3219f11c6ec76acb4fe8",
+  "sizeBytes": 917221,
+  "sha256": "a131949c8593e29b757d0b121b1fa839e1a5b92d308801c913d0b583137734d9",
   "csp": {
     "present": true,
     "directives": {
@@ -57,6 +57,10 @@
       "dialog",
       "label",
       "bundle",
+      "qr",
+      "p2p",
+      "sync",
+      "history",
       "srs"
     ]
   },
@@ -68,6 +72,10 @@
       "dialog",
       "label",
       "bundle",
+      "qr",
+      "p2p",
+      "sync",
+      "history",
       "srs"
     ]
   },
