@@ -2,7 +2,7 @@
   "schema": 1,
   "slug": "origami",
   "name": "ORIGAMI — Arta plierii hârtiei",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "updated": "2026-11-11",
   "description": "Ghid offline de origami: simboluri de pliere, baze fundamentale și modele pas cu pas, de la începător la avansat.",
   "egress": [],
@@ -17,8 +17,8 @@
     "origami.srs.__decks",
     "origami.srs.origami"
   ],
-  "sizeBytes": 954871,
-  "sha256": "3a67b7b881ae519501ec9c4cc9c2a3961204c41aa5e8bb005aa80c57c20d2d57",
+  "sizeBytes": 957754,
+  "sha256": "a8c3d3f0091870cdad2155723588cd99d3a534c7612aa8f0686425508581c2d6",
   "csp": {
     "present": true,
     "directives": {
