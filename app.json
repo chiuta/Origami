@@ -8,7 +8,8 @@
   "egress": [],
   "permissions": [
     "serviceWorker",
-    "localStorage"
+    "localStorage",
+    "WebGL"
   ],
   "storageKeys": [
     "origami-done",
@@ -17,13 +18,13 @@
     "origami.srs.__decks",
     "origami.srs.origami"
   ],
-  "sizeBytes": 971331,
-  "sha256": "9578383e18113ddc3516e8fba6713ac5823b6fab281d979ad2a9500175df43b6",
+  "sizeBytes": 1022971,
+  "sha256": "647375c47181e051f95bd0d15b71f6e7244558b784845bee7101d991809b26d8",
   "csp": {
     "present": true,
     "directives": {
       "default-src": "'none'",
-      "script-src": "sha256×3",
+      "script-src": "sha256×4",
       "style-src": "'unsafe-inline'",
       "img-src": "'self' data:",
       "base-uri": "'none'",
